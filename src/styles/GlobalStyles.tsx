@@ -9,7 +9,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-weight: 300;
     font-family: 'Source Sans Pro', sans-serif;
-    color:${(props) => props.theme.textColor};
     line-height: 1.2;
   }
 
