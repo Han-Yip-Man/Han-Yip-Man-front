@@ -1,7 +1,7 @@
-import { createGlobalStyle } from 'styled-components'
+import { Global, css } from '@emotion/react'
 import reset from 'styled-reset'
 
-const GlobalStyle = createGlobalStyle`
+const style = css`
   ${reset}
   * {
     box-sizing: border-box;
@@ -9,10 +9,12 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-weight: 300;
     font-family: 'Source Sans Pro', sans-serif;
-    /* color:${(props) => props.theme?.textColor}; */
     line-height: 1.2;
   }
-
 `
+
+const GlobalStyle = () => {
+  return <Global styles={style} />
+}
 
 export default GlobalStyle

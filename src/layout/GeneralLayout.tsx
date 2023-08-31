@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom'
-import { styled } from 'styled-components'
+import styled from '@emotion/styled'
 
 function GeneralLayout() {
+  console.log(LayOut)
   return (
     <LayOut>
       <Outlet />
