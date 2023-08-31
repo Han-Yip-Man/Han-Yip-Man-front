@@ -1,8 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
+import { useTheme } from '@mui/material/styles'
 
 function GeneralLayout() {
-  console.log(LayOut)
+  const theme = useTheme()
+  console.log(theme)
   return (
     <LayOut>
       <Outlet />
