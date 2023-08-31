@@ -18,7 +18,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@emotion/styled': 'styled-components',
+      // '@emotion/styled': 'styled-components',
       '@material-ui/core': '@material-ui/core/styles',
     },
   },

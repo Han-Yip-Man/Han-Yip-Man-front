@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
+import { Store } from './pages/Store'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -36,6 +37,13 @@ const routerData: RouterElement[] = [
     element: <></>,
     withAuth: false,
     children: [],
+  },
+  {
+    id: 3,
+    path: '/store',
+    label: 'Store',
+    element: <Store />,
+    withAuth: false,
   },
 ]
 
