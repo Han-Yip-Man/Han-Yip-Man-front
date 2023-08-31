@@ -1,13 +1,13 @@
-import { RouterProvider } from "react-router-dom";
-import { RecoilRoot } from "recoil";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import GlobalStyle from "./styles/GlobalStyles";
-import { ThemeProvider } from "@mui/styled-engine-sc";
-import { theme } from "./theme.ts";
-import { routers } from "./router.tsx";
+import { RouterProvider } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import GlobalStyle from './styles/GlobalStyles'
+import { ThemeProvider } from '@mui/styled-engine-sc'
+import { theme } from './theme.ts'
+import { routers } from './router.tsx'
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         </RecoilRoot>
       </ThemeProvider>
     </QueryClientProvider>
-  );
+  )
 }
 
-export default App;
+export default App
