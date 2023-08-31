@@ -1,14 +1,11 @@
-import * as S from '@/pages/Domino/MenuDetail.Styles';
+import * as S from '@/pages/Domino/MenuDetail.Styles'
 
 const MenuDetail = () => {
   return (
     <>
       <S.WrapperDiv>
         <S.FixedDiv>
-          <S.Img
-            alt="sample_img"
-            src="https://cdn.dominos.co.kr/admin/upload/goods/20230619_hybtjkBv.jpg"
-          />
+          <S.Img alt="sample_img" src="https://cdn.dominos.co.kr/admin/upload/goods/20230619_hybtjkBv.jpg" />
         </S.FixedDiv>
 
         <S.OptionDiv>
@@ -44,7 +41,7 @@ const MenuDetail = () => {
         </S.OptionDiv>
       </S.WrapperDiv>
     </>
-  );
-};
+  )
+}
 
-export default MenuDetail;
+export default MenuDetail
