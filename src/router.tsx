@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
+import GeneralLayout from './layout/GeneralLayout'
 import { Store } from './pages/Store'
 
 interface RouterBase {
@@ -34,16 +35,17 @@ const routerData: RouterElement[] = [
     id: 0,
     path: '/',
     label: 'Layout',
-    element: <></>,
+    element: <GeneralLayout />,
     withAuth: false,
-    children: [],
-  },
-  {
-    id: 3,
-    path: '/store',
-    label: 'Store',
-    element: <Store />,
-    withAuth: false,
+    children: [
+      {
+        id: 3,
+        path: '/store',
+        label: 'Store',
+        element: <Store />,
+        withAuth: false,
+      },
+    ],
   },
 ]
 

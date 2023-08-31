@@ -18,7 +18,7 @@ axiosClient.interceptors.response.use((response) => {
 axiosClient.interceptors.request.use((config) => {
   config.headers['Content-Type'] = 'application/json; charset=utf-8'
   if (token) {
-    config.headers['Authorization'] = `${token}` // <------ 헤더에 토큰 여기서 뭐 더 해야할거 있나요?
+    config.headers['Authorization'] = `${token}`
   }
 
   return config
