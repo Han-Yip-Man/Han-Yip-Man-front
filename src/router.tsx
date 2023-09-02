@@ -3,7 +3,9 @@ import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
-import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
+import MypageLayout from './layout/MypageLayout'
+import CustomerMypage from './pages/CustomerMypage/CustomerMypage'
+import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -51,7 +53,22 @@ const routerData: RouterElement[] = [
         id: 51,
         path: '',
         label: 'test',
-        element: <OwnerSignin />,
+        element: <CustomerSignup />,
+      },
+    ],
+  },
+  {
+    id: 60,
+    path: '/11',
+    label: 'mypagelayout',
+    element: <MypageLayout />,
+    withAuth: false,
+    children: [
+      {
+        id: 61,
+        path: '',
+        label: 'test',
+        element: <CustomerMypage />,
       },
     ],
   },
