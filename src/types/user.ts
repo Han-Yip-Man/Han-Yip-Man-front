@@ -24,3 +24,13 @@ export interface User {
   sub: string
   updated_at: string
 }
+
+export interface FormData {
+  email: string
+  password: string
+  password_confirm: string
+  phoneNumber: string
+  nickname: string
+  address?: string
+  BusinessNumber?: string
+}
