@@ -75,6 +75,9 @@ const StyledAccordion = styled(Accordion)`
   border-radius: 0 !important;
   font-size: 20px;
   box-shadow: none;
+  &.Mui-expanded {
+    margin: 0;
+  }
 `
 
 const StyledTabTitle = styled.div`

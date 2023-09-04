@@ -163,9 +163,13 @@ export default MainMenuCategory
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 80px);
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   align-items: center;
 `
 const Title = styled.h2`

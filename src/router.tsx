@@ -5,7 +5,7 @@ import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
-import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
+import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -53,7 +53,7 @@ const routerData: RouterElement[] = [
         id: 51,
         path: '',
         label: 'test',
-        element: <OwnerSignin />,
+        element: <OwnerSignup />,
       },
     ],
   },
