@@ -2,6 +2,10 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
+import SignLayout from './layout/SignLayout'
+import MypageLayout from './layout/MypageLayout'
+import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
+import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
 import { Store } from './pages/Store'
 
 interface RouterBase {
@@ -44,6 +48,36 @@ const routerData: RouterElement[] = [
         label: 'Store',
         element: <Store />,
         withAuth: false,
+      },
+    ],
+  },
+  {
+    id: 50,
+    path: '/123',
+    label: 'signlayout',
+    element: <SignLayout />,
+    withAuth: false,
+    children: [
+      {
+        id: 51,
+        path: '',
+        label: 'test',
+        element: <OwnerSignup />,
+      },
+    ],
+  },
+  {
+    id: 60,
+    path: '/11',
+    label: 'mypagelayout',
+    element: <MypageLayout />,
+    withAuth: false,
+    children: [
+      {
+        id: 61,
+        path: '',
+        label: 'test',
+        element: <OwnerDashboard />,
       },
     ],
   },
