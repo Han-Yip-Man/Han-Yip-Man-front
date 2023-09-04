@@ -12,8 +12,9 @@ const InputField = React.forwardRef<
     checkDuplication?: () => void
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
     maxLength?: number
+    placeholder?: string
   }
->(({ label, type = 'text', errorMessage, checkDuplication, onChange, maxLength, ...props }, ref) => (
+>(({ label, type = 'text', errorMessage, checkDuplication, onChange, maxLength, placeholder, ...props }, ref) => (
   <InputWrapper>
     <div className="input-row">
       <TextField
@@ -26,6 +27,7 @@ const InputField = React.forwardRef<
         onChange={onChange}
         variant="outlined"
         inputProps={{ maxLength: maxLength }}
+        placeholder={placeholder}
         {...props}
       />
       {checkDuplication && (

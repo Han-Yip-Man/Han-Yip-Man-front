@@ -26,11 +26,19 @@ export interface User {
 }
 
 export interface FormData {
-  email: string
-  password: string
-  password_confirm: string
-  phoneNumber: string
-  nickname: string
+  email?: string
+  password?: string
+  password_confirm?: string
+  phoneNumber?: string
+  nickname?: string
   address?: string
   BusinessNumber?: string
+  storeName?: string
+  storePhone?: string
+  category?: string
+  businessNumber?: string
+  minimumOrderAmount?: string
+  mainImage?: File
+  bannerImage?: File
+  menuCategory?: string
 }

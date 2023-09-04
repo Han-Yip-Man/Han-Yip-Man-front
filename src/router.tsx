@@ -4,8 +4,8 @@ import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
-import CustomerMypage from './pages/CustomerMypage/CustomerMypage'
-import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
+import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
+import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -53,7 +53,7 @@ const routerData: RouterElement[] = [
         id: 51,
         path: '',
         label: 'test',
-        element: <CustomerSignup />,
+        element: <OwnerSignin />,
       },
     ],
   },
@@ -68,7 +68,7 @@ const routerData: RouterElement[] = [
         id: 61,
         path: '',
         label: 'test',
-        element: <CustomerMypage />,
+        element: <OwnerDashboard />,
       },
     ],
   },

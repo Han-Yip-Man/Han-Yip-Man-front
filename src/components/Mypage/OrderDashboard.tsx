@@ -8,10 +8,10 @@ import Chip from '@mui/material/Chip'
 const OrderDashboard = () => {
   return (
     <DashboardWrapper>
-      <div className="dashboard_title">
+      <Title>
         <h2>주문내역</h2>
-      </div>
-      <div className="dashboard_list">
+      </Title>
+      <ItemList>
         <Card>
           <CardMedia sx={{ width: 100, height: 100 }} image="/img/ordertest.jpg" title="green iguana" />
           <CardContent>
@@ -38,59 +38,7 @@ const OrderDashboard = () => {
           </CardContent>
           <Chip className="order_state" label="배달완료" color="primary" />
         </Card>
-        <Card>
-          <CardMedia sx={{ width: 100, height: 100 }} image="/img/ordertest.jpg" title="green iguana" />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              3대 전통 할매손맛피자
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              청국장 피자 <span>옵션:산나물 토핑추가</span>
-            </Typography>
-            <Typography>주문가격 : 423,000원</Typography>
-          </CardContent>
-          <Chip className="order_state" label="배달완료" color="primary" />
-        </Card>
-        <Card>
-          <CardMedia sx={{ width: 100, height: 100 }} image="/img/ordertest.jpg" title="green iguana" />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              3대 전통 할매손맛피자
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              청국장 피자 <span>옵션:산나물 토핑추가</span>
-            </Typography>
-            <Typography>주문가격 : 423,000원</Typography>
-          </CardContent>
-          <Chip className="order_state" label="배달완료" color="primary" />
-        </Card>
-        <Card>
-          <CardMedia sx={{ width: 100, height: 100 }} image="/img/ordertest.jpg" title="green iguana" />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              3대 전통 할매손맛피자
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              청국장 피자 <span>옵션:산나물 토핑추가</span>
-            </Typography>
-            <Typography>주문가격 : 423,000원</Typography>
-          </CardContent>
-          <Chip className="order_state" label="배달완료" color="primary" />
-        </Card>
-        <Card>
-          <CardMedia sx={{ width: 100, height: 100 }} image="/img/ordertest.jpg" title="green iguana" />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              3대 전통 할매손맛피자
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              청국장 피자 <span>옵션:산나물 토핑추가</span>
-            </Typography>
-            <Typography>주문가격 : 423,000원</Typography>
-          </CardContent>
-          <Chip className="order_state" label="배달완료" color="primary" />
-        </Card>
-      </div>
+      </ItemList>
     </DashboardWrapper>
   )
 }
@@ -103,18 +51,19 @@ const DashboardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  .dashboard_title {
-    margin: 50px;
-    h2 {
-      font-size: 30px;
-    }
+`
+const Title = styled.div`
+  margin: 50px;
+  h2 {
+    font-size: 30px;
   }
-  .dashboard_list {
-    margin-top: 30px;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+`
+
+const ItemList = styled.div`
+  margin-top: 30px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
   }
   .MuiCard-root {
     display: flex;
