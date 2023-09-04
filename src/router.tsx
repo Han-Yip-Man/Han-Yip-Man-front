@@ -6,6 +6,7 @@ import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
 import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
+import { Store } from './pages/Store'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -40,7 +41,15 @@ const routerData: RouterElement[] = [
     label: 'Layout',
     element: <GeneralLayout />,
     withAuth: false,
-    children: [],
+    children: [
+      {
+        id: 3,
+        path: '/store',
+        label: 'Store',
+        element: <Store />,
+        withAuth: false,
+      },
+    ],
   },
   {
     id: 50,
