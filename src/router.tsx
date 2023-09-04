@@ -50,7 +50,11 @@ const routerData: RouterElement[] = [
 
 function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   return routerArray.map((router) => {
-    const routeElement = router.withAuth ? <AuthComponent>{router.element}</AuthComponent> : router.element
+    const routeElement = router.withAuth ? (
+      <AuthComponent>{router.element}</AuthComponent>
+    ) : (
+      router.element
+    )
 
     const routeObject: RouteObject = {
       path: router.path,

@@ -5,9 +5,10 @@ import { keyword, focusState, dataState } from '../../atoms/mainAtoms'
 interface Props<T> {
   data?: T
   msg?: string
+  active?: boolean
 }
 
-function AddrLi({ data, msg }: Props<DataType>) {
+function AddrLi({ data, msg, active }: Props<DataType>) {
   const setInputKeyword = useSetRecoilState(keyword)
   const setIsFocused = useSetRecoilState(focusState)
   const setData = useSetRecoilState(dataState)
@@ -27,7 +28,7 @@ function AddrLi({ data, msg }: Props<DataType>) {
           <AddrName>{msg}</AddrName>
         </Li>
       ) : (
-        <Li onClick={handleClick}>
+        <Li onClick={handleClick} style={{ backgroundColor: active ? '#ddd' : '#fff' }}>
           <AddrName>{data?.place_name}</AddrName>
           <AddrRoad>{data?.road_address_name}</AddrRoad>
         </Li>

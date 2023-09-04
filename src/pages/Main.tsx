@@ -11,6 +11,7 @@ import { useRouter } from '../hooks/useRouter'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { focusState, keyword, userAddr } from '../atoms/mainAtoms'
 import searchAddressByKeyword from '../api/addressSearch'
+import useKeyboard from '../hooks/useKeyboard'
 
 const geo = new window.kakao.maps.services.Geocoder()
 
@@ -21,9 +22,14 @@ function Main() {
   const [inputKeyword, setInputKeyword] = useRecoilState(keyword)
   const setAddr = useSetRecoilState(userAddr)
   const { debouncedKeyword } = useDebounce(inputKeyword, 600)
-  const { data, msg } = useAddress(debouncedKeyword)
-  const dropDownRef = useRef<HTMLUListElement | null>(null)
+  const { data, setData, msg } = useAddress(debouncedKeyword)
   const inputRef = useRef<HTMLInputElement | null>(null)
+  // const dropDownRef = useRef<HTMLUListElement | null>(null)
+  const { currentIndex, ulRef, handleKeyPress } = useKeyboard(data.length, () => {
+    setInputKeyword(() => data[currentIndex].place_name)
+    setData(() => [data[currentIndex]])
+    setIsFocused(false)
+  })
   const { routeTo } = useRouter()
 
   const {
@@ -54,8 +60,8 @@ function Main() {
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
-      dropDownRef.current &&
-      !dropDownRef.current.contains(event.target as Node) &&
+      ulRef.current &&
+      !ulRef.current.contains(event.target as Node) &&
       inputRef.current &&
       !inputRef.current.contains(event.target as Node)
     ) {
@@ -64,8 +70,8 @@ function Main() {
   }
 
   const submitAddress = () => {
+    // 데이터[0]이 없으면 주소를 똑바로 입력하란 알람,토스트 메세지 등을 보여주자
     if (!data[0]) return
-
     const { id, address_name, road_address_name, place_name, place_url, x, y } = data[0]
 
     setAddr({
@@ -95,7 +101,7 @@ function Main() {
         })
       },
       (error) => {
-        console.log('좌표 오류 =>', error.code)
+        console.log('좌표 받아오기 오류 =>', error.code)
         //   0: unknown error
         //   1: permission denied
         //   2: position unavailable (error response from location provider)
@@ -124,6 +130,7 @@ function Main() {
               onFocus={handleFocus}
               onBlur={handleBlur}
               onMouseUp={handleMouseUp}
+              onKeyDown={handleKeyPress}
               ref={inputRef}
             />
             <CustomBtn variant="contained" btncolor={custom} onClick={submitAddress}>
@@ -131,11 +138,13 @@ function Main() {
             </CustomBtn>
           </InputWrap>
           {isFocused && (
-            <AddrUl ref={dropDownRef} onMouseDown={handleMouseUp}>
+            <AddrUl ref={ulRef} onMouseDown={handleMouseUp}>
               {msg.length > 0 ? (
                 <AddrLi msg={msg} />
               ) : (
-                data.map((addr) => <AddrLi key={addr.id} data={addr} msg={msg} />)
+                data.map((addr, index) => (
+                  <AddrLi key={addr.id} data={addr} msg={msg} active={index === currentIndex} />
+                ))
               )}
             </AddrUl>
           )}

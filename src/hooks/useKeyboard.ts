@@ -1,15 +1,27 @@
 import React, { useState, useRef, KeyboardEvent } from 'react'
+import { useRecoilState } from 'recoil'
+import { focusState } from '../atoms/mainAtoms'
 
-type KeyboardProps = [
-  currentIndex: number,
-  ulRef: React.RefObject<HTMLUListElement>,
-  handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void,
-  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>,
-]
+type KeyboardProps = {
+  currentIndex: number
+  ulRef: React.RefObject<HTMLUListElement>
+  handleKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
+}
 
-export default function useKeyboard(dataLength: number, setKeyword: React.Dispatch<React.SetStateAction<string>>): KeyboardProps {
+type CallbackType = () => void
+
+export default function useKeyboard(dataLength: number, callback: CallbackType): KeyboardProps {
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const ulRef = useRef<HTMLUListElement>(null)
+  const [isFocused, setIsFocused] = useRecoilState(focusState)
+
+  const onFocus = () => {
+    if (!isFocused) {
+      setIsFocused(true)
+      return
+    }
+  }
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (dataLength > 0) {
@@ -17,6 +29,7 @@ export default function useKeyboard(dataLength: number, setKeyword: React.Dispat
         case 'ArrowDown':
           setCurrentIndex(currentIndex + 1)
           if (ulRef.current?.childElementCount === currentIndex + 1) setCurrentIndex(0)
+          onFocus()
           break
         case 'ArrowUp':
           setCurrentIndex(currentIndex - 1)
@@ -25,12 +38,22 @@ export default function useKeyboard(dataLength: number, setKeyword: React.Dispat
           }
           break
         case 'Enter':
+          // 엔터 시에 장소이름을 인풋에 넣고
+          // setData([data[0]]) 해야함
+          // isfocus true로
+          callback()
           setCurrentIndex(-1)
-          setKeyword(ulRef.current?.children[currentIndex].textContent?.substring(2) as string)
           break
       }
     }
   }
 
-  return [currentIndex, ulRef, handleKeyPress, setCurrentIndex]
+  if (ulRef.current && ulRef.current.children[currentIndex]) {
+    ulRef.current.children[currentIndex].scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
+  return { currentIndex, ulRef, handleKeyPress, setCurrentIndex }
 }
