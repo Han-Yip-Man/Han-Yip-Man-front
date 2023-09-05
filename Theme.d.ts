@@ -3,11 +3,17 @@ declare module '@mui/material/styles' {
     custom: true
   }
 
-  interface Palette {
-    custom: Palette['primary']
+  interface PaletteColorOptions {
+    main: string
+    secondary: string
   }
+
+  interface Palette {
+    custom: PaletteColorOptions
+  }
+
   interface PaletteOptions {
-    custom?: PaletteOptions['palette']
+    custom?: PaletteColorOptions
   }
   export function createTheme(options: PaletteOptions): Palette
 }

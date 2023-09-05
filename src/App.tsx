@@ -3,8 +3,8 @@ import { RecoilRoot } from 'recoil'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import GlobalStyle from './styles/GlobalStyles'
-import { ThemeProvider } from '@mui/material/styles'
-import { theme } from './theme.ts'
+import { ThemeProvider as MuiTheme } from '@mui/material/styles'
+import { theme } from './styles/theme.ts'
 import { routers } from './router.tsx'
 
 const queryClient = new QueryClient()
@@ -12,13 +12,13 @@ const queryClient = new QueryClient()
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
+      <MuiTheme theme={theme}>
         <RecoilRoot>
           <GlobalStyle />
           <RouterProvider router={routers} />
           <ReactQueryDevtools />
         </RecoilRoot>
-      </ThemeProvider>
+      </MuiTheme>
     </QueryClientProvider>
   )
 }
