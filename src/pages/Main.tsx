@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import Container from '@mui/material/Container'
 import PlaceIcon from '@mui/icons-material/Place'
@@ -24,7 +24,7 @@ function Main() {
   const setAddr = useSetRecoilState(userAddr)
   const { debouncedKeyword } = useDebounce(inputKeyword, 600)
   const { data, setData, msg } = useAddress(debouncedKeyword)
-  const [openToast, setOpenToast] = useState()
+  // const [openToast, setOpenToast] = useState()
   const inputRef = useRef<HTMLInputElement | null>(null)
   // const dropDownRef = useRef<HTMLUListElement | null>(null)
   const { currentIndex, ulRef, handleKeyPress, setCurrentIndex } = useKeyboard(data.length, () => {
