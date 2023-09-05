@@ -1,14 +1,23 @@
 declare module '@mui/material/styles' {
-  // interface Theme {
-  //   status: {
-  //     danger: string
-  //   }
-  // }
-  // // allow configuration using `createTheme`
-  // interface ThemeOptions {
-  //   status?: {
-  //     danger?: string
-  //   }
-  // }
-  // export function createTheme(options: ThemeOptions): Theme
+  interface ButtonPropsColorOverrides {
+    custom: true
+  }
+
+  interface PaletteColorOptions {
+    main: string
+    secondary: string
+  }
+
+  interface Palette {
+    custom: PaletteColorOptions
+    jeein: PaletteColorOptions
+  }
+
+  interface PaletteOptions {
+    custom?: PaletteColorOptions
+    jeein?: PaletteColorOptions
+  }
+  export function createTheme(options: PaletteOptions): Palette
 }
+
+export {}

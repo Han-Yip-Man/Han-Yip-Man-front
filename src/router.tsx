@@ -2,6 +2,9 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
+import MenuDetail from './pages/menuDetail/MenuDetail'
+import Cart from './pages/cart/Cart'
+import Order from './pages/order/Order'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -36,7 +39,26 @@ const routerData: RouterElement[] = [
     label: 'Layout',
     element: <GeneralLayout />,
     withAuth: false,
-    children: [],
+    children: [
+      {
+        id: 0,
+        path: 'menuDetail',
+        label: 'MenuDetail',
+        element: <MenuDetail />,
+      },
+      {
+        id: 1,
+        path: 'cart',
+        label: 'Cart',
+        element: <Cart />,
+      },
+      {
+        id: 2,
+        path: 'order',
+        label: 'Order',
+        element: <Order />,
+      },
+    ],
   },
 ]
 
