@@ -6,9 +6,10 @@ interface Props<T> {
   data?: T
   msg?: string
   active?: boolean
+  resetCurrentIndex?: () => void
 }
 
-function AddrLi({ data, msg, active }: Props<DataType>) {
+function AddrLi({ data, msg, active, resetCurrentIndex }: Props<DataType>) {
   const setInputKeyword = useSetRecoilState(keyword)
   const setIsFocused = useSetRecoilState(focusState)
   const setData = useSetRecoilState(dataState)
@@ -19,6 +20,8 @@ function AddrLi({ data, msg, active }: Props<DataType>) {
     setInputKeyword(() => `${data.place_name}`)
     setData(() => [data])
     setIsFocused(false)
+    if (!resetCurrentIndex) return
+    resetCurrentIndex()
   }
 
   return (
@@ -44,6 +47,7 @@ const Li = styled.li`
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding-bottom: 20px;
+  padding-left: 30px;
   cursor: pointer;
   position: relative;
 

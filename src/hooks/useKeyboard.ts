@@ -27,20 +27,17 @@ export default function useKeyboard(dataLength: number, callback: CallbackType):
     if (dataLength > 0) {
       switch (e.key) {
         case 'ArrowDown':
-          setCurrentIndex(currentIndex + 1)
-          if (ulRef.current?.childElementCount === currentIndex + 1) setCurrentIndex(0)
+          setCurrentIndex(() => currentIndex + 1)
+          if (ulRef.current?.childElementCount === currentIndex + 1) setCurrentIndex(() => 0)
           onFocus()
           break
         case 'ArrowUp':
-          setCurrentIndex(currentIndex - 1)
+          setCurrentIndex(() => currentIndex - 1)
           if (currentIndex <= 0) {
             setCurrentIndex(ulRef.current!.childElementCount - 1)
           }
           break
         case 'Enter':
-          // 엔터 시에 장소이름을 인풋에 넣고
-          // setData([data[0]]) 해야함
-          // isfocus true로
           callback()
           setCurrentIndex(-1)
           break

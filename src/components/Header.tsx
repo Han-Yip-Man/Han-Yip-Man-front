@@ -5,6 +5,8 @@ import Container from '@mui/material/Container'
 import { Link } from 'react-router-dom'
 import Stack from '@mui/material/Stack'
 import BtnHeader from './BtnHeader'
+import LocalPizzaOutlinedIcon from '@mui/icons-material/LocalPizzaOutlined'
+import LunchDiningOutlinedIcon from '@mui/icons-material/LunchDiningOutlined'
 
 function Header() {
   return (
@@ -15,8 +17,14 @@ function Header() {
             <LogoImg src="/svg/HanYip.svg" alt="" />
           </CustomLink>
           <Stack direction="row" spacing={5}>
-            <BtnHeader>로그인</BtnHeader>
-            <BtnHeader primary={true}>회원가입</BtnHeader>
+            <BtnHeader width={120}>
+              <LocalPizzaOutlinedIcon />
+              &nbsp;로그인
+            </BtnHeader>
+            <BtnHeader primary={true} width={140}>
+              <LunchDiningOutlinedIcon />
+              &nbsp;회원가입
+            </BtnHeader>
           </Stack>
         </CustomToolbar>
       </Container>

@@ -6,21 +6,28 @@ import { useTheme } from '@mui/material/styles'
 interface Props {
   children: React.ReactNode
   primary?: boolean
+  width?: number
 }
 
 interface BtnProps {
   primary?: boolean
   maincolor: string
   secondcolor: string
+  width?: number
 }
 
-function BtnHeader({ children, primary }: Props) {
+function BtnHeader({ children, primary, width }: Props) {
   const {
     palette: { custom },
   } = useTheme()
 
   return (
-    <CustomBtn primary={primary} maincolor={custom.main} secondcolor={custom.secondary}>
+    <CustomBtn
+      primary={primary}
+      maincolor={custom.main}
+      secondcolor={custom.secondary}
+      width={width}
+    >
       {children}
     </CustomBtn>
   )
@@ -32,7 +39,7 @@ const CustomBtn = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'primary',
 })<BtnProps>`
   border-radius: 50px;
-  width: 100px;
+  width: ${(props) => `${props.width}px`};
   height: 50px;
   font-size: 17px;
   line-height: 50px;
