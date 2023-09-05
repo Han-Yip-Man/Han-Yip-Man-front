@@ -1,37 +1,18 @@
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
+import { Box, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { MenuCard } from './MenuCard'
+import MenuList from './MenuList'
 
 export default function BasicAccordion() {
   return (
-    <div>
-      <Accordion>
+    <Box>
+      <Accordion defaultExpanded={true}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-          <Typography>Accordion 1</Typography>
+          <Typography>신제품 | 세트 | 프리미엄 | 클래식 | 더블치즈엣지 | 사이드디시 | 음료 | 기타</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <MenuCard />
-          <MenuCard />
-          <MenuCard />
-          <MenuCard />
-          <MenuCard />
+          <MenuList />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
-          <Typography>Accordion 2</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <MenuCard />
-          <MenuCard />
-          <MenuCard />
-          <MenuCard />
-          <MenuCard />
-        </AccordionDetails>
-      </Accordion>
-    </div>
+    </Box>
   )
 }
