@@ -41,4 +41,6 @@ export interface FormData {
   mainImage?: File
   bannerImage?: File
   menuCategory?: string
+  zonecode?: string
+  detailaddress?: string
 }

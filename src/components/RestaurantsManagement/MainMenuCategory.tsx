@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import InputField from '../common/InputField'
-import { Button, ButtonGroup, Card } from '@mui/material'
+import { Button, Card, Grid } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FormData } from '../../types/user'
 
@@ -114,6 +114,7 @@ const MainMenuCategory: React.FC = () => {
                 // 만약 현재 인덱스가 placeholderIndex와 같다면 Placeholder 컴포넌트를 렌더링
                 index === placeholderIndex && <Placeholder onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, placeholderIndex)} />
               }
+
               <StyledItemContainer
                 onDragOver={
                   // 만약 현재 인덱스가 마지막 아이템의 인덱스라면, 드래그 오버 이벤트를 핸들링
@@ -128,24 +129,28 @@ const MainMenuCategory: React.FC = () => {
                     : undefined
                 }
               >
-                <StyleCard
-                  draggable="true" // 카드 아이템이 드래그 가능하도록 설정
-                  onDragStart={(e) => handleDragStart(e, index)} // 드래그 시작 이벤트 핸들러
-                  onDragEnter={(e) => handleDragEnter(e, index)} // 드래그 엔터 이벤트 핸들러
-                  onDrop={(e) => {
-                    // 드롭 이벤트 핸들러. 만약 placeholderIndex가 마지막 위치라면, 드롭 이벤트를 처리
-                    if (placeholderIndex === cards.length) {
-                      handleDrop(e, cards.length)
-                    }
-                  }}
-                  onDragEnd={handleDragEnd} // 드래그 종료 이벤트 핸들러
-                >
-                  <div style={{ flexGrow: 1 }}>{content}</div>
-                </StyleCard>
-                <ButtonGroup>
-                  <StyleitemBtn onClick={() => handleEdit(index)}>수정</StyleitemBtn>
-                  <StyleitemBtn onClick={() => handleDelete(index)}>삭제</StyleitemBtn>
-                </ButtonGroup>
+                <Grid container spacing={2} columns={16}>
+                  <Grid item xs={10}>
+                    <StyleCard
+                      draggable="true" // 카드 아이템이 드래그 가능하도록 설정
+                      onDragStart={(e) => handleDragStart(e, index)} // 드래그 시작 이벤트 핸들러
+                      onDragEnter={(e) => handleDragEnter(e, index)} // 드래그 엔터 이벤트 핸들러
+                      onDrop={(e) => {
+                        // 드롭 이벤트 핸들러. 만약 placeholderIndex가 마지막 위치라면, 드롭 이벤트를 처리
+                        if (placeholderIndex === cards.length) {
+                          handleDrop(e, cards.length)
+                        }
+                      }}
+                      onDragEnd={handleDragEnd} // 드래그 종료 이벤트 핸들러
+                    >
+                      <div style={{ flexGrow: 1 }}>{content}</div>
+                    </StyleCard>
+                  </Grid>
+                  <StyleGrid item xs={6}>
+                    <StyleitemBtn onClick={() => handleEdit(index)}>수정</StyleitemBtn>
+                    <StyleitemBtn onClick={() => handleDelete(index)}>삭제</StyleitemBtn>
+                  </StyleGrid>
+                </Grid>
               </StyledItemContainer>
             </React.Fragment>
           ))
@@ -197,14 +202,19 @@ const Categorylist = styled.div`
   padding: 20px;
 `
 const StyleCard = styled(Card)`
+  max-width: 250px;
   display: flex;
   border-radius: 15px;
+  text-align: center;
   align-items: center;
   font-size: 20px;
   font-weight: 400;
   height: 50px;
-  padding: 20px 40px;
+  padding: 20px 20px;
   background-color: #f2cd00;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: #444;
   cursor: pointer;
   &:active {
@@ -235,6 +245,7 @@ const StyleitemBtn = styled(Button)`
   background-color: #ea7600;
   color: #fff;
   border-color: #ea7600;
+  border-radius: 15px;
   &:hover {
     background-color: #ea7600;
     color: #fff;
@@ -244,7 +255,14 @@ const StyleitemBtn = styled(Button)`
 `
 
 const StyledItemContainer = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  width: 390px;
+  gap: 10px;
+`
+
+const StyleGrid = styled(Grid)`
+  display: flex;
   gap: 10px;
 `
