@@ -5,7 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "skipLibCheck": true,
-
+    "types": ["@emotion/react/types/css-prop"],
     /* Bundler mode */
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "types.d.ts", "./Theme.d.ts"],
+  "include": ["src", "./Theme.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

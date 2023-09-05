@@ -5,8 +5,8 @@ import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
-import { Store } from './pages/Store'
 import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
+import Main from './pages/Main'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -43,11 +43,10 @@ const routerData: RouterElement[] = [
     withAuth: false,
     children: [
       {
-        id: 3,
-        path: '/store',
-        label: 'Store',
-        element: <Store />,
-        withAuth: false,
+        id: 1,
+        path: '',
+        label: 'Main',
+        element: <Main />,
       },
     ],
   },
@@ -85,7 +84,11 @@ const routerData: RouterElement[] = [
 
 function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   return routerArray.map((router) => {
-    const routeElement = router.withAuth ? <AuthComponent>{router.element}</AuthComponent> : router.element
+    const routeElement = router.withAuth ? (
+      <AuthComponent>{router.element}</AuthComponent>
+    ) : (
+      router.element
+    )
 
     const routeObject: RouteObject = {
       path: router.path,
