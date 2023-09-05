@@ -1,4 +1,4 @@
-import { Box, Tabs, Tab, Typography, Rating } from '@mui/material'
+import { Box, Tabs, Tab, Typography, Rating, Stack, styled } from '@mui/material'
 import BasicAccordion from './BasicAccordion'
 import { ReviewCard } from './ReviewCard'
 import { KakaoMap, UserSetAddressKakaoMap } from '../../api/kakao.api'
@@ -47,42 +47,30 @@ export default function BasicTabs() {
       <CustomTabPanel value={value} index={0}>
         <Box>
           <BasicAccordion />
-          <Box width={'100%'} height={'200px'} border={'1px solid'} borderColor={'#ccc'}>
+          <StyledBox>
             <Typography>원산지 대부분 국산 아님</Typography>
-          </Box>
-          <Box width={'100%'} height={'200px'} border={'1px solid'} borderColor={'#ccc'}>
-            <Typography>유의사항 메뉴사진은 연출된 이미지로 실제 조리된 음삭과 다를 수 있습니다.</Typography>
-          </Box>
+          </StyledBox>
+          <StyledBox>
+            <Typography>유의사항 메뉴사진은 연출된 이미지로 실제 조리된 음식과 다를 수 있습니다.</Typography>
+          </StyledBox>
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Box>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            운영시간 00:00~23:59
-          </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            휴무일 연중 무휴
-          </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
+        <Stack color={'text.secondary'} alignItems={'center'}>
+          <Typography>운영시간 00:00~23:59</Typography>
+          <Typography>휴무일 연중 무휴</Typography>
+          <Typography>
             별점
             <Rating name="half-rating-read" defaultValue={5} precision={5} readOnly />
             5.0/5.0
           </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            전화 번호 02-1234-5678
-          </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            사업자 번호 123-45-67890
-          </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            유의사항
-          </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            위치
-          </Typography>
+          <Typography>전화 번호 02-1234-5678</Typography>
+          <Typography>사업자 번호 123-45-67890</Typography>
+          <Typography>유의사항</Typography>
+          <Typography>위치</Typography>
           <UserSetAddressKakaoMap mapId={'map1'} width="750px" height="350px" latitude={37.490569} longitude={127.032444} />
           <KakaoMap mapId={'map'} width="750px" height="350px" latitude={37.490569} longitude={127.032444} />
-        </Box>
+        </Stack>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         Item Three
@@ -96,3 +84,8 @@ export default function BasicTabs() {
     </Box>
   )
 }
+
+const StyledBox = styled(Box)`
+  height: 200px;
+  border: 1px solid;
+`
