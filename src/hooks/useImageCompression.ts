@@ -14,7 +14,7 @@ const useImageCompression = (initialImage?: string) => {
     try {
       // 이미지 압축 옵션을 정의합니다.
       const options = {
-        maxSizeMB: 0.05, // 최대 파일 크기는 0.3MB
+        maxSizeMB: 0.05, // 1이 기본 1MB입니다 소수점도 설정가능
         maxWidthOrHeight: 1920, // 최대 너비 또는 높이는 1920 픽셀
         useWebWorker: true, // Web Worker를 사용하여 압축을 백그라운드에서 수행
       }

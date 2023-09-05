@@ -1,13 +1,45 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import InputField from '../../components/common/InputField'
 import styled from '@emotion/styled'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { FormData } from '../../types/user'
+import useAddressSearch from '../../hooks/useAddressSearch'
+import { DaumPostcodeData } from '../../types/Address'
 
 const CustomerSignup = () => {
   const theme = useTheme()
+  const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
+  const openPostcodePopup = useAddressSearch(scriptUrl)
+
+  const [address, setAddress] = useState<DaumPostcodeData | null>({
+    address: '',
+    zonecode: '',
+    addressEnglish: '',
+    addressType: '',
+    userSelectedType: '',
+    roadAddress: '',
+    roadAddressEnglish: '',
+    jibunAddress: '',
+    jibunAddressEnglish: '',
+    bname: '',
+    buildingName: '',
+    apartment: '',
+  })
+
+  const handleAddressPopup = () => {
+    openPostcodePopup()
+      .then((result) => {
+        if (result) {
+          setAddress((prevState) => ({ ...prevState, address: result.address, zonecode: result.zonecode }))
+        }
+      })
+      .catch((err: Error) => {
+        console.error(err)
+      })
+  }
+  console.log(address)
 
   const {
     register,
@@ -79,8 +111,22 @@ const CustomerSignup = () => {
         {...register('nickname', { required: true, minLength: 2, maxLength: 6, pattern: /^[가-힣A-Za-z]{2,6}$/ })}
         errorMessage={isSubmitted && errors.nickname && '한글 혹은 영문을 사용하여 2글자이상 6글자 이하로 입력해주세요.'}
       />
+      <AddressBtnbox>
+        <InputField label="우편번호" type="text" value={address ? address.zonecode : ''} {...register('zonecode', { required: true })} />
+        <AddressBtn variant="contained" onClick={handleAddressPopup}>
+          주소 입력하기
+        </AddressBtn>
+      </AddressBtnbox>
 
-      <InputField label="주소" type="text" {...register('address')} />
+      <InputField
+        label="주소"
+        type="text"
+        value={address ? address.address : ''}
+        {...register('address', { required: true })}
+        errorMessage={isSubmitted && errors.address && '주소를 입력해 주세요.'}
+      />
+
+      <InputField label="상세주소" type="text" maxLength={25} {...register('detailaddress', { required: true })} errorMessage={isSubmitted && errors.detailaddress && '상세주소를 입력해 주세요.'} />
 
       <SubmitBtn variant="contained" type="submit">
         회원가입
@@ -89,6 +135,23 @@ const CustomerSignup = () => {
   )
 }
 export default CustomerSignup
+
+const AddressBtnbox = styled.div`
+  display: flex;
+  height: 56px;
+  width: 100%;
+  gap: 30px;
+`
+
+const AddressBtn = styled(Button)`
+  width: 500px;
+  font-size: 18px;
+  background-color: #ea7600;
+  &:hover {
+    background-color: #ea7600;
+    opacity: 0.8;
+  }
+`
 
 const Form = styled.form`
   display: flex;
