@@ -17,7 +17,12 @@ export const ReviewCard = () => {
           <Box width={'50%'}></Box>
         </Box>
         <Box sx={{ height: 150, display: 'flex', flexDirection: 'row' }}>
-          <CardMedia component="img" alt="green iguana" height="150" image="/src/assets/pizzahut.png" />
+          <CardMedia
+            component="img"
+            alt="green iguana"
+            height="150"
+            image="/src/assets/pizzahut.png"
+          />
           <CardContent sx={{ width: '200%' }}>
             <Typography gutterBottom variant="h5" component="div">
               너무 맛있어요

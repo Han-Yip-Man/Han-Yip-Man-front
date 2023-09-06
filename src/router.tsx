@@ -2,7 +2,11 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
-import { Store } from './pages/Store'
+import SignLayout from './layout/SignLayout'
+import MypageLayout from './layout/MypageLayout'
+import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
+import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
+import Main from './pages/Main'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -39,11 +43,40 @@ const routerData: RouterElement[] = [
     withAuth: false,
     children: [
       {
-        id: 3,
-        path: '/store',
-        label: 'Store',
-        element: <Store />,
-        withAuth: false,
+        id: 1,
+        path: '',
+        label: 'Main',
+        element: <Main />,
+      },
+    ],
+  },
+  {
+    id: 50,
+    path: '/123',
+    label: 'signlayout',
+    element: <SignLayout />,
+    withAuth: false,
+    children: [
+      {
+        id: 51,
+        path: '',
+        label: 'test',
+        element: <CustomerSignup />,
+      },
+    ],
+  },
+  {
+    id: 60,
+    path: '/11',
+    label: 'mypagelayout',
+    element: <MypageLayout />,
+    withAuth: false,
+    children: [
+      {
+        id: 61,
+        path: '',
+        label: 'test',
+        element: <OwnerDashboard />,
       },
     ],
   },
@@ -51,7 +84,11 @@ const routerData: RouterElement[] = [
 
 function transformRoutes(routerArray: RouterElement[]): RouteObject[] {
   return routerArray.map((router) => {
-    const routeElement = router.withAuth ? <AuthComponent>{router.element}</AuthComponent> : router.element
+    const routeElement = router.withAuth ? (
+      <AuthComponent>{router.element}</AuthComponent>
+    ) : (
+      router.element
+    )
 
     const routeObject: RouteObject = {
       path: router.path,
