@@ -9,7 +9,11 @@ export default function BasicAccordion() {
   return (
     <div>
       <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
           <Typography>Accordion 1</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -21,7 +25,11 @@ export default function BasicAccordion() {
         </AccordionDetails>
       </Accordion>
       <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
           <Typography>Accordion 2</Typography>
         </AccordionSummary>
         <AccordionDetails>

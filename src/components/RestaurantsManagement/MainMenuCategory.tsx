@@ -7,7 +7,14 @@ import { FormData } from '../../types/user'
 
 const MainMenuCategory: React.FC = () => {
   // 카드 데이터 및 드래그/드롭 관련 상태
-  const [cards, setCards] = React.useState<(string | undefined)[]>(['뼈치킨', '순살치킨', '특수부위', '사이드메뉴', '음료 & 주류', '공기밥'])
+  const [cards, setCards] = React.useState<(string | undefined)[]>([
+    '뼈치킨',
+    '순살치킨',
+    '특수부위',
+    '사이드메뉴',
+    '음료 & 주류',
+    '공기밥',
+  ])
   const [placeholderIndex, setPlaceholderIndex] = React.useState<number | null>(null) // placeholder의 위치를 결정
   const [dragSrcIndex, setDragSrcIndex] = React.useState<number | null>(null) // 현재 드래그 중인 카드의 인덱스
   const { register, handleSubmit, setValue, formState } = useForm<FormData>()
@@ -112,7 +119,12 @@ const MainMenuCategory: React.FC = () => {
             <React.Fragment key={index}>
               {
                 // 만약 현재 인덱스가 placeholderIndex와 같다면 Placeholder 컴포넌트를 렌더링
-                index === placeholderIndex && <Placeholder onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, placeholderIndex)} />
+                index === placeholderIndex && (
+                  <Placeholder
+                    onDragOver={handleDragOver}
+                    onDrop={(e) => handleDrop(e, placeholderIndex)}
+                  />
+                )
               }
 
               <StyledItemContainer
@@ -157,7 +169,12 @@ const MainMenuCategory: React.FC = () => {
         }
         {
           // 만약 placeholderIndex가 마지막 위치라면, 마지막 위치에 Placeholder 컴포넌트를 추가
-          placeholderIndex === cards.length && <Placeholder onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, placeholderIndex)} />
+          placeholderIndex === cards.length && (
+            <Placeholder
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, placeholderIndex)}
+            />
+          )
         }
       </Categorylist>
     </Wrapper>

@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { FormData } from '../../types/user'
+import { SignIn } from '../../api/user'
 
 const OwnerSignin = () => {
   const theme = useTheme()
@@ -13,8 +14,18 @@ const OwnerSignin = () => {
   const password = useRef<string | undefined>()
   password.current = watch('password')
 
-  const onSubmit = (data: FormData) => {
-    console.log('data', data)
+  const onSubmit = async (data: FormData) => {
+    try {
+      const payload = {
+        email: data.email,
+        password: data.password,
+      }
+
+      const response = await SignIn(payload)
+      console.log('로그인 성공:', response)
+    } catch (error) {
+      console.error('로그인 실패:', error)
+    }
   }
 
   return (

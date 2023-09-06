@@ -6,6 +6,7 @@ import AddRestaurants from './AddRestaurants'
 import EditRestaurant from './EditRestaurant'
 import MainMenuCategory from './MainMenuCategory'
 import Menumanagement from './Menumanagement'
+import AddMenu from './AddMenu'
 
 interface ContainerProps {
   menupage: number
@@ -13,14 +14,28 @@ interface ContainerProps {
 }
 
 const ManagementContainer: React.FC<ContainerProps> = ({ menupage, setMenupage }) => {
+  const renderManagement = () => {
+    switch (menupage) {
+      case 1:
+        return <RestaurantsProfile setMenupage={setMenupage} />
+      case 2:
+        return <MainMenuCategory />
+      case 3:
+        return <Menumanagement setMenupage={setMenupage} />
+      case 6:
+        return <EditRestaurant setMenupage={setMenupage} />
+      case 7:
+        return <AddRestaurants setMenupage={setMenupage} />
+      case 8:
+        return <AddMenu />
+      default:
+        return null
+    }
+  }
   return (
     <Wrapper>
       <RestaurantsManagementHeader />
-      {menupage === 1 && <RestaurantsProfile setMenupage={setMenupage} />}
-      {menupage === 2 && <MainMenuCategory />}
-      {menupage === 3 && <Menumanagement />}
-      {menupage === 6 && <EditRestaurant setMenupage={setMenupage} />}
-      {menupage === 7 && <AddRestaurants setMenupage={setMenupage} />}
+      {renderManagement()}
     </Wrapper>
   )
 }

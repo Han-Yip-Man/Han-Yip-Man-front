@@ -36,8 +36,16 @@ const EditRestaurant: React.FC<EditRestaurantProps> = ({ setMenupage }) => {
     }
   }
 
-  const { image: mainImage, compressImage: compressMainImage, compressedFile: mainCompressedFile } = useImageCompression('/img/preview.jpg')
-  const { image: bannerImage, compressImage: compressBannerImage, compressedFile: bannerCompressedFile } = useImageCompression('/img/preview.jpg')
+  const {
+    image: mainImage,
+    compressImage: compressMainImage,
+    compressedFile: mainCompressedFile,
+  } = useImageCompression('/img/preview.jpg')
+  const {
+    image: bannerImage,
+    compressImage: compressBannerImage,
+    compressedFile: bannerCompressedFile,
+  } = useImageCompression('/img/preview.jpg')
 
   useEffect(() => {
     if (mainCompressedFile) {
@@ -82,7 +90,11 @@ const EditRestaurant: React.FC<EditRestaurantProps> = ({ setMenupage }) => {
               minLength: 2,
               pattern: /^[A-Za-z가-힣\s]+$/,
             })}
-            errorMessage={(errors.storeName?.type === 'pattern' && '상호명은 한글 혹은 영어만 입력 가능합니다.') || (errors.storeName?.type === 'required' && '상호명은 필수 입력입니다.')}
+            errorMessage={
+              (errors.storeName?.type === 'pattern' &&
+                '상호명은 한글 혹은 영어만 입력 가능합니다.') ||
+              (errors.storeName?.type === 'required' && '상호명은 필수 입력입니다.')
+            }
           />
 
           <InputField
@@ -92,9 +104,17 @@ const EditRestaurant: React.FC<EditRestaurantProps> = ({ setMenupage }) => {
             errorMessage={errors.storePhone && '정확한 전화번호를 입력해주세요.'}
           />
 
-          <InputField label="카테고리" {...register('category', { required: true })} errorMessage={errors.category && '카테고리를 입력해주세요.'} />
+          <InputField
+            label="카테고리"
+            {...register('category', { required: true })}
+            errorMessage={errors.category && '카테고리를 입력해주세요.'}
+          />
 
-          <InputField label="주소" {...register('address', { required: true, minLength: 5 })} errorMessage={errors.address && '주소를 입력해주세요.'} />
+          <InputField
+            label="주소"
+            {...register('address', { required: true, minLength: 5 })}
+            errorMessage={errors.address && '주소를 입력해주세요.'}
+          />
 
           <InputField
             label="사업자등록번호"
