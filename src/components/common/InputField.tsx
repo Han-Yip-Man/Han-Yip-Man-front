@@ -16,30 +16,44 @@ const InputField = React.forwardRef<
     onClick?: () => void
     value?: string
   }
->(({ label, type = 'text', errorMessage, checkDuplication, onChange, maxLength, placeholder, ...props }, ref) => (
-  <InputWrapper>
-    <div className="input-row">
-      <TextField
-        fullWidth
-        label={label}
-        type={type}
-        error={!!errorMessage}
-        helperText={errorMessage || ' '}
-        inputRef={ref}
-        onChange={onChange}
-        variant="outlined"
-        inputProps={{ maxLength: maxLength }}
-        placeholder={placeholder}
-        {...props}
-      />
-      {checkDuplication && (
-        <StyledButton variant="outlined" onClick={checkDuplication}>
-          중복검사
-        </StyledButton>
-      )}
-    </div>
-  </InputWrapper>
-))
+>(
+  (
+    {
+      label,
+      type = 'text',
+      errorMessage,
+      checkDuplication,
+      onChange,
+      maxLength,
+      placeholder,
+      ...props
+    },
+    ref,
+  ) => (
+    <InputWrapper>
+      <div className="input-row">
+        <TextField
+          fullWidth
+          label={label}
+          type={type}
+          error={!!errorMessage}
+          helperText={errorMessage || ' '}
+          inputRef={ref}
+          onChange={onChange}
+          variant="outlined"
+          inputProps={{ maxLength: maxLength }}
+          placeholder={placeholder}
+          {...props}
+        />
+        {checkDuplication && (
+          <StyledButton variant="outlined" onClick={checkDuplication}>
+            중복검사
+          </StyledButton>
+        )}
+      </div>
+    </InputWrapper>
+  ),
+)
 
 export default InputField
 

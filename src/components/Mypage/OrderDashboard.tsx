@@ -13,7 +13,11 @@ const OrderDashboard = () => {
       </Title>
       <ItemList>
         <Card>
-          <CardMedia sx={{ width: 100, height: 100 }} image="/img/ordertest.jpg" title="green iguana" />
+          <CardMedia
+            sx={{ width: 100, height: 100 }}
+            image="/img/ordertest.jpg"
+            title="green iguana"
+          />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               3대 전통 할매손맛피자
@@ -26,7 +30,11 @@ const OrderDashboard = () => {
           <Chip className="order_state" label="배달완료" color="primary" />
         </Card>
         <Card>
-          <CardMedia sx={{ width: 100, height: 100 }} image="/img/ordertest.jpg" title="green iguana" />
+          <CardMedia
+            sx={{ width: 100, height: 100 }}
+            image="/img/ordertest.jpg"
+            title="green iguana"
+          />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               3대 전통 할매손맛피자

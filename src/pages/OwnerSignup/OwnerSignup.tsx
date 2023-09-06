@@ -51,16 +51,27 @@ const OwnerSignup = () => {
         label="비밀번호"
         type="password"
         placeholder="영어와 숫자를 조합하여 6글자 이상"
-        {...register('password', { required: true, minLength: 6, pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/ })}
-        errorMessage={isSubmitted && errors.password && '영어와 숫자를 조합하여 6글자 이상 입력해야 합니다.'}
+        {...register('password', {
+          required: true,
+          minLength: 6,
+          pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+        })}
+        errorMessage={
+          isSubmitted && errors.password && '영어와 숫자를 조합하여 6글자 이상 입력해야 합니다.'
+        }
       />
 
       <InputField
         label="비밀번호 확인"
         type="password"
         placeholder="비밀번호를 다시 한번 입력해주세요."
-        {...register('password_confirm', { required: true, validate: (value) => value === password.current })}
-        errorMessage={isSubmitted && errors.password_confirm && '패스워드를 다시 한번 입력해주세요.'}
+        {...register('password_confirm', {
+          required: true,
+          validate: (value) => value === password.current,
+        })}
+        errorMessage={
+          isSubmitted && errors.password_confirm && '패스워드를 다시 한번 입력해주세요.'
+        }
       />
 
       <InputField
@@ -76,8 +87,17 @@ const OwnerSignup = () => {
       <InputField
         label="닉네임"
         placeholder="한글 혹은 영문만을 사용하여 2~6글자 사이"
-        {...register('nickname', { required: true, minLength: 2, maxLength: 6, pattern: /^[가-힣A-Za-z]{2,6}$/ })}
-        errorMessage={isSubmitted && errors.nickname && '한글 혹은 영문을 사용하여 2글자이상 6글자 이하로 입력해주세요.'}
+        {...register('nickname', {
+          required: true,
+          minLength: 2,
+          maxLength: 6,
+          pattern: /^[가-힣A-Za-z]{2,6}$/,
+        })}
+        errorMessage={
+          isSubmitted &&
+          errors.nickname &&
+          '한글 혹은 영문을 사용하여 2글자이상 6글자 이하로 입력해주세요.'
+        }
       />
 
       <InputField
@@ -87,7 +107,9 @@ const OwnerSignup = () => {
         placeholder="사업자 등록 번호를 입력해주세요."
         {...register('BusinessNumber', { required: true, pattern: /^\d{10}$/ })}
         onChange={handleInputChange}
-        errorMessage={isSubmitted && errors.BusinessNumber && '정확한 사업자 등록번호를 입력해주세요.'}
+        errorMessage={
+          isSubmitted && errors.BusinessNumber && '정확한 사업자 등록번호를 입력해주세요.'
+        }
       />
 
       <SubmitBtn variant="contained" type="submit">

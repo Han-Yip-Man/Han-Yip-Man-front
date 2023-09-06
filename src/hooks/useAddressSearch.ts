@@ -22,7 +22,10 @@ const useAddressSearch = (scriptUrl: string) => {
     return { address: fullAddress, zonecode } // 여기서 주소 데이터와 zonecode를 객체 형태로 반환합니다.
   }
 
-  const openPostcodePopup = (): Promise<{ address: string | undefined; zonecode: string | undefined }> => {
+  const openPostcodePopup = (): Promise<{
+    address: string | undefined
+    zonecode: string | undefined
+  }> => {
     return new Promise((resolve, reject) => {
       open({
         onComplete: (data) => {

@@ -67,7 +67,11 @@ const Menumanagement = () => {
   ])
 
   const handleEditClick = (optionId) => {
-    setOptions((prevOptions) => prevOptions.map((option) => (option.optionId === optionId ? { ...option, isEditing: !option.isEditing } : option)))
+    setOptions((prevOptions) =>
+      prevOptions.map((option) =>
+        option.optionId === optionId ? { ...option, isEditing: !option.isEditing } : option,
+      ),
+    )
   }
 
   const handleDeleteClick = (optionId) => {
@@ -89,14 +93,20 @@ const Menumanagement = () => {
       </Navigation>
       <MenuItemWrapper>
         <StyleAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
             <MenuImg src="img/chicken.jpg" alt="메뉴사진" />
             <Menudescbox>
               <MenuNamebox>
                 <MenuName>메뉴이름입니다.</MenuName>
                 <MenuPrice>판매가격 : 5,000원</MenuPrice>
               </MenuNamebox>
-              <Menudescription>메뉴설명 하는곳입니다 음~~ 맛있다~~ 너무맛있는 메뉴~~</Menudescription>
+              <Menudescription>
+                메뉴설명 하는곳입니다 음~~ 맛있다~~ 너무맛있는 메뉴~~
+              </Menudescription>
             </Menudescbox>
           </AccordionSummary>
           <AccordionDetails>
@@ -108,14 +118,30 @@ const Menumanagement = () => {
                     <input
                       type="text"
                       value={option.optionName}
-                      onChange={(e) => setOptions((prevOptions) => prevOptions.map((opt) => (opt.optionId === option.optionId ? { ...opt, optionName: e.target.value } : opt)))}
+                      onChange={(e) =>
+                        setOptions((prevOptions) =>
+                          prevOptions.map((opt) =>
+                            opt.optionId === option.optionId
+                              ? { ...opt, optionName: e.target.value }
+                              : opt,
+                          ),
+                        )
+                      }
                     />
                   ) : (
                     <h2>{option.optionName}</h2>
                   )}
                   <span>(다중선택: {option.isMultiple ? '가능' : '불가능'})</span>
-                  <img src="img/optionedit.svg" alt="" onClick={() => handleEditClick(option.optionId)} />
-                  <img src="img/optiondelete.svg" alt="" onClick={() => handleDeleteClick(option.optionId)} />
+                  <img
+                    src="img/optionedit.svg"
+                    alt=""
+                    onClick={() => handleEditClick(option.optionId)}
+                  />
+                  <img
+                    src="img/optiondelete.svg"
+                    alt=""
+                    onClick={() => handleDeleteClick(option.optionId)}
+                  />
                 </OptionNamebox>
                 <ul>{/* ... 기존 코드 */}</ul>
               </div>

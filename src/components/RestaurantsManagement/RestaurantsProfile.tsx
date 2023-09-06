@@ -28,7 +28,12 @@ const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
               <Grid item xs={1}></Grid>
               <Grid item xs={4}>
                 <Card elevation={0}>
-                  <CardMedia component="img" alt="메인 사진" height="200" image="/img/ordertest.jpg" />
+                  <CardMedia
+                    component="img"
+                    alt="메인 사진"
+                    height="200"
+                    image="/img/ordertest.jpg"
+                  />
                   <Imgdescription>
                     <Typography variant="body2" color="textSecondary" component="p">
                       대표 이미지
@@ -39,7 +44,12 @@ const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
               <Grid item xs={2}></Grid>
               <Grid item xs={4}>
                 <Card elevation={0}>
-                  <CardMedia component="img" alt="배너 사진" height="200" image="/img/ordertest.jpg" />
+                  <CardMedia
+                    component="img"
+                    alt="배너 사진"
+                    height="200"
+                    image="/img/ordertest.jpg"
+                  />
                   <Imgdescription>
                     <Typography variant="body2" color="textSecondary" component="p">
                       배너 이미지

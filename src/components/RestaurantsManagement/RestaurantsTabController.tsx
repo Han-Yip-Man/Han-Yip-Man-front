@@ -12,7 +12,11 @@ const RestaurantsTabController: React.FC<TabControllerProps> = ({ setMenupage })
     <Wrapper>
       <StyledTabTitle>티엔미미 - 신촌점</StyledTabTitle>
       <StyledAccordion>
-        <StlyedAccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+        <StlyedAccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
           <Typography>가게관리</Typography>
         </StlyedAccordionSummary>
         <StyledAccordionDetails>

@@ -14,7 +14,13 @@ function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props
 
   return (
-    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
@@ -51,7 +57,9 @@ export default function BasicTabs() {
             <Typography>원산지 대부분 국산 아님</Typography>
           </Box>
           <Box width={'100%'} height={'200px'} border={'1px solid'} borderColor={'#ccc'}>
-            <Typography>유의사항 메뉴사진은 연출된 이미지로 실제 조리된 음삭과 다를 수 있습니다.</Typography>
+            <Typography>
+              유의사항 메뉴사진은 연출된 이미지로 실제 조리된 음삭과 다를 수 있습니다.
+            </Typography>
           </Box>
         </Box>
       </CustomTabPanel>
@@ -80,8 +88,20 @@ export default function BasicTabs() {
           <Typography sx={{ fontSize: 14 }} color="text.secondary">
             위치
           </Typography>
-          <UserSetAddressKakaoMap mapId={'map1'} width="750px" height="350px" latitude={37.490569} longitude={127.032444} />
-          <KakaoMap mapId={'map'} width="750px" height="350px" latitude={37.490569} longitude={127.032444} />
+          <UserSetAddressKakaoMap
+            mapId={'map1'}
+            width="750px"
+            height="350px"
+            latitude={37.490569}
+            longitude={127.032444}
+          />
+          <KakaoMap
+            mapId={'map'}
+            width="750px"
+            height="350px"
+            latitude={37.490569}
+            longitude={127.032444}
+          />
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>

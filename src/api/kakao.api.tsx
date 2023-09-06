@@ -16,7 +16,13 @@ type UserSetAddressKakaoMapProps = {
   longitude: number
 }
 
-export const UserSetAddressKakaoMap = ({ mapId, width, height, latitude, longitude }: UserSetAddressKakaoMapProps) => {
+export const UserSetAddressKakaoMap = ({
+  mapId,
+  width,
+  height,
+  latitude,
+  longitude,
+}: UserSetAddressKakaoMapProps) => {
   const [centerLatitude, setCenterLatitude] = useState(latitude)
   const [centerLongitude, setCenterLongitude] = useState(longitude)
   // const [markers, setMarkers] = useState([])
