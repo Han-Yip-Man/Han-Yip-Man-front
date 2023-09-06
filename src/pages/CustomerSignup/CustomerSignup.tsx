@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles'
 import { FormData } from '../../types/user'
 import useAddressSearch from '../../hooks/useAddressSearch'
 import { DaumPostcodeData } from '../../types/Address'
+import { userSignUp } from '../../api/user'
 
 const CustomerSignup = () => {
   const theme = useTheme()
@@ -26,6 +27,7 @@ const CustomerSignup = () => {
     bname: '',
     buildingName: '',
     apartment: '',
+    coordinates: null,
   })
 
   const handleAddressPopup = () => {
@@ -36,6 +38,7 @@ const CustomerSignup = () => {
             ...prevState,
             address: result.address,
             zonecode: result.zonecode,
+            coordinates: result.coordinates,
           }))
         }
       })
@@ -43,6 +46,7 @@ const CustomerSignup = () => {
         console.error(err)
       })
   }
+
   console.log(address)
 
   const {
@@ -54,8 +58,28 @@ const CustomerSignup = () => {
   const password = useRef<string | undefined>()
   password.current = watch('password')
 
-  const onSubmit = (data: FormData) => {
-    console.log('data', data)
+  const onSubmit = async (data: FormData) => {
+    try {
+      const { coordinates } = address || {}
+
+      const payload = {
+        address: data.address,
+        addressDetail: data.detailaddress,
+        email: data.email,
+        latitude: Number(parseFloat(coordinates?.latitude || '0').toFixed(6)),
+        longitude: Number(parseFloat(coordinates?.longitude || '0').toFixed(6)),
+        nickName: data.nickname,
+        password: data.password,
+        passwordCheck: data.password_confirm,
+        phoneNumber: data.phoneNumber,
+        profileImageFile: '',
+      }
+
+      const response = await userSignUp(payload)
+      console.log('회원가입 성공:', response)
+    } catch (error) {
+      console.error('회원가입 실패:', error)
+    }
   }
 
   //중복체크 검사할떄 쓸 함수~~

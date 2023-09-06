@@ -7,7 +7,26 @@ import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 
-const Menumanagement = () => {
+interface OptionItemType {
+  itemId: number
+  itemName: string
+  itemPrice: number
+  isEditing?: boolean
+}
+
+interface OptionType {
+  optionId: number
+  optionName: string
+  isMultiple: boolean
+  optionItem: OptionItemType[]
+  isEditing?: boolean
+}
+
+interface MenumanagementProps {
+  setMenupage: (value: number) => void
+}
+
+const Menumanagement: React.FC<MenumanagementProps> = ({ setMenupage }) => {
   const [menuCategory, setMenuCategory] = useState<string | unknown>('뼈치킨')
   const [expanded, setExpanded] = React.useState<string | false>(false)
 
@@ -15,11 +34,11 @@ const Menumanagement = () => {
     setExpanded(isExpanded ? panel : false)
   }
 
-  const handleSelectMenuCategory = (e: SelectChangeEvent<unknown>) => {
+  const handleSelectMenuCategory = (e: SelectChangeEvent<string | unknown>) => {
     setMenuCategory(e.target.value)
   }
 
-  const [options, setOptions] = useState([
+  const [options, setOptions] = useState<Array<OptionType>>([
     {
       optionId: 1,
       optionName: '크기',
@@ -66,7 +85,7 @@ const Menumanagement = () => {
     },
   ])
 
-  const handleEditClick = (optionId) => {
+  const handleEditClick = (optionId: number): void => {
     setOptions((prevOptions) =>
       prevOptions.map((option) =>
         option.optionId === optionId ? { ...option, isEditing: !option.isEditing } : option,
@@ -74,14 +93,43 @@ const Menumanagement = () => {
     )
   }
 
-  const handleDeleteClick = (optionId) => {
+  const handleDeleteClick = (optionId: number): void => {
     setOptions((prevOptions) => prevOptions.filter((option) => option.optionId !== optionId))
   }
 
+  const handleItemEditClick = (optionId: number, itemId: number): void => {
+    setOptions((prevOptions) =>
+      prevOptions.map((currentOption) =>
+        currentOption.optionId === optionId
+          ? {
+              ...currentOption,
+              optionItem: currentOption.optionItem.map((it) =>
+                it.itemId === itemId ? { ...it, isEditing: !it.isEditing } : it,
+              ),
+            }
+          : currentOption,
+      ),
+    )
+  }
+
+  const handleItemDeleteClick = (optionId: number, itemId: number): void => {
+    setOptions((prevOptions) =>
+      prevOptions.map((option) =>
+        option.optionId === optionId
+          ? {
+              ...option,
+              optionItem: option.optionItem.filter((it) => it.itemId !== itemId),
+            }
+          : option,
+      ),
+    )
+  }
   return (
     <Wrapper>
       <Navigation>
-        <StyleBtn variant="contained">메뉴 추가</StyleBtn>
+        <StyleBtn variant="contained" onClick={() => setMenupage(8)}>
+          메뉴 추가
+        </StyleBtn>
         <StyleSelect value={menuCategory} onChange={handleSelectMenuCategory}>
           <MenuItem value="뼈치킨">뼈치킨</MenuItem>
           <MenuItem value="순살치킨">순살치킨</MenuItem>
@@ -110,7 +158,7 @@ const Menumanagement = () => {
             </Menudescbox>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>옵션</Typography>
+            <OptionTitle>옵션</OptionTitle>
             {options.map((option) => (
               <div key={option.optionId}>
                 <OptionNamebox>
@@ -127,23 +175,77 @@ const Menumanagement = () => {
                           ),
                         )
                       }
+                      onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                          handleEditClick(option.optionId)
+                        }
+                      }}
                     />
                   ) : (
                     <h2>{option.optionName}</h2>
                   )}
-                  <span>(다중선택: {option.isMultiple ? '가능' : '불가능'})</span>
-                  <img
+                  <Stylespan isMultiple={option.isMultiple}>
+                    (다중선택: {option.isMultiple ? '가능' : '불가능'})
+                  </Stylespan>
+                  <StyleImg
                     src="img/optionedit.svg"
                     alt=""
                     onClick={() => handleEditClick(option.optionId)}
                   />
-                  <img
+                  <StyleImg
                     src="img/optiondelete.svg"
                     alt=""
                     onClick={() => handleDeleteClick(option.optionId)}
                   />
                 </OptionNamebox>
-                <ul>{/* ... 기존 코드 */}</ul>
+                <Itemul>
+                  {option.optionItem.map((item) => (
+                    <OptionItem key={item.itemId}>
+                      {item.isEditing ? (
+                        <input
+                          type="text"
+                          value={item.itemName}
+                          onChange={(e) =>
+                            setOptions((prevOptions) =>
+                              prevOptions.map((currentOption) =>
+                                currentOption.optionId === option.optionId
+                                  ? {
+                                      ...currentOption,
+                                      optionItem: currentOption.optionItem.map((it) =>
+                                        it.itemId === item.itemId
+                                          ? { ...it, itemName: e.target.value }
+                                          : it,
+                                      ),
+                                    }
+                                  : currentOption,
+                              ),
+                            )
+                          }
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleItemEditClick(option.optionId, item.itemId)
+                            }
+                          }}
+                        />
+                      ) : (
+                        <p>{item.itemName}</p>
+                      )}
+                      <OptionBtnBox>
+                        <p>({item.itemPrice}원)</p>
+                        <StyleImg
+                          src="img/optionedit.svg"
+                          alt=""
+                          onClick={() => handleItemEditClick(option.optionId, item.itemId)}
+                        />
+                        <StyleImg
+                          src="img/optiondelete.svg"
+                          alt=""
+                          onClick={() => handleItemDeleteClick(option.optionId, item.itemId)}
+                        />
+                      </OptionBtnBox>
+                    </OptionItem>
+                  ))}
+                </Itemul>
               </div>
             ))}
           </AccordionDetails>
@@ -155,13 +257,52 @@ const Menumanagement = () => {
 
 export default Menumanagement
 
+const Stylespan = styled.span<{ isMultiple: boolean }>`
+  font-size: 15px;
+  margin: 0 20px 0 10px;
+  color: ${(props) => (props.isMultiple ? 'blue' : 'red')};
+`
+
+const StyleImg = styled.img`
+  cursor: pointer;
+  margin-right: 5px;
+  &:hover {
+    filter: invert(52%) sepia(91%) saturate(2957%) hue-rotate(7deg) brightness(98%) contrast(101%);
+  }
+`
+
+const OptionTitle = styled(Typography)`
+  font-size: 20px;
+`
+
+const OptionBtnBox = styled.div`
+  display: flex;
+  p {
+    margin-right: 30px;
+  }
+`
+
+const Itemul = styled.ul`
+  margin-left: 30px;
+`
+
+const OptionItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  margin-bottom: 3px;
+`
+
 const OptionNamebox = styled.h2`
   display: flex;
-  margin-top: 15px;
+  margin: 18px 0 10px 0;
   align-items: center;
+  font-size: 20px;
 `
 
 const StyleAccordion = styled(Accordion)`
+  margin-bottom: 20px;
   /* &.Mui-expanded {
     margin: 0;
   } */
@@ -170,6 +311,7 @@ const StyleAccordion = styled(Accordion)`
 const Menudescbox = styled.div`
   display: flex;
   flex-direction: column;
+
   padding: 15px 50px 10px 20px;
   width: 100%;
 `

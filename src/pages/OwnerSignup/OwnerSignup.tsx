@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { FormData } from '../../types/user'
+import { OwnerSignUp } from '../../api/user'
 
 const OwnerSignup = () => {
   const theme = useTheme()
@@ -18,8 +19,22 @@ const OwnerSignup = () => {
   const password = useRef<string | undefined>()
   password.current = watch('password')
 
-  const onSubmit = (data: FormData) => {
-    console.log('data', data)
+  const onSubmit = async (data: FormData) => {
+    try {
+      const payload = {
+        businessNumber: data.BusinessNumber,
+        email: data.email,
+        nickName: data.nickname,
+        password: data.password,
+        passwordCheck: data.password_confirm,
+        phoneNumber: data.phoneNumber,
+      }
+
+      const response = await OwnerSignUp(payload)
+      console.log('회원가입 성공:', response)
+    } catch (error) {
+      console.error('회원가입 실패:', error)
+    }
   }
 
   //중복체크 검사할떄 쓸 함수~~
