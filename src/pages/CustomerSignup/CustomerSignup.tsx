@@ -38,7 +38,7 @@ const CustomerSignup = () => {
             ...prevState,
             address: result.address,
             zonecode: result.zonecode,
-            coordinates: result.coordinates, // 위도와 경도 정보도 상태에 저장합니다.
+            coordinates: result.coordinates,
           }))
         }
       })

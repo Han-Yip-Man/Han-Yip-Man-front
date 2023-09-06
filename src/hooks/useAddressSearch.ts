@@ -48,7 +48,7 @@ const useAddressSearch = (scriptUrl: string) => {
 
     const coordinates = await getAddressCoordinates(fullAddress)
 
-    return { address: fullAddress, zonecode, coordinates } // 여기서 주소 데이터, zonecode 및 위도와 경도를 객체 형태로 반환합니다.
+    return { address: fullAddress, zonecode, coordinates }
   }
 
   const openPostcodePopup = (): Promise<{
