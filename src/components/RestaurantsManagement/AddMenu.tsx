@@ -80,11 +80,11 @@ const AddMenu = () => {
       return
     }
 
-    console.log('Data: ', data) // 데이터 객체의 내용을 확인합니다.
+    console.log('Data: ', data)
 
     setOptions((prevOptions) => {
       const newOptions = [...prevOptions]
-      console.log('Selected Option: ', newOptions[selectedOptionIndex]) // 선택된 옵션 객체를 확인합니다.
+      console.log('Selected Option: ', newOptions[selectedOptionIndex])
 
       if (newOptions[selectedOptionIndex]) {
         newOptions[selectedOptionIndex].optionItem.push(data)
@@ -101,6 +101,7 @@ const AddMenu = () => {
 
   const onSubmit = (data: MenuType) => {
     console.log(data)
+    console.log('어흥')
   }
 
   console.log(options)
