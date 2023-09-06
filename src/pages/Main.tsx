@@ -13,6 +13,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 import { focusState, keyword, userAddr } from '../atoms/mainAtoms'
 import searchAddressByKeyword from '../api/addressSearch'
 import useKeyboard from '../hooks/useKeyboard'
+import useAlert from '../hooks/useAlert'
 
 const geo = new window.kakao.maps.services.Geocoder()
 
@@ -24,15 +25,14 @@ function Main() {
   const setAddr = useSetRecoilState(userAddr)
   const { debouncedKeyword } = useDebounce(inputKeyword, 600)
   const { data, setData, msg } = useAddress(debouncedKeyword)
-  // const [openToast, setOpenToast] = useState()
   const inputRef = useRef<HTMLInputElement | null>(null)
-  // const dropDownRef = useRef<HTMLUListElement | null>(null)
   const { currentIndex, ulRef, handleKeyPress, setCurrentIndex } = useKeyboard(data.length, () => {
     setInputKeyword(() => data[currentIndex].place_name)
     setData(() => [data[currentIndex]])
     setIsFocused(false)
   })
   const { routeTo } = useRouter()
+  const handleAlert = useAlert()
 
   const {
     palette: { custom },
@@ -76,8 +76,8 @@ function Main() {
   }
 
   const submitAddress = () => {
-    // 데이터[0]이 없으면 주소를 똑바로 입력하란 알람,토스트 메세지 등을 보여주자
     if (!data[0]) {
+      handleAlert('주소를 똑바로 입력하세요 👿', 3000, 'error')
       return
     }
     const { id, address_name, road_address_name, place_name, place_url, x, y } = data[0]
@@ -91,6 +91,7 @@ function Main() {
       lat: y,
       lng: x,
     })
+    handleAlert('맛집을 찾아보세요 !! 😋', 3000, 'success')
 
     routeTo('/main')
   }
