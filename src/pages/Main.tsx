@@ -46,11 +46,11 @@ function Main() {
   }
 
   const handleFocus = () => {
-    setIsFocused(() => true)
+    setIsFocused(true)
   }
 
   const handleBlur = () => {
-    setIsFocused(() => false)
+    setIsFocused(false)
   }
 
   const handleMouseUp = (e: React.MouseEvent) => {
@@ -105,7 +105,6 @@ function Main() {
           searchAddressByKeyword(keyword.address_name, (result: any, status: any) => {
             if (status === 'OK') {
               setInputKeyword(() => result[0].place_name)
-              setData(() => [result[0]])
             }
           })
         })

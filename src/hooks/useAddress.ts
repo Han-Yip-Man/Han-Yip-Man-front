@@ -16,10 +16,10 @@ const useAddress = (keyword: string) => {
     }
 
     searchAddressByKeyword(keyword, (addr: any, status: any) => {
-      setStatus(status)
+      setStatus(() => status)
       switch (status) {
         case 'OK':
-          setData(addr)
+          setData(() => addr)
           setMsg('')
           return
         case 'ZERO_RESULT':
