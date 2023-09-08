@@ -61,9 +61,12 @@ const useAddressSearch = (scriptUrl: string) => {
   }> => {
     return new Promise((resolve, reject) => {
       open({
+        popupKey: '중복창은안돼요',
+        popupTitle: '두근두근 신나는 주소찾기',
         onComplete: async (data) => {
           resolve(await handleComplete(data))
         },
+
         onError: (error) => {
           reject(error)
         },

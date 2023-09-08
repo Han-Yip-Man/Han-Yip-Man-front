@@ -1,23 +1,17 @@
-import styled from '@emotion/styled'
-import RestaurantsTabController from './RestaurantsTabController'
+import RestaurantsTabController from '../RestaurantsTabController/RestaurantsTabController'
 import { useState } from 'react'
-import ManagementContainer from './ManagementContainer'
+import ManagementContainer from '../ManagementContainer/ManagementContainer'
+import * as S from './RestaurantsManagement.style'
 
 const RestaurantsManagement = () => {
   const [menupage, setMenupage] = useState(1)
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <RestaurantsTabController setMenupage={setMenupage} />
       <ManagementContainer menupage={menupage} setMenupage={setMenupage} />
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 
 export default RestaurantsManagement
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-`

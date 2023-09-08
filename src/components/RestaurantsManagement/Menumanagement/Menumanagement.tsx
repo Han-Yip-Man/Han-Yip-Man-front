@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import styled from '@emotion/styled'
-import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
-import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { MenuItem, SelectChangeEvent } from '@mui/material'
+import * as S from './Menumanagement.style'
 
 interface OptionItemType {
   itemId: number
@@ -125,43 +123,43 @@ const Menumanagement: React.FC<MenumanagementProps> = ({ setMenupage }) => {
     )
   }
   return (
-    <Wrapper>
-      <Navigation>
-        <StyleBtn variant="contained" onClick={() => setMenupage(8)}>
+    <S.Wrapper>
+      <S.Navigation>
+        <S.StyleBtn variant="contained" onClick={() => setMenupage(8)}>
           메뉴 추가
-        </StyleBtn>
-        <StyleSelect value={menuCategory} onChange={handleSelectMenuCategory}>
+        </S.StyleBtn>
+        <S.StyleSelect value={menuCategory} onChange={handleSelectMenuCategory}>
           <MenuItem value="뼈치킨">뼈치킨</MenuItem>
           <MenuItem value="순살치킨">순살치킨</MenuItem>
           <MenuItem value="특수부위">특수부위</MenuItem>
           <MenuItem value="사이드메뉴">사이드메뉴</MenuItem>
           <MenuItem value="음료 & 주류">음료 & 주류</MenuItem>
           <MenuItem value="공기밥">공기밥</MenuItem>
-        </StyleSelect>
-      </Navigation>
-      <MenuItemWrapper>
-        <StyleAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+        </S.StyleSelect>
+      </S.Navigation>
+      <S.MenuItemWrapper>
+        <S.StyleAccordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
           >
-            <MenuImg src="img/chicken.jpg" alt="메뉴사진" />
-            <Menudescbox>
-              <MenuNamebox>
-                <MenuName>메뉴이름입니다.</MenuName>
-                <MenuPrice>판매가격 : 5,000원</MenuPrice>
-              </MenuNamebox>
-              <Menudescription>
+            <S.MenuImg src="/img/chicken.jpg" alt="메뉴사진" />
+            <S.Menudescbox>
+              <S.MenuNamebox>
+                <S.MenuName>메뉴이름입니다.</S.MenuName>
+                <S.MenuPrice>판매가격 : 5,000원</S.MenuPrice>
+              </S.MenuNamebox>
+              <S.Menudescription>
                 메뉴설명 하는곳입니다 음~~ 맛있다~~ 너무맛있는 메뉴~~
-              </Menudescription>
-            </Menudescbox>
+              </S.Menudescription>
+            </S.Menudescbox>
           </AccordionSummary>
           <AccordionDetails>
-            <OptionTitle>옵션</OptionTitle>
+            <S.OptionTitle>옵션</S.OptionTitle>
             {options.map((option) => (
               <div key={option.optionId}>
-                <OptionNamebox>
+                <S.OptionNamebox>
                   {option.isEditing ? (
                     <input
                       type="text"
@@ -182,25 +180,25 @@ const Menumanagement: React.FC<MenumanagementProps> = ({ setMenupage }) => {
                       }}
                     />
                   ) : (
-                    <h2>{option.optionName}</h2>
+                    <div>{option.optionName}</div>
                   )}
-                  <Stylespan isMultiple={option.isMultiple}>
+                  <S.Stylespan isMultiple={option.isMultiple}>
                     (다중선택: {option.isMultiple ? '가능' : '불가능'})
-                  </Stylespan>
-                  <StyleImg
-                    src="img/optionedit.svg"
+                  </S.Stylespan>
+                  <S.StyleImg
+                    src="/img/optionedit.svg"
                     alt=""
                     onClick={() => handleEditClick(option.optionId)}
                   />
-                  <StyleImg
-                    src="img/optiondelete.svg"
+                  <S.StyleImg
+                    src="/img/optiondelete.svg"
                     alt=""
                     onClick={() => handleDeleteClick(option.optionId)}
                   />
-                </OptionNamebox>
-                <Itemul>
+                </S.OptionNamebox>
+                <S.Itemul>
                   {option.optionItem.map((item) => (
-                    <OptionItem key={item.itemId}>
+                    <S.OptionItem key={item.itemId}>
                       {item.isEditing ? (
                         <input
                           type="text"
@@ -230,151 +228,29 @@ const Menumanagement: React.FC<MenumanagementProps> = ({ setMenupage }) => {
                       ) : (
                         <p>{item.itemName}</p>
                       )}
-                      <OptionBtnBox>
+                      <S.OptionBtnBox>
                         <p>({item.itemPrice}원)</p>
-                        <StyleImg
-                          src="img/optionedit.svg"
+                        <S.StyleImg
+                          src="/img/optionedit.svg"
                           alt=""
                           onClick={() => handleItemEditClick(option.optionId, item.itemId)}
                         />
-                        <StyleImg
-                          src="img/optiondelete.svg"
+                        <S.StyleImg
+                          src="/img/optiondelete.svg"
                           alt=""
                           onClick={() => handleItemDeleteClick(option.optionId, item.itemId)}
                         />
-                      </OptionBtnBox>
-                    </OptionItem>
+                      </S.OptionBtnBox>
+                    </S.OptionItem>
                   ))}
-                </Itemul>
+                </S.Itemul>
               </div>
             ))}
           </AccordionDetails>
-        </StyleAccordion>
-      </MenuItemWrapper>
-    </Wrapper>
+        </S.StyleAccordion>
+      </S.MenuItemWrapper>
+    </S.Wrapper>
   )
 }
 
 export default Menumanagement
-
-const Stylespan = styled.span<{ isMultiple: boolean }>`
-  font-size: 15px;
-  margin: 0 20px 0 10px;
-  color: ${(props) => (props.isMultiple ? 'blue' : 'red')};
-`
-
-const StyleImg = styled.img`
-  cursor: pointer;
-  margin-right: 5px;
-  &:hover {
-    filter: invert(52%) sepia(91%) saturate(2957%) hue-rotate(7deg) brightness(98%) contrast(101%);
-  }
-`
-
-const OptionTitle = styled(Typography)`
-  font-size: 20px;
-`
-
-const OptionBtnBox = styled.div`
-  display: flex;
-  p {
-    margin-right: 30px;
-  }
-`
-
-const Itemul = styled.ul`
-  margin-left: 30px;
-`
-
-const OptionItem = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 18px;
-  margin-bottom: 3px;
-`
-
-const OptionNamebox = styled.h2`
-  display: flex;
-  margin: 18px 0 10px 0;
-  align-items: center;
-  font-size: 20px;
-`
-
-const StyleAccordion = styled(Accordion)`
-  margin-bottom: 20px;
-  /* &.Mui-expanded {
-    margin: 0;
-  } */
-`
-
-const Menudescbox = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  padding: 15px 50px 10px 20px;
-  width: 100%;
-`
-
-const Menudescription = styled.p`
-  margin-top: 20px;
-`
-
-const MenuNamebox = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
-const MenuName = styled.h3`
-  font-weight: bold;
-  font-size: 20px;
-`
-
-const MenuPrice = styled.div`
-  font-weight: 500;
-`
-
-const MenuImg = styled.img`
-  width: 130px;
-  height: 130px;
-`
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: calc(100% - 80px);
-`
-const Navigation = styled.div`
-  height: 60px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 30px;
-  padding-right: 30px;
-  align-items: center;
-`
-
-const StyleBtn = styled(Button)`
-  height: 40px;
-  width: 100px;
-`
-
-const StyleSelect = styled(Select)`
-  height: 40px;
-  width: 220px;
-
-  /* &.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: red;
-  } */
-`
-
-const MenuItemWrapper = styled.div`
-  width: 100%;
-  margin-top: 50px;
-  height: calc(100% - 110px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`

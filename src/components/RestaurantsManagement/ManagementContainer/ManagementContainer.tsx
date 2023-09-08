@@ -1,12 +1,12 @@
-import styled from '@emotion/styled'
-import RestaurantsManagementHeader from './RestaurantsManagementHeader'
+import RestaurantsManagementHeader from '../RestaurantsManagementHeader/RestaurantsManagementHeader'
 import React from 'react'
-import RestaurantsProfile from './RestaurantsProfile'
-import AddRestaurants from './AddRestaurants'
-import EditRestaurant from './EditRestaurant'
-import MainMenuCategory from './MainMenuCategory'
-import Menumanagement from './Menumanagement'
-import AddMenu from './AddMenu'
+import RestaurantsProfile from '../RestaurantsProfile/RestaurantsProfile'
+import AddRestaurants from '../AddRestaurants/AddRestaurants'
+import EditRestaurant from '../EditRestaurant/EditRestaurant'
+import MainMenuCategory from '../MainMenuCategory/MainMenuCategory'
+import Menumanagement from '../Menumanagement/Menumanagement'
+import AddMenu from '../AddMenu/AddMenu'
+import * as S from './ManagementContainer.style'
 
 interface ContainerProps {
   menupage: number
@@ -33,16 +33,11 @@ const ManagementContainer: React.FC<ContainerProps> = ({ menupage, setMenupage }
     }
   }
   return (
-    <Wrapper>
+    <S.Wrapper>
       <RestaurantsManagementHeader />
       {renderManagement()}
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 
 export default ManagementContainer
-
-const Wrapper = styled.div`
-  flex: 1;
-  height: 100%;
-`

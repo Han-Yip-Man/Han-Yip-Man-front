@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import styled from '@emotion/styled'
+import * as S from './AddMenu.style'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import InputField from '../common/InputField'
+import InputField from '../../common/InputField'
 import Button from '@mui/material/Button'
 import { useForm, Controller } from 'react-hook-form'
+import useAlert from '../../../hooks/useAlert'
 
 interface MenuOptionItem {
   itemName: string
-  itemPrice: string
+  itemPrice: number
 }
 
 interface MenuOption {
@@ -21,6 +22,7 @@ interface MenuType {
   menuName: string
   price: number
   description: string
+  options: MenuOption[]
   option: {
     optionName: string
     isMultiple: boolean
@@ -29,15 +31,18 @@ interface MenuType {
 }
 
 const AddMenu = () => {
-  const { control, handleSubmit, reset } = useForm<MenuType>()
+  const { control, handleSubmit, reset, getValues } = useForm<MenuType>()
   const [category, setCategory] = useState('뼈치킨')
   const [options, setOptions] = useState<MenuOption[]>([])
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null)
-  const [mainImage, setMainImage] = useState<string | null>(null)
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(0)
+  const [mainImage, setMainImage] = useState<string | null>('/img/preview.jpg')
+  const toast = useAlert()
 
+  // 새 옵션을 추가하는 함수입니다.
+  // data 파라미터로 전달된 옵션 정보를 기반으로 옵션 리스트에 새 옵션을 추가합니다.
   const handleAddOption = (data: MenuOption) => {
     if (!data.optionName.trim()) {
-      alert('옵션 이름을 입력해주세요.')
+      toast('옵션 이름을 입력해주세요.', 3000, 'error')
       return
     }
 
@@ -50,13 +55,17 @@ const AddMenu = () => {
       },
     ])
 
-    reset({ option: { optionName: '', isMultiple: false } })
+    reset({ ...getValues(), option: { optionName: '', isMultiple: false } })
   }
 
+  // 옵션 선택을 처리하는 함수입니다.
+  // 선택된 옵션의 인덱스를 상태로 설정합니다.
   const handleSelectOption = (event: SelectChangeEvent<number | null>, _child: React.ReactNode) => {
     setSelectedOptionIndex(event.target.value as number | null)
   }
 
+  // 메인 이미지 변경을 처리하는 함수입니다.
+  // 선택된 파일을 읽어와 상태로 설정하여 이미지 미리보기를 제공합니다.
   const handleMainImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -64,19 +73,22 @@ const AddMenu = () => {
     }
   }
 
+  // 옵션 아이템을 추가하는 함수입니다.
+  // 선택된 옵션 카테고리에 새 옵션 아이템을 추가합니다.
   const handleAddOptionItem = (data: MenuOptionItem) => {
     if (selectedOptionIndex === null) {
-      alert('옵션 종류를 선택해주세요.')
+      toast('옵션 종류를 선택해주세요', 3000, 'error')
       return
     }
 
     if (!data.itemName.trim()) {
-      alert('옵션 아이템 이름을 입력해주세요.')
+      toast('옵션아이템 이름을 입력해주세요', 3000, 'error')
       return
     }
 
-    if (!data.itemPrice.trim()) {
-      alert('옵션 아이템 가격을 입력해주세요.')
+    const PriceTest = data.itemPrice.toString()
+    if (!PriceTest.trim() || Number(PriceTest) === 0) {
+      toast('옵션아이템 가격을 입력해주세요.', 3000, 'error')
       return
     }
 
@@ -92,60 +104,91 @@ const AddMenu = () => {
       return newOptions
     })
 
-    reset({ optionItem: { itemName: '', itemPrice: '' } })
+    reset({ ...getValues(), optionItem: { itemName: '', itemPrice: 0 } })
   }
 
+  // 카테고리 변경을 처리하는 함수입니다.
+  // 선택된 카테고리 값을 상태로 설정합니다.
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setCategory(event.target.value as string)
   }
 
   const onSubmit = (data: MenuType) => {
-    console.log(data)
-    console.log('어흥')
+    if (!data.menuName?.trim()) {
+      toast('메뉴 이름을 입력해주세요.', 3000, 'error')
+      return
+    }
+    const priceStr = data.price?.toString()
+    if (!priceStr?.trim() || Number(priceStr) === 0) {
+      toast('메뉴 가격을 입력해주세요.', 3000, 'error')
+      return
+    }
+    if (!data.description?.trim()) {
+      toast('메뉴 설명을 입력해주세요.', 3000, 'error')
+      return
+    }
+
+    const completeData = {
+      ...data,
+      options,
+    }
+
+    console.log(completeData)
+
+    reset({
+      menuName: '',
+      price: 0,
+      description: '',
+      option: { optionName: '', isMultiple: false },
+      optionItem: { itemName: '', itemPrice: 0 },
+    })
+    setOptions([])
   }
 
   console.log(options)
   return (
-    <Wrapper onSubmit={handleSubmit(onSubmit)}>
-      <CategorySelectbox>
-        <StyleSelect value={category} onChange={handleChange}>
+    <S.Wrapper onSubmit={handleSubmit(onSubmit)}>
+      <S.CategorySelectbox>
+        <S.StyleSelect value={category} onChange={handleChange}>
           <MenuItem value="뼈치킨">뼈치킨</MenuItem>
           <MenuItem value="순살치킨">순살치킨</MenuItem>
           <MenuItem value="사이드메뉴">사이드메뉴</MenuItem>
-        </StyleSelect>
-      </CategorySelectbox>
+        </S.StyleSelect>
+      </S.CategorySelectbox>
 
-      <WritingContainer>
-        <MenuWritingWrapper>
-          <Menubox>
-            <ImgContainer>
-              <PreviewBox>
+      <S.WritingContainer>
+        <S.MenuWritingWrapper>
+          <S.Menubox>
+            <S.ImgContainer>
+              <S.PreviewBox>
                 <input type="file" id="mainImage" onChange={handleMainImageChange} />
                 {mainImage && <img src={mainImage} alt="대표 이미지 미리보기" />}
-              </PreviewBox>
-              <ImageDescription>메뉴 이미지</ImageDescription>
-            </ImgContainer>
+              </S.PreviewBox>
+              <S.ImageDescription>메뉴 이미지</S.ImageDescription>
+            </S.ImgContainer>
 
-            <TextContainer>
+            <S.TextContainer>
               <Controller
                 name="menuName"
+                defaultValue=""
                 control={control}
                 render={({ field }) => (
-                  <StyleInput label="메뉴 이름" showErrorMessage={false} {...field} />
+                  <S.StyleInput label="메뉴 이름" showErrorMessage={false} {...field} />
                 )}
               />
               <Controller
                 name="price"
+                defaultValue={0}
                 control={control}
                 render={({ field }) => (
-                  <StyleInput label="가격" type="number" showErrorMessage={false} {...field} />
+                  <S.StyleInput label="가격" type="number" showErrorMessage={false} {...field} />
                 )}
               />
               <Controller
                 name="description"
                 control={control}
                 render={({ field }) => (
-                  <StyleInput
+                  <S.StyleInput
                     label="메뉴 설명"
                     multiline={true}
                     rows={2}
@@ -154,28 +197,28 @@ const AddMenu = () => {
                   />
                 )}
               />
-            </TextContainer>
-          </Menubox>
+            </S.TextContainer>
+          </S.Menubox>
 
-          <OptionCateContainer>
+          <S.OptionCateContainer>
             <Controller
               name="option"
               control={control}
               defaultValue={{ optionName: '', isMultiple: false }}
               render={({ field }) => (
-                <OptionCatebox>
-                  <CateTitle>메뉴 옵션 카테고리 등록</CateTitle>
+                <S.OptionCatebox>
+                  <S.CateTitle>메뉴 옵션 카테고리 등록</S.CateTitle>
                   <InputField
                     label="옵션 이름"
-                    value={field.value.optionName}
+                    value={field.value.optionName !== null ? field.value.optionName : ''}
                     onChange={(e) => field.onChange({ ...field.value, optionName: e.target.value })}
                   />
-                  <CheckWrapper>
+                  <S.CheckWrapper>
                     <label>
                       <span>다중 선택:</span>
-                      <OptionCheck
+                      <S.OptionCheck
                         type="checkbox"
-                        checked={field.value.isMultiple}
+                        checked={field.value.isMultiple || false}
                         onChange={(e) =>
                           field.onChange({ ...field.value, isMultiple: e.target.checked })
                         }
@@ -188,21 +231,21 @@ const AddMenu = () => {
                     >
                       옵션 종류 등록
                     </Button>
-                  </CheckWrapper>
-                </OptionCatebox>
+                  </S.CheckWrapper>
+                </S.OptionCatebox>
               )}
             />
-          </OptionCateContainer>
+          </S.OptionCateContainer>
 
           {options.length > 0 && (
-            <DetailoptionContainer>
+            <S.DetailoptionContainer>
               <Controller
                 name="optionItem"
                 control={control}
-                defaultValue={{ itemName: '', itemPrice: '' }}
+                defaultValue={{ itemName: '', itemPrice: 0 }}
                 render={({ field }) => (
                   <>
-                    <DetailWriting>
+                    <S.DetailWriting>
                       <InputField
                         label="옵션 아이템 이름"
                         value={field.value.itemName}
@@ -211,7 +254,7 @@ const AddMenu = () => {
                           field.onChange({ ...field.value, itemName: e.target.value })
                         }
                       />
-                      <InputField
+                      <S.StyleInput
                         label="옵션 아이템 가격"
                         type="number"
                         value={field.value.itemPrice}
@@ -220,8 +263,8 @@ const AddMenu = () => {
                           field.onChange({ ...field.value, itemPrice: e.target.value })
                         }
                       />
-                    </DetailWriting>
-                    <DetailBtnbox>
+                    </S.DetailWriting>
+                    <S.DetailBtnbox>
                       <Select value={selectedOptionIndex} onChange={handleSelectOption}>
                         {options.map((option, index) => (
                           <MenuItem value={index} key={index}>
@@ -232,216 +275,41 @@ const AddMenu = () => {
                       <Button variant="contained" onClick={() => handleAddOptionItem(field.value)}>
                         상세 옵션 등록
                       </Button>
-                    </DetailBtnbox>
+                    </S.DetailBtnbox>
                   </>
                 )}
               />
-            </DetailoptionContainer>
+            </S.DetailoptionContainer>
           )}
-        </MenuWritingWrapper>
+        </S.MenuWritingWrapper>
 
-        <MenuOptionView>
+        <S.MenuOptionView>
           <ul>
             {options.map((option, optionIndex) => (
-              <Stylelist key={optionIndex}>
+              <S.Stylelist key={optionIndex}>
                 옵션 종류: {option.optionName},{' '}
                 <span>다중 선택 : {option.isMultiple ? '가능' : '불가능'}</span>
                 <ul>
                   {option.optionItem
                     .filter((item) => item && item.itemName && item.itemPrice)
                     .map((item, itemIndex) => (
-                      <Detailli key={itemIndex}>
+                      <S.Detailli key={itemIndex}>
                         상세 옵션: {item.itemName}, 가격: {item.itemPrice}원
-                      </Detailli>
+                      </S.Detailli>
                     ))}
                 </ul>
-              </Stylelist>
+              </S.Stylelist>
             ))}
           </ul>
-        </MenuOptionView>
-      </WritingContainer>
-      <AddMenuBtnbox>
+        </S.MenuOptionView>
+      </S.WritingContainer>
+      <S.AddMenuBtnbox>
         <Button variant="contained" color="primary" type="submit">
           메뉴 등록
         </Button>
-      </AddMenuBtnbox>
-    </Wrapper>
+      </S.AddMenuBtnbox>
+    </S.Wrapper>
   )
 }
 
 export default AddMenu
-
-const DetailBtnbox = styled.div`
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  height: 140px;
-  gap: 10px;
-  button {
-    height: 56px;
-  }
-`
-
-const DetailWriting = styled.div`
-  width: 220px;
-  display: flex;
-  flex-direction: column;
-  height: 140px;
-`
-
-const DetailoptionContainer = styled.div`
-  display: flex;
-  padding-top: 30px;
-  width: 100%;
-  gap: 50px;
-  justify-content: center;
-  align-items: center;
-`
-
-const Detailli = styled.li`
-  margin-left: 30px;
-  margin-top: 3px;
-  font-size: 15px;
-`
-
-const Stylelist = styled.li`
-  margin-bottom: 30px;
-  font-size: 18px;
-`
-
-const CheckWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  label {
-    display: flex;
-    align-items: center;
-  }
-`
-
-const OptionCheck = styled.input`
-  width: 25px;
-  height: 25px;
-`
-
-const CateTitle = styled.h2`
-  margin-bottom: 20px;
-`
-
-const OptionCateContainer = styled.div`
-  border-top: 1px solid #000;
-  width: 95%;
-  margin: 30px auto 0 auto;
-  display: flex;
-  justify-content: center;
-`
-
-const OptionCatebox = styled.div`
-  width: 50%;
-  display: flex;
-  padding: 20px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-const StyleInput = styled(InputField)``
-
-const PreviewBox = styled.div`
-  position: relative;
-  width: 190px;
-  height: 190px;
-  border: 1px solid #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-
-  img {
-    width: 95%;
-    height: 95%;
-    object-fit: cover;
-    cursor: pointer;
-  }
-
-  input[type='file'] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-  }
-`
-
-const ImageDescription = styled.span`
-  font-size: 14px;
-`
-
-const Menubox = styled.div`
-  display: flex;
-  height: auto;
-  align-items: center;
-  margin: 20px auto;
-  width: 90%;
-  gap: 50px;
-`
-
-const ImgContainer = styled.div`
-  width: 30%;
-  text-align: center;
-`
-
-const TextContainer = styled.div`
-  flex: 1;
-`
-
-const StyleSelect = styled(Select)`
-  width: 220px;
-  height: 50px;
-`
-
-const Wrapper = styled.form`
-  width: 100%;
-  height: calc(100% - 80px);
-  display: flex;
-  flex-direction: column;
-`
-
-const CategorySelectbox = styled.div`
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: flex-start;
-  padding-left: 30px;
-  align-items: center;
-`
-
-const WritingContainer = styled.div`
-  width: 100%;
-  height: calc(100% - 110px);
-  display: flex;
-`
-
-const MenuWritingWrapper = styled.div`
-  width: 60%;
-  height: 100%;
-`
-const MenuOptionView = styled.div`
-  width: 40%;
-  height: 100%;
-`
-
-const AddMenuBtnbox = styled.div`
-  width: 100%;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-
-  Button {
-    height: 50px;
-    width: 40%;
-    font-size: 25px;
-  }
-`
