@@ -4,9 +4,10 @@ import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
-import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
+// import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
 import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 import Main from './pages/Main'
+import CustomerMypage from './pages/CustomerMypage/CustomerMypage'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -72,11 +73,17 @@ const routerData: RouterElement[] = [
     element: <MypageLayout />,
     withAuth: false,
     children: [
+      // {
+      //   id: 61,
+      //   path: '',
+      //   label: 'test',
+      //   element: <OwnerDashboard />,
+      // },
       {
-        id: 61,
+        id: 62,
         path: '',
-        label: 'test',
-        element: <OwnerDashboard />,
+        label: 'customerMapage',
+        element: <CustomerMypage />,
       },
     ],
   },

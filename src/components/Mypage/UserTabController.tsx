@@ -9,6 +9,7 @@ const UserTabController: React.FC<TabControllerProps> = ({ setmenupage }) => {
   return (
     <TabWrapper>
       <Title>마이페이지</Title>
+      <TabMenu onClick={() => setmenupage(0)}>마이페이지</TabMenu>
       <TabMenu onClick={() => setmenupage(1)}>쿠폰관리</TabMenu>
       <TabMenu onClick={() => setmenupage(2)}>주문내역</TabMenu>
     </TabWrapper>
