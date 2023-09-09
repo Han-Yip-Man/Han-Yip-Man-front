@@ -3,6 +3,7 @@ import OrderDashboard from './OrderDashboard'
 import { useState } from 'react'
 import MyCoupon from './MyCoupon'
 import UserTabController from './UserTabController'
+import { CustomerOrderDetail } from './CustomerOrderDetail'
 
 const Mypage = () => {
   const [menupage, setmenupage] = useState(1)
@@ -11,7 +12,8 @@ const Mypage = () => {
     <MypageWrap>
       <UserTabController setmenupage={setmenupage} />
       {menupage === 1 && <MyCoupon />}
-      {menupage === 2 && <OrderDashboard />}
+      {menupage === 2 && <OrderDashboard setmenupage={setmenupage} />}
+      {menupage === 3 && <CustomerOrderDetail setmenupage={setmenupage} />}
     </MypageWrap>
   )
 }
