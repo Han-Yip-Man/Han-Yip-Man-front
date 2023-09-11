@@ -56,7 +56,7 @@ const Li = styled.li`
   }
 
   &:hover {
-    background: rgb(128, 128, 128, 0.2);
+    background-color: rgb(128, 128, 128, 0.2) !important;
   }
 `
 

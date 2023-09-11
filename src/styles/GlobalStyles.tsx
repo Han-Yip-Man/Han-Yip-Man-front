@@ -20,7 +20,7 @@ const style = css`
   }
   body {
     font-family: 'bae', sans-serif;
-    line-height: 1.2;
+    line-height: 1;
   }
 `
 

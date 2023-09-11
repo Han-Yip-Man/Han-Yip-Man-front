@@ -1,16 +1,21 @@
 import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
-import Header from '../components/Header'
+import Header from '../components/header/Header'
 import Container from '@mui/material/Container'
+import { useRouter } from '../hooks/useRouter'
 
 function GeneralLayout() {
+  const { currentPath } = useRouter()
+
   return (
     <CustomContainer maxWidth="xl" disableGutters>
-      <BackgroundWrapper>
-        <Background autoPlay loop muted>
-          <source src="/background/background.webm" type="video/webm" />
-        </Background>
-      </BackgroundWrapper>
+      {currentPath === '/' && (
+        <BackgroundWrapper>
+          <Background autoPlay loop muted>
+            <source src="/background/background.webm" type="video/webm" />
+          </Background>
+        </BackgroundWrapper>
+      )}
       <Header />
       <Outlet />
     </CustomContainer>
@@ -20,7 +25,7 @@ function GeneralLayout() {
 export default GeneralLayout
 
 const CustomContainer = styled(Container)`
-  height: 100vh;
+  /* height: 100vh; */
 `
 const BackgroundWrapper = styled.div`
   position: fixed;

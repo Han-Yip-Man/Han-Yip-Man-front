@@ -7,6 +7,7 @@ import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
 import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 import Main from './pages/Main'
+import CategoryMain from './pages/CategoryMain/CategoryMain'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -47,6 +48,12 @@ const routerData: RouterElement[] = [
         path: '',
         label: 'Main',
         element: <Main />,
+      },
+      {
+        id: 2,
+        path: '/main',
+        label: 'CategoryMain',
+        element: <CategoryMain />,
       },
     ],
   },

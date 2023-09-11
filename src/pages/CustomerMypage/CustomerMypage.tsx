@@ -1,4 +1,4 @@
-import Mypage from '../../components/Mypage/Mypage'
+import Mypage from '../../components/mypage/Mypage'
 import styled from '@emotion/styled'
 
 const CustomerMypage = () => {
