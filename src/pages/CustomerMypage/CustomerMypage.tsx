@@ -1,17 +1,12 @@
-import Mypage from '../../components/mypage/Mypage'
-import styled from '@emotion/styled'
+import Mypage from '../../components/Mypage/Mypage/Mypage'
+import * as S from './CustomerMypage.style'
 
 const CustomerMypage = () => {
   return (
-    <Wrapper>
+    <S.Wrapper>
       <Mypage />
-    </Wrapper>
+    </S.Wrapper>
   )
 }
 
 export default CustomerMypage
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-`

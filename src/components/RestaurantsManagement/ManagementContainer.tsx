@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
-import RestaurantsManagementHeader from './RestaurantsManagementHeader'
+import RestaurantsManagementHeader from './RestaurantsManagementHeader/RestaurantsManagementHeader'
 import React from 'react'
-import RestaurantsProfile from './RestaurantsProfile'
-import AddRestaurants from './AddRestaurants'
-import EditRestaurant from './EditRestaurant'
-import MainMenuCategory from './MainMenuCategory'
-import Menumanagement from './Menumanagement'
+import RestaurantsProfile from './RestaurantsProfile/RestaurantsProfile'
+import AddRestaurants from './AddRestaurants/AddRestaurants'
+import EditRestaurant from './EditRestaurant/EditRestaurant'
+import MainMenuCategory from './MainMenuCategory/MainMenuCategory'
+import Menumanagement from './Menumanagement/Menumanagement'
 import OrderManagement from './OrderManagement'
 
 interface ContainerProps {
@@ -19,7 +19,7 @@ const ManagementContainer: React.FC<ContainerProps> = ({ menupage, setMenupage }
       <RestaurantsManagementHeader />
       {menupage === 1 && <RestaurantsProfile setMenupage={setMenupage} />}
       {menupage === 2 && <MainMenuCategory />}
-      {menupage === 3 && <Menumanagement />}
+      {menupage === 3 && <Menumanagement setMenupage={setMenupage} />}
       {menupage === 4 && <OrderManagement />}
       {menupage === 6 && <EditRestaurant setMenupage={setMenupage} />}
       {menupage === 7 && <AddRestaurants setMenupage={setMenupage} />}
