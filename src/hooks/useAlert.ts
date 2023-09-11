@@ -16,7 +16,7 @@ const useAlert = () => {
   ) => {
     enqueueSnackbar(msg, {
       variant,
-      anchorOrigin: { horizontal: 'center', vertical: 'top' },
+      anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
       autoHideDuration: hideDuration,
       style,
     })

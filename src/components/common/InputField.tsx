@@ -28,6 +28,7 @@ const InputField = React.forwardRef<
       showErrorMessage = true,
       checkDuplication,
       onChange,
+      value,
       maxLength,
       placeholder,
       ...props
@@ -43,6 +44,7 @@ const InputField = React.forwardRef<
           error={!!errorMessage}
           helperText={showErrorMessage ? errorMessage || ' ' : ''}
           inputRef={ref}
+          value={value}
           onChange={onChange}
           variant="outlined"
           inputProps={{ maxLength: maxLength }}
