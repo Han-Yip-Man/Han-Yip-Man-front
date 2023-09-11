@@ -11,4 +11,8 @@ export interface DaumPostcodeData {
   bname?: string // 법정동명
   buildingName?: string // 건물명
   apartment?: string // 아파트명
+  coordinates?: {
+    latitude: string | undefined
+    longitude: string | undefined
+  } | null
 }

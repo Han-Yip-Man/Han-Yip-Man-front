@@ -1,9 +1,10 @@
-import React from 'react'
-import styled from '@emotion/styled'
-import InputField from '../common/InputField'
-import { Button, Card, Grid } from '@mui/material'
+import React, { useEffect } from 'react'
+import InputField from '../../common/InputField'
+import { Grid } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { FormData } from '../../types/user'
+import { FormData } from '../../../types/user'
+import useAlert from '../../../hooks/useAlert'
+import * as S from './MainMenuCategory.style'
 
 const MainMenuCategory: React.FC = () => {
   // 카드 데이터 및 드래그/드롭 관련 상태
@@ -19,6 +20,7 @@ const MainMenuCategory: React.FC = () => {
   const [dragSrcIndex, setDragSrcIndex] = React.useState<number | null>(null) // 현재 드래그 중인 카드의 인덱스
   const { register, handleSubmit, setValue, formState } = useForm<FormData>()
   const { errors } = formState
+  const toast = useAlert()
 
   // 드래그 시작 시 실행되는 함수
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
@@ -93,10 +95,16 @@ const MainMenuCategory: React.FC = () => {
     setCards((prev) => prev.filter((_, i) => i !== index)) // 해당 인덱스의 카드를 제외한 모든 카드를 유지
   }
 
+  useEffect(() => {
+    if (errors.menuCategory) {
+      toast('정확한 카테고리를 입력해주세요.', 3000, 'error')
+    }
+  }, [errors.menuCategory])
+
   return (
-    <Wrapper>
-      <Title>메뉴 대분류 관리</Title>
-      <From onSubmit={handleSubmit(onCategorySubmit)}>
+    <S.Wrapper>
+      <S.Title>메뉴 대분류 관리</S.Title>
+      <S.From onSubmit={handleSubmit(onCategorySubmit)}>
         <InputField
           label="메뉴 추가하기"
           maxLength={10}
@@ -108,11 +116,11 @@ const MainMenuCategory: React.FC = () => {
           onChange={handleCategoryInputChange}
           errorMessage={errors.menuCategory && '정확한 카테고리를 입력해주세요.'}
         />
-        <StyleButton type="submit" variant="contained">
+        <S.StyleButton type="submit" variant="contained">
           카테고리 추가
-        </StyleButton>
-      </From>
-      <Categorylist>
+        </S.StyleButton>
+      </S.From>
+      <S.Categorylist>
         {
           // 반복문을 사용해 cards 배열의 각 아이템을 렌더링
           cards.map((content, index) => (
@@ -120,14 +128,14 @@ const MainMenuCategory: React.FC = () => {
               {
                 // 만약 현재 인덱스가 placeholderIndex와 같다면 Placeholder 컴포넌트를 렌더링
                 index === placeholderIndex && (
-                  <Placeholder
+                  <S.Placeholder
                     onDragOver={handleDragOver}
                     onDrop={(e) => handleDrop(e, placeholderIndex)}
                   />
                 )
               }
 
-              <StyledItemContainer
+              <S.StyledItemContainer
                 onDragOver={
                   // 만약 현재 인덱스가 마지막 아이템의 인덱스라면, 드래그 오버 이벤트를 핸들링
                   index === cards.length - 1
@@ -143,7 +151,7 @@ const MainMenuCategory: React.FC = () => {
               >
                 <Grid container spacing={2} columns={16}>
                   <Grid item xs={10}>
-                    <StyleCard
+                    <S.StyleCard
                       draggable="true" // 카드 아이템이 드래그 가능하도록 설정
                       onDragStart={(e) => handleDragStart(e, index)} // 드래그 시작 이벤트 핸들러
                       onDragEnter={(e) => handleDragEnter(e, index)} // 드래그 엔터 이벤트 핸들러
@@ -156,130 +164,29 @@ const MainMenuCategory: React.FC = () => {
                       onDragEnd={handleDragEnd} // 드래그 종료 이벤트 핸들러
                     >
                       <div style={{ flexGrow: 1 }}>{content}</div>
-                    </StyleCard>
+                    </S.StyleCard>
                   </Grid>
-                  <StyleGrid item xs={6}>
-                    <StyleitemBtn onClick={() => handleEdit(index)}>수정</StyleitemBtn>
-                    <StyleitemBtn onClick={() => handleDelete(index)}>삭제</StyleitemBtn>
-                  </StyleGrid>
+                  <S.StyleGrid item xs={6}>
+                    <S.StyleitemBtn onClick={() => handleEdit(index)}>수정</S.StyleitemBtn>
+                    <S.StyleitemBtn onClick={() => handleDelete(index)}>삭제</S.StyleitemBtn>
+                  </S.StyleGrid>
                 </Grid>
-              </StyledItemContainer>
+              </S.StyledItemContainer>
             </React.Fragment>
           ))
         }
         {
           // 만약 placeholderIndex가 마지막 위치라면, 마지막 위치에 Placeholder 컴포넌트를 추가
           placeholderIndex === cards.length && (
-            <Placeholder
+            <S.Placeholder
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, placeholderIndex)}
             />
           )
         }
-      </Categorylist>
-    </Wrapper>
+      </S.Categorylist>
+    </S.Wrapper>
   )
 }
 
 export default MainMenuCategory
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: calc(100% - 80px);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  align-items: center;
-`
-const Title = styled.h2`
-  margin: 30px 0;
-  font-size: 30px;
-  font-weight: 500;
-`
-
-const From = styled.form`
-  display: flex;
-  gap: 40px;
-  width: 50%;
-  height: 56px;
-`
-const StyleButton = styled(Button)`
-  width: 180px;
-`
-
-const Categorylist = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-  gap: 20px;
-  padding: 20px;
-`
-const StyleCard = styled(Card)`
-  max-width: 250px;
-  display: flex;
-  border-radius: 15px;
-  text-align: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: 400;
-  height: 50px;
-  padding: 20px 20px;
-  background-color: #f2cd00;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #444;
-  cursor: pointer;
-  &:active {
-    background-color: #ea7600;
-  }
-`
-
-const Placeholder = styled.div`
-  width: 500px;
-  height: 50px;
-  position: relative;
-  margin: 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 150px;
-    height: 50px;
-    border-radius: 15px;
-    background-color: rgba(0, 0, 0, 0.1);
-    border: 2px dashed #aaa;
-  }
-`
-
-const StyleitemBtn = styled(Button)`
-  background-color: #ea7600;
-  color: #fff;
-  border-color: #ea7600;
-  border-radius: 15px;
-  &:hover {
-    background-color: #ea7600;
-    color: #fff;
-    border-color: #ea7600;
-    opacity: 0.8;
-  }
-`
-
-const StyledItemContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  width: 390px;
-  gap: 10px;
-`
-
-const StyleGrid = styled(Grid)`
-  display: flex;
-  gap: 10px;
-`

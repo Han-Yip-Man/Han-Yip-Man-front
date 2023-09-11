@@ -14,7 +14,10 @@ const InputField = React.forwardRef<
     maxLength?: number
     placeholder?: string
     onClick?: () => void
-    value?: string
+    value?: string | number
+    showErrorMessage?: boolean
+    multiline?: boolean
+    rows?: number
   }
 >(
   (
@@ -22,8 +25,10 @@ const InputField = React.forwardRef<
       label,
       type = 'text',
       errorMessage,
+      showErrorMessage = true,
       checkDuplication,
       onChange,
+      value,
       maxLength,
       placeholder,
       ...props
@@ -37,8 +42,9 @@ const InputField = React.forwardRef<
           label={label}
           type={type}
           error={!!errorMessage}
-          helperText={errorMessage || ' '}
+          helperText={showErrorMessage ? errorMessage || ' ' : ''}
           inputRef={ref}
+          value={value}
           onChange={onChange}
           variant="outlined"
           inputProps={{ maxLength: maxLength }}
