@@ -1,4 +1,11 @@
-import { Box, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material'
+import {
+  Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  styled,
+} from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MenuList from './MenuList'
 
@@ -15,10 +22,15 @@ export default function BasicAccordion() {
             신제품 | 세트 | 프리미엄 | 클래식 | 더블치즈엣지 | 사이드디시 | 음료 | 기타
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <MenuListWrap>
           <MenuList />
-        </AccordionDetails>
+        </MenuListWrap>
       </Accordion>
     </Box>
   )
 }
+
+const MenuListWrap = styled(AccordionDetails)`
+  width: 100%;
+  padding: 0px;
+`

@@ -126,7 +126,7 @@ export const KakaoMap = ({ mapId, width, height, latitude, longitude }: KakaoMap
 
   return (
     <>
-      <div id={mapId} style={{ margin: 10, width: width, height: height }}></div>
+      <div id={mapId} style={{ width: width, height: height }}></div>
     </>
   )
 }

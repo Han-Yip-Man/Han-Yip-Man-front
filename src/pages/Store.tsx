@@ -3,7 +3,7 @@ import { Box, CardMedia, Rating, Stack, Typography, styled } from '@mui/material
 
 export const Store = () => {
   return (
-    <Stack width={'100%'} direction={'column'} marginX={'auto'} bgcolor={'white'}>
+    <StoreWrap>
       <Box>
         <CardMedia component="img" image="/src/assets/pizzahut.png" alt="banner" />
       </Box>
@@ -13,10 +13,16 @@ export const Store = () => {
         <Typography>리뷰 N개</Typography>
       </StyledStoreInfoBox>
       <BasicTabs />
-    </Stack>
+    </StoreWrap>
   )
 }
 
+const StoreWrap = styled(Stack)`
+  width: 100%;
+  background-color: white;
+`
+
 const StyledStoreInfoBox = styled(Stack)`
+  padding: 10px;
   align-items: center;
 `

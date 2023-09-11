@@ -8,7 +8,7 @@ export default function MenuList() {
   }
 
   return (
-    <List sx={{ width: '100%' }}>
+    <List>
       {menus.map((value) => {
         return (
           <ListItem key={value} disablePadding>
