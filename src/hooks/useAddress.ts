@@ -23,12 +23,12 @@ const useAddress = (keyword: string) => {
           setMsg('')
           return
         case 'ZERO_RESULT':
-          setMsg('검색 결과가 없는뎁쇼?😁')
           setData([])
+          setMsg('검색 결과가 없는뎁쇼?😁')
           return
         case 'ERROR':
-          setMsg('검색어를 똑바로 입력해주쇼!!!')
           setData([])
+          setMsg('검색어를 똑바로 입력해주쇼!!!')
           return
       }
     })

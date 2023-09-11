@@ -5,19 +5,6 @@ export const keyword = atom({
   default: '',
 })
 
-export const userAddr = atom({
-  key: 'userAddr',
-  default: {
-    id: '',
-    address: '',
-    road_address: '',
-    place_name: '',
-    place_url: '',
-    lat: '',
-    lng: '',
-  },
-})
-
 export const focusState = atom({
   key: 'isFocus',
   default: false,

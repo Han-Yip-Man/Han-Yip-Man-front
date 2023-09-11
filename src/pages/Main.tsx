@@ -10,7 +10,8 @@ import useDebounce from '../hooks/useDebounce'
 import useAddress from '../hooks/useAddress'
 import { useRouter } from '../hooks/useRouter'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { focusState, keyword, userAddr } from '../atoms/mainAtoms'
+import { focusState, keyword } from '../atoms/mainAtoms'
+import { userAddr } from '../atoms/addressAtoms'
 import searchAddressByKeyword from '../api/addressSearch'
 import useKeyboard from '../hooks/useKeyboard'
 import useAlert from '../hooks/useAlert'
@@ -211,7 +212,7 @@ const AddrUl = styled.ul`
   margin-top: 20px;
   width: 100%;
   background-color: white;
-  padding: 30px 15px 30px 15px;
+  padding: 15px 15px 15px 15px;
   gap: 5px;
   max-height: 500px;
 `
