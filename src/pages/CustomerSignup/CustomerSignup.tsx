@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import InputField from '../../components/common/InputField'
-import styled from '@emotion/styled'
-import Button from '@mui/material/Button'
+import * as S from './CustomerSignup.style'
 import { useTheme } from '@mui/material/styles'
 import { FormData } from '../../types/user'
 import useAddressSearch from '../../hooks/useAddressSearch'
 import { DaumPostcodeData } from '../../types/Address'
+import { userSignUp } from '../../api/user'
 
 const CustomerSignup = () => {
   const theme = useTheme()
@@ -26,6 +26,7 @@ const CustomerSignup = () => {
     bname: '',
     buildingName: '',
     apartment: '',
+    coordinates: null,
   })
 
   const handleAddressPopup = () => {
@@ -36,6 +37,7 @@ const CustomerSignup = () => {
             ...prevState,
             address: result.address,
             zonecode: result.zonecode,
+            coordinates: result.coordinates,
           }))
         }
       })
@@ -43,6 +45,7 @@ const CustomerSignup = () => {
         console.error(err)
       })
   }
+
   console.log(address)
 
   const {
@@ -54,8 +57,28 @@ const CustomerSignup = () => {
   const password = useRef<string | undefined>()
   password.current = watch('password')
 
-  const onSubmit = (data: FormData) => {
-    console.log('data', data)
+  const onSubmit = async (data: FormData) => {
+    try {
+      const { coordinates } = address || {}
+
+      const payload = {
+        address: data.address,
+        addressDetail: data.detailaddress,
+        email: data.email,
+        latitude: Number(parseFloat(coordinates?.latitude || '0').toFixed(6)),
+        longitude: Number(parseFloat(coordinates?.longitude || '0').toFixed(6)),
+        nickName: data.nickname,
+        password: data.password,
+        passwordCheck: data.password_confirm,
+        phoneNumber: data.phoneNumber,
+        profileImageFile: '',
+      }
+
+      const response = await userSignUp(payload)
+      console.log('회원가입 성공:', response)
+    } catch (error) {
+      console.error('회원가입 실패:', error)
+    }
   }
 
   //중복체크 검사할떄 쓸 함수~~
@@ -66,13 +89,13 @@ const CustomerSignup = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <LogoBox>
+    <S.Form onSubmit={handleSubmit(onSubmit)}>
+      <S.LogoBox>
         <img src="/img/mainlogo.svg" alt="" />
-      </LogoBox>
-      <Title>
+      </S.LogoBox>
+      <S.Title>
         <h1 style={{ color: theme.palette.custom.main }}>사용자 회원가입</h1>
-      </Title>
+      </S.Title>
 
       <InputField
         label="아이디"
@@ -135,17 +158,17 @@ const CustomerSignup = () => {
           '한글 혹은 영문을 사용하여 2글자이상 6글자 이하로 입력해주세요.'
         }
       />
-      <AddressBtnbox>
+      <S.AddressBtnbox>
         <InputField
           label="우편번호"
           type="text"
           value={address ? address.zonecode : ''}
           {...register('zonecode', { required: true })}
         />
-        <AddressBtn variant="contained" onClick={handleAddressPopup}>
+        <S.AddressBtn variant="contained" onClick={handleAddressPopup}>
           주소 입력하기
-        </AddressBtn>
-      </AddressBtnbox>
+        </S.AddressBtn>
+      </S.AddressBtnbox>
 
       <InputField
         label="주소"
@@ -159,68 +182,22 @@ const CustomerSignup = () => {
         label="상세주소"
         type="text"
         maxLength={25}
-        {...register('detailaddress', { required: true })}
-        errorMessage={isSubmitted && errors.detailaddress && '상세주소를 입력해 주세요.'}
+        {...register('detailaddress', {
+          required: true,
+          pattern: /^[가-힣0-9\s]+$/,
+        })}
+        errorMessage={
+          isSubmitted &&
+          errors.detailaddress &&
+          (errors.detailaddress.type === 'pattern'
+            ? '상세주소는 한글과 숫자만 입력 가능합니다.'
+            : '상세주소를 입력해 주세요.')
+        }
       />
-
-      <SubmitBtn variant="contained" type="submit">
+      <S.SubmitBtn variant="contained" type="submit">
         회원가입
-      </SubmitBtn>
-    </Form>
+      </S.SubmitBtn>
+    </S.Form>
   )
 }
 export default CustomerSignup
-
-const AddressBtnbox = styled.div`
-  display: flex;
-  height: 56px;
-  width: 100%;
-  gap: 30px;
-`
-
-const AddressBtn = styled(Button)`
-  width: 500px;
-  font-size: 18px;
-  background-color: #ea7600;
-  &:hover {
-    background-color: #ea7600;
-    opacity: 0.8;
-  }
-`
-
-const Form = styled.form`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  max-width: 550px;
-  width: 100%;
-  gap: 10px;
-`
-const LogoBox = styled.div`
-  display: flex;
-  justify-content: center;
-  img {
-    width: 200px;
-    height: 70px;
-    margin-top: 50px;
-    margin-bottom: 20px;
-  }
-`
-const Title = styled.div`
-  margin: 20px 0;
-  h1 {
-    font-size: 25px;
-  }
-`
-const SubmitBtn = styled(Button)`
-  width: 100%;
-  height: 60px;
-  font-size: 30px;
-  color: #fff;
-  border-color: transparent;
-  background-color: #ea7600;
-  &:hover {
-    border-color: transparent;
-    background-color: #ea9600;
-  }
-`

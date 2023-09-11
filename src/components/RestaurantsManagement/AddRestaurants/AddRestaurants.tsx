@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import InputField from '../common/InputField'
-import styled from '@emotion/styled'
-import Button from '@mui/material/Button'
-import useImageCompression from '../../hooks/useImageCompression'
-import { FormData } from '../../types/user'
+import InputField from '../../common/InputField'
+import * as S from './AddRestaurants.style'
+import useImageCompression from '../../../hooks/useImageCompression'
+import { FormData } from '../../../types/user'
 
 interface AddRestaurantsProps {
   setMenupage: (value: number) => void
@@ -57,31 +56,31 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
   }, [mainCompressedFile, bannerCompressedFile, setValue])
 
   return (
-    <Wrapper>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <BackBtn src="img/back.svg" alt="" onClick={() => setMenupage(1)} />
-        <FormFrame>
-          <Addtitle>
+    <S.Wrapper>
+      <S.Form onSubmit={handleSubmit(onSubmit)}>
+        <S.BackBtn src="/img/back.svg" alt="" onClick={() => setMenupage(1)} />
+        <S.FormFrame>
+          <S.Addtitle>
             <h1>신규 가게 등록</h1>
-          </Addtitle>
+          </S.Addtitle>
 
-          <ImageUploadContainer>
-            <PreviewContainer>
-              <PreviewBox>
+          <S.ImageUploadContainer>
+            <S.PreviewContainer>
+              <S.PreviewBox>
                 <input type="file" id="mainImage" onChange={handleMainImageChange} />
                 <img src={mainImage} alt="대표 이미지 미리보기" />
-              </PreviewBox>
-              <ImageDescription>대표 이미지</ImageDescription>
-            </PreviewContainer>
+              </S.PreviewBox>
+              <S.ImageDescription>대표 이미지</S.ImageDescription>
+            </S.PreviewContainer>
 
-            <PreviewContainer>
-              <PreviewBox>
+            <S.PreviewContainer>
+              <S.PreviewBox>
                 <input type="file" id="bannerImage" onChange={handleBannerImageChange} />
                 <img src={bannerImage} alt="배너 이미지 미리보기" />
-              </PreviewBox>
-              <ImageDescription>배너 이미지</ImageDescription>
-            </PreviewContainer>
-          </ImageUploadContainer>
+              </S.PreviewBox>
+              <S.ImageDescription>배너 이미지</S.ImageDescription>
+            </S.PreviewContainer>
+          </S.ImageUploadContainer>
 
           <InputField
             label="상호명"
@@ -132,104 +131,13 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
             errorMessage={errors.minimumOrderAmount && '최소 주문금액은 숫자만 입력해주세요.'}
           />
 
-          <SubmitButton className="submit_btn" variant="contained" type="submit">
+          <S.SubmitButton className="submit_btn" variant="contained" type="submit">
             가게 등록
-          </SubmitButton>
-        </FormFrame>
-      </Form>
-    </Wrapper>
+          </S.SubmitButton>
+        </S.FormFrame>
+      </S.Form>
+    </S.Wrapper>
   )
 }
 
 export default AddRestaurants
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: calc(100% - 80px);
-  display: flex;
-  justify-content: center;
-`
-
-const Form = styled.form`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  overflow-y: auto;
-  position: relative;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
-
-const FormFrame = styled.div`
-  width: 50%;
-`
-
-const BackBtn = styled.img`
-  position: absolute;
-  left: 30px;
-  top: 10px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-`
-
-const Addtitle = styled.div`
-  text-align: center;
-  margin: 20px 0;
-  h1 {
-    font-size: 25px;
-    font-weight: 500;
-  }
-`
-
-const ImageUploadContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 100px;
-  margin-bottom: 30px;
-`
-
-const PreviewBox = styled.div`
-  position: relative;
-  width: 150px;
-  height: 150px;
-  border: 1px solid #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-
-  img {
-    width: 95%;
-    height: 95%;
-    object-fit: cover;
-    cursor: pointer;
-  }
-
-  input[type='file'] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-  }
-`
-
-const PreviewContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`
-
-const ImageDescription = styled.span`
-  font-size: 14px;
-`
-
-const SubmitButton = styled(Button)`
-  width: 100%;
-  font-size: 20px;
-  margin-bottom: 40px;
-`

@@ -4,10 +4,13 @@ import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
-// import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
-import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
+import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
 import Main from './pages/Main'
-import CustomerMypage from './pages/CustomerMypage/CustomerMypage'
+import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
+import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
+import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
+import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
+import Mypage from './components/Mypage/Mypage/Mypage'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -60,9 +63,27 @@ const routerData: RouterElement[] = [
     children: [
       {
         id: 51,
-        path: '',
+        path: '1',
+        label: 'test',
+        element: <OwnerSignup />,
+      },
+      {
+        id: 52,
+        path: '2',
+        label: 'test',
+        element: <OwnerSignin />,
+      },
+      {
+        id: 53,
+        path: '3',
         label: 'test',
         element: <CustomerSignup />,
+      },
+      {
+        id: 54,
+        path: '4',
+        label: 'test',
+        element: <CustomerSignin />,
       },
     ],
   },
@@ -73,17 +94,17 @@ const routerData: RouterElement[] = [
     element: <MypageLayout />,
     withAuth: false,
     children: [
-      // {
-      //   id: 61,
-      //   path: '',
-      //   label: 'test',
-      //   element: <OwnerDashboard />,
-      // },
+      {
+        id: 61,
+        path: '1',
+        label: 'test',
+        element: <OwnerDashboard />,
+      },
       {
         id: 62,
-        path: '',
-        label: 'customerMapage',
-        element: <CustomerMypage />,
+        path: '2',
+        label: 'test',
+        element: <Mypage />,
       },
     ],
   },
