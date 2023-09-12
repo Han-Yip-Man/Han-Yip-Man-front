@@ -3,27 +3,32 @@ import { useForm } from 'react-hook-form'
 import InputField from '../../components/common/InputField'
 import * as S from './CustomerSignin.style'
 import { useTheme } from '@mui/material/styles'
-import { FormData } from '../../types/user'
-import { SignIn } from '../../api/user'
+import { FormDataType } from '../../types/user'
+import { signIn } from '../../api/user'
+import useAlert from '../../hooks/useAlert'
 
 const CustomerSignin = () => {
   const theme = useTheme()
+  const toast = useAlert()
 
-  const { register, handleSubmit, watch } = useForm<FormData>()
+  const { register, handleSubmit, watch } = useForm<FormDataType>()
   const password = useRef<string | undefined>()
   password.current = watch('password')
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: FormDataType) => {
     try {
       const payload = {
         email: data.email,
         password: data.password,
       }
 
-      const response = await SignIn(payload)
+      const response = await signIn(payload)
       console.log('로그인 성공:', response)
+      localStorage.setItem('accessToken', response.accessToken)
+      localStorage.setItem('role', response.role)
+      localStorage.setItem('profileUrl', response.profileUrl)
     } catch (error) {
-      console.error('로그인 실패:', error)
+      toast('로그인 정보가 올바르지 않습니다.', 3000, 'error')
     }
   }
 

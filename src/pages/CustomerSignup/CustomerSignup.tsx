@@ -1,17 +1,31 @@
-import { useRef, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import InputField from '../../components/common/InputField'
 import * as S from './CustomerSignup.style'
 import { useTheme } from '@mui/material/styles'
-import { FormData } from '../../types/user'
+import { FormDataType } from '../../types/user'
 import useAddressSearch from '../../hooks/useAddressSearch'
 import { DaumPostcodeData } from '../../types/Address'
 import { userSignUp } from '../../api/user'
+import { emailCheck } from '../../api/user'
+import useAlert from '../../hooks/useAlert'
+import useImageCompression from '../../hooks/useImageCompression'
 
 const CustomerSignup = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitted },
+  } = useForm<FormDataType>()
+  const password = useRef<string | undefined>()
+  password.current = watch('password')
+  const email = watch('email')
   const theme = useTheme()
   const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
   const openPostcodePopup = useAddressSearch(scriptUrl)
+  const toast = useAlert()
 
   const [address, setAddress] = useState<DaumPostcodeData | null>({
     address: '',
@@ -46,18 +60,30 @@ const CustomerSignup = () => {
       })
   }
 
-  console.log(address)
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '')
+  }
+
+  const handleProfileImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      await compressProfileImage(file)
+    }
+  }
 
   const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isSubmitted },
-  } = useForm<FormData>()
-  const password = useRef<string | undefined>()
-  password.current = watch('password')
+    image: profileImage,
+    compressImage: compressProfileImage,
+    compressedFile: profileCompressedFile,
+  } = useImageCompression('/img/preview.jpg')
 
-  const onSubmit = async (data: FormData) => {
+  useEffect(() => {
+    if (profileCompressedFile) {
+      setValue('profileImage', profileCompressedFile)
+    }
+  }, [profileCompressedFile])
+
+  const onSubmit = async (data: FormDataType) => {
     try {
       const { coordinates } = address || {}
 
@@ -71,10 +97,18 @@ const CustomerSignup = () => {
         password: data.password,
         passwordCheck: data.password_confirm,
         phoneNumber: data.phoneNumber,
-        profileImageFile: '',
+        profileImageFile: data.profileImage,
       }
 
-      const response = await userSignUp(payload)
+      const formData = new FormData()
+
+      Object.entries(payload).forEach(([key, value]) => {
+        if (value !== undefined) {
+          formData.append(key, value.toString())
+        }
+      })
+
+      const response = await userSignUp(formData)
       console.log('회원가입 성공:', response)
     } catch (error) {
       console.error('회원가입 실패:', error)
@@ -82,10 +116,16 @@ const CustomerSignup = () => {
   }
 
   //중복체크 검사할떄 쓸 함수~~
-  const checkIdDuplication = () => {}
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, '')
+  const checkIdDuplication = async () => {
+    const emailtrim = email?.trim()
+    if (emailtrim && emailtrim.length > 0) {
+      try {
+        await emailCheck({ checkEmail: emailtrim })
+        toast('사용가능한 아이디입니다.', 3000, 'success')
+      } catch (error) {
+        toast('이미 사용중인 아이디입니다.', 3000, 'error')
+      }
+    }
   }
 
   return (
@@ -96,6 +136,14 @@ const CustomerSignup = () => {
       <S.Title>
         <h1 style={{ color: theme.palette.custom.main }}>사용자 회원가입</h1>
       </S.Title>
+
+      <S.PreviewContainer>
+        <S.PreviewBox>
+          <input type="file" id="mainImage" onChange={handleProfileImageChange} />
+          <img src={profileImage} alt="대표 이미지 미리보기" />
+        </S.PreviewBox>
+        <S.ImageDescription>프로필 이미지</S.ImageDescription>
+      </S.PreviewContainer>
 
       <InputField
         label="아이디"

@@ -26,3 +26,7 @@ declare interface SignInType {
   email?: string
   password?: string
 }
+
+declare interface EmailCheckType {
+  checkEmail?: string
+}
