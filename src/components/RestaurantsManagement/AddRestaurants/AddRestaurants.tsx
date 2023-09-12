@@ -108,18 +108,18 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
 
       const formData = new FormData()
 
-      console.log('어흥', formData, payload)
-
       Object.entries(payload).forEach(([key, value]) => {
         if (value !== undefined) {
-          formData.append(key, value.toString())
+          formData.append(key, value)
         }
       })
+
+      console.log('어흥', formData, payload)
 
       await addShop(formData)
       toast('가게가 성공적으로 등록되었습니다', 2000, 'success')
       setTimeout(() => {
-        setMenupage(1)
+        window.location.reload()
       }, 2000)
     } catch (error) {
       toast('가게등록에 실패하였습니다.', 3000, 'error')
