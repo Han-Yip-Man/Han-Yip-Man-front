@@ -25,7 +25,22 @@ export interface User {
   updated_at: string
 }
 
-export interface FormData {
+export interface AddShopType {
+  address?: string // 필수
+  addressDetail?: string // 선택적
+  bannerImage?: File // 선택적
+  businessNumber?: string // 필수
+  categoryId: number // 필수
+  latitude: number // 필수
+  longitude: number // 필수
+  minOrderPrice: number // 필수
+  shopName: string // 필수
+  shopPhone: string // 필수
+  showDescription: string // 필수
+  thumbnailImage?: File // 선택적
+}
+
+export interface FormDataType {
   email?: string
   password?: string
   password_confirm?: string
@@ -43,4 +58,5 @@ export interface FormData {
   menuCategory?: string
   zonecode?: string
   detailaddress?: string
+  [key: string]: any
 }

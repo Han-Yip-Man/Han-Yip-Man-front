@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form'
 import InputField from '../../common/InputField'
 import * as S from './AddRestaurants.style'
 import useImageCompression from '../../../hooks/useImageCompression'
-import { FormData } from '../../../types/user'
+import { FormDataType, AddShopType } from '../../../types/user'
+import { addShop } from '../../../api/restaurant'
 
 interface AddRestaurantsProps {
   setMenupage: (value: number) => void
@@ -16,10 +17,6 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
     setValue,
     formState: { errors = {} },
   } = useForm()
-
-  const onSubmit = (data: FormData) => {
-    console.log('데이따!', data)
-  }
 
   const handleMainImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -40,6 +37,7 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
     compressImage: compressMainImage,
     compressedFile: mainCompressedFile,
   } = useImageCompression('/img/preview.jpg')
+
   const {
     image: bannerImage,
     compressImage: compressBannerImage,
@@ -55,9 +53,48 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
     }
   }, [mainCompressedFile, bannerCompressedFile, setValue])
 
+  console.log(mainCompressedFile, bannerCompressedFile)
+
+  const onSubmit = async (data: FormDataType) => {
+    try {
+      const formData = new FormData()
+
+      Object.keys(data).forEach((key) => {
+        if (data[key] !== undefined) {
+          formData.append(key, data[key])
+        }
+      })
+
+      const addShopData: AddShopType = {
+        address: data.address,
+        businessNumber: data.businessNumber,
+        categoryId: data.categoryId,
+        latitude: data.latitude,
+        longitude: data.longitude,
+        minOrderPrice: data.minOrderPrice,
+        shopName: data.shopName,
+        shopPhone: data.shopPhone,
+        showDescription: data.showDescription,
+      }
+
+      if (mainCompressedFile) {
+        formData.append('thumbnailImage', mainCompressedFile)
+      }
+
+      if (bannerCompressedFile) {
+        formData.append('bannerImage', bannerCompressedFile)
+      }
+
+      const response = await addShop(addShopData)
+      console.log('가게 등록 성공:', response)
+    } catch (error) {
+      console.error('가게 등록 실패:', error)
+    }
+  }
+
   return (
     <S.Wrapper>
-      <S.Form onSubmit={handleSubmit(onSubmit)}>
+      <S.Form>
         <S.BackBtn src="/img/back.svg" alt="" onClick={() => setMenupage(1)} />
         <S.FormFrame>
           <S.Addtitle>
@@ -131,7 +168,12 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
             errorMessage={errors.minimumOrderAmount && '최소 주문금액은 숫자만 입력해주세요.'}
           />
 
-          <S.SubmitButton className="submit_btn" variant="contained" type="submit">
+          <S.SubmitButton
+            className="submit_btn"
+            variant="contained"
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+          >
             가게 등록
           </S.SubmitButton>
         </S.FormFrame>
