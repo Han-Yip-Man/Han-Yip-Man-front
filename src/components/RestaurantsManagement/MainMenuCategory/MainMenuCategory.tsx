@@ -2,11 +2,19 @@ import React, { useEffect } from 'react'
 import InputField from '../../common/InputField'
 import { Grid } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { FormData } from '../../../types/user'
+import { FormDataType } from '../../../types/user'
 import useAlert from '../../../hooks/useAlert'
 import * as S from './MainMenuCategory.style'
+import { getMenuGroups, addMenuGroups } from '../../../api/restaurant'
+import { useRecoilValue } from 'recoil'
+import { selectedShopIdState } from '../../../recoil/restaurants'
+import { useRecoilState } from 'recoil'
+import { shopMenuGroups } from '../../../recoil/restaurants'
 
 const MainMenuCategory: React.FC = () => {
+  const currentId = useRecoilValue(selectedShopIdState)
+  const [menugroup, setMenugroup] = useRecoilState(shopMenuGroups)
+
   // 카드 데이터 및 드래그/드롭 관련 상태
   const [cards, setCards] = React.useState<(string | undefined)[]>([
     '뼈치킨',
@@ -18,9 +26,24 @@ const MainMenuCategory: React.FC = () => {
   ])
   const [placeholderIndex, setPlaceholderIndex] = React.useState<number | null>(null) // placeholder의 위치를 결정
   const [dragSrcIndex, setDragSrcIndex] = React.useState<number | null>(null) // 현재 드래그 중인 카드의 인덱스
-  const { register, handleSubmit, setValue, formState } = useForm<FormData>()
+  const { register, handleSubmit, setValue, formState } = useForm<FormDataType>()
   const { errors } = formState
   const toast = useAlert()
+
+  useEffect(() => {
+    const getCate = async () => {
+      try {
+        console.log(currentId)
+        const response = await getMenuGroups(currentId)
+        setMenugroup(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getCate()
+  }, [currentId])
+
+  console.log(menugroup)
 
   // 드래그 시작 시 실행되는 함수
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
@@ -71,9 +94,16 @@ const MainMenuCategory: React.FC = () => {
   }
 
   // 카테고리 제출 핸들러
-  const onCategorySubmit = (data: FormData) => {
+  const onCategorySubmit = async (data: FormDataType) => {
     setCards((prev) => [...prev, data.menuCategory]) // 이전 카드 목록에 새 카테고리 추가
     setValue('menuCategory', '') // 'menuCategory' 입력 필드의 값을 리셋
+    console.log(data)
+    try {
+      const response = await addMenuGroups({ shop_id: currentId, menuGroupName: data.menuCategory })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // 카테고리 입력 변경 핸들러

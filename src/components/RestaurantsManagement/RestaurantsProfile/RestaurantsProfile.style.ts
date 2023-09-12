@@ -49,3 +49,19 @@ export const Imgdescription = styled(CardContent)`
 export const TitleTypography = styled(Typography)`
   margin-bottom: 40px;
 `
+export const ImgContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const DefaultImgBox = styled.div`
+  width: 620px;
+  height: 550px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`
