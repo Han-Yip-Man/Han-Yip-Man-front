@@ -7,6 +7,7 @@ import MainMenuCategory from '../MainMenuCategory/MainMenuCategory'
 import Menumanagement from '../Menumanagement/Menumanagement'
 import AddMenu from '../AddMenu/AddMenu'
 import * as S from './ManagementContainer.style'
+import OrderManagement from '../OrderManagement/OrderManagement'
 
 interface ContainerProps {
   menupage: number
@@ -22,6 +23,8 @@ const ManagementContainer: React.FC<ContainerProps> = ({ menupage, setMenupage }
         return <MainMenuCategory />
       case 3:
         return <Menumanagement setMenupage={setMenupage} />
+      case 4:
+        return <OrderManagement />
       case 6:
         return <EditRestaurant setMenupage={setMenupage} />
       case 7:
