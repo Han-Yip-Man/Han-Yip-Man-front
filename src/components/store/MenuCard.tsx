@@ -1,6 +1,17 @@
 import { Box, Card, CardContent, CardMedia, Typography, styled } from '@mui/material'
 
-export const MenuCard = () => {
+type MenuCardProps = {
+  menu: {
+    menuDescription: string
+    menuDiscountPrice: number
+    menuId: number
+    menuName: string
+    menuPrice: number
+    menuThumbnailUrl: string
+  }
+}
+
+export const MenuCard = ({ menu }: MenuCardProps) => {
   return (
     <StyledCardContainer>
       <Card sx={{ height: 116, padding: 1 }}>
@@ -9,11 +20,12 @@ export const MenuCard = () => {
             component="img"
             alt="green iguana"
             height="100"
-            image="/src/assets/domino.jpg"
+            image={menu.menuThumbnailUrl}
           />
           <CardContent sx={{ width: '300%', display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="h6">씨푸드킹 L</Typography>
-            <Typography variant="body1">36,900원</Typography>
+            <Typography variant="h6">{menu.menuName}</Typography>
+            <Typography variant="body1">{menu.menuPrice}원</Typography>
+            <Typography variant="body1">{menu.menuDiscountPrice}원</Typography>
           </CardContent>
         </StyledCardInnerContainer>
       </Card>

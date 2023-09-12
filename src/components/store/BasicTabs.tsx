@@ -16,6 +16,8 @@ import BasicAccordion from './BasicAccordion'
 import { ReviewCard } from './ReviewCard'
 import { KakaoMap } from '../../api/kakao.api'
 import { SyntheticEvent, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { getStoreDetail, getStoreMenus } from '../../api/storeDetail'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -48,6 +50,9 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [value, setValue] = useState(0)
+  const [shopId] = useState(10)
+  const { data: menuData } = useQuery(['storeMenus', shopId], () => getStoreMenus(shopId))
+  const { data: infoData } = useQuery(['stores', shopId], () => getStoreDetail(shopId))
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     event.preventDefault()
@@ -64,7 +69,11 @@ export default function BasicTabs() {
         </Tabs>
       </TabsWrap>
       <CustomTabPanel value={value} index={0}>
-        <BasicAccordion />
+        {menuData
+          ? menuData.map((menuList: any) => (
+              <BasicAccordion key={menuList.menuGroupId} menuList={menuList} />
+            ))
+          : null}
         <InfoPaper>
           <InfoTitle variant="h6">원산지</InfoTitle>
           <Typography>대부분 국산 아님</Typography>
@@ -88,7 +97,7 @@ export default function BasicTabs() {
                     </TableRow>
                     <TableRow>
                       <StyledTableCell>상호명</StyledTableCell>
-                      <StyledTableCell>한국피자헛 어느점</StyledTableCell>
+                      <StyledTableCell>{infoData?.storeDetail.info.shopName}</StyledTableCell>
                     </TableRow>
                     <TableRow>
                       <StyledTableCell>운영시간</StyledTableCell>
@@ -121,12 +130,13 @@ export default function BasicTabs() {
             </Grid>
           </Grid>
           <MapBox>
+            {/* <MapTitle variant="h6">위치</MapTitle> */}
             <KakaoMap
               mapId={'map'}
               width="100%"
               height="350px"
-              latitude={37.490569}
-              longitude={127.032444}
+              latitude={infoData?.storeDetail.info.shopAddressResponse.latitude}
+              longitude={infoData?.storeDetail.info.shopAddressResponse.longitude}
             />
           </MapBox>
         </StoreInfoWrap>
@@ -176,6 +186,11 @@ const InfoTitle = styled(Typography)`
   font-weight: bold;
   margin: 16px auto;
 `
+
+// const MapTitle = styled(Typography)`
+//   font-weight: bold;
+//   margin: 16px 16px;
+// `
 
 const StyledTableCell = styled(TableCell)`
   border-bottom: none;
