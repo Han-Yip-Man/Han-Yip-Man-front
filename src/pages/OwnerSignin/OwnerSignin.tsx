@@ -24,9 +24,9 @@ const OwnerSignin = () => {
 
       const response = await signIn(payload)
       console.log('로그인 성공:', response)
-      localStorage.setItem('accessToken', response.accessToken)
-      localStorage.setItem('role', response.role)
-      localStorage.setItem('profileUrl', response.profileUrl)
+      sessionStorage.setItem('accessToken', response.accessToken)
+      sessionStorage.setItem('role', response.role)
+      sessionStorage.setItem('profileUrl', response.profileUrl)
     } catch (error) {
       toast('로그인 정보가 올바르지 않습니다.', 3000, 'error')
     }
