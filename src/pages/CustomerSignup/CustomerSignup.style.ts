@@ -54,3 +54,41 @@ export const SubmitBtn = styled(Button)`
     background-color: #ea9600;
   }
 `
+export const PreviewBox = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  img {
+    width: 95%;
+    height: 95%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  input[type='file'] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+`
+
+export const PreviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+`
+
+export const ImageDescription = styled.span`
+  font-size: 14px;
+`
