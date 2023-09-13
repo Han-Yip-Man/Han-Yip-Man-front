@@ -161,3 +161,35 @@ export const patchindexMenuGroups = async (payload: PatchindexMenuGroupsType) =>
     throw error
   }
 }
+
+//가게 메뉴 등록
+
+export const patchindexMenuGroups = async (payload: PatchindexMenuGroupsType) => {
+  try {
+    const response = await axiosClient.patch(`/api/seller-shops/menus/${payload.menugroupid}`, {
+      description: 'string',
+      menuName: 'string',
+      options: [
+        {
+          isMultiple: true,
+          maxSelected: 0,
+          optionItems: [
+            {
+              itemName: 'string',
+              itemPrice: 0,
+            },
+          ],
+          optionName: 'string',
+        },
+      ],
+      price: 0,
+    })
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
