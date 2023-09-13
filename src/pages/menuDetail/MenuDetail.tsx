@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import CounterBox from '../../components/menuDetail/CounterBox'
-import MainDishRadio from '../../components/menuDetail/MainDishRadio'
-import SideDishOneRadio from '../../components/menuDetail/SideDishOneRadio'
-import SideDishTwoRadio from '../../components/menuDetail/SideDishTwoRadio'
 import * as S from './MenuDetail.Styles'
+import SizeOption from '../../components/menuDetail/SizeOption'
+import AddOptionOne from '../../components/menuDetail/AddOptionOne'
 
 const MenuDetail = () => {
   const navigate = useNavigate()
@@ -23,15 +22,11 @@ const MenuDetail = () => {
             </S.MenuInfoDiv>
 
             <S.OptionBox>
-              <MainDishRadio />
+              <SizeOption />
             </S.OptionBox>
 
             <S.OptionBox>
-              <SideDishOneRadio />
-            </S.OptionBox>
-
-            <S.OptionBox>
-              <SideDishTwoRadio />
+              <AddOptionOne />
             </S.OptionBox>
 
             <S.OptionBox>
