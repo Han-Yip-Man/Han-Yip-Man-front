@@ -12,6 +12,9 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/css'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { userInfo } from '../../atoms/userInfoAtoms'
+import { currentAddr, userAddr } from '../../atoms/addressAtoms'
 
 const messages = [
   '떡볶이 한사발 하시죠?',
@@ -24,11 +27,16 @@ const messages = [
 ]
 
 function LoginBtnComponent() {
+  const resetCurrentAddr = useResetRecoilState(userAddr)
+  const resetNonLoginAddrs = useResetRecoilState(currentAddr)
+  const isLoggedIn = useRecoilValue(userInfo) // 사용자 이름
   const { pathname } = useLocation()
   const currentPath = pathname === '/'
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [msg, setMsg] = useState('')
   const open = Boolean(anchorEl)
+
+  console.log(isLoggedIn)
 
   const handleClose = () => {
     setAnchorEl(null)
@@ -38,6 +46,13 @@ function LoginBtnComponent() {
     setAnchorEl(event.currentTarget)
   }
 
+  const handleLogout = () => {
+    resetCurrentAddr()
+    resetNonLoginAddrs()
+    sessionStorage.clear()
+    handleClose()
+  }
+
   useEffect(() => {
     const message = messages[Math.floor(Math.random() * messages.length)]
     setMsg(message)
@@ -45,20 +60,22 @@ function LoginBtnComponent() {
 
   return (
     <UserInfo>
-      <BadgeWrap>
-        <IconButton>
-          <Badge
-            color="warning"
-            sx={{
-              color: `${currentPath ? 'white' : 'inherit'}`,
-              transform: `${currentPath && 'scale(1.2)'}`,
-            }}
-            badgeContent={100}
-          >
-            <MopedIcon />
-          </Badge>
-        </IconButton>
-      </BadgeWrap>
+      {!currentPath && (
+        <BadgeWrap>
+          <IconButton>
+            <Badge
+              color="warning"
+              sx={{
+                color: `${currentPath ? 'white' : 'inherit'}`,
+                transform: `${currentPath && 'scale(1.2)'}`,
+              }}
+              badgeContent={3}
+            >
+              <MopedIcon />
+            </Badge>
+          </IconButton>
+        </BadgeWrap>
+      )}
       <CustomizedTooltip title={'나의 정보'}>
         <CustomBtn
           className={css`
@@ -74,6 +91,7 @@ function LoginBtnComponent() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
+          {/* {`${isLoggedIn?.sub}님 ${msg}`} */}
           {`차지환님 ${msg}`}
         </CustomBtn>
       </CustomizedTooltip>
@@ -94,11 +112,12 @@ function LoginBtnComponent() {
         <MenuItem onClick={handleClose}>마이 페이지</MenuItem>
         <MenuItem onClick={handleClose}>주문내역</MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
+          {/* 세션 스토리지에 토큰을 비우고 userAddr도 비우고  */}
         </MenuItem>
       </Menu>
     </UserInfo>
@@ -112,8 +131,8 @@ const CustomBtn = styled(Button)`
 `
 
 const UserInfo = styled.div`
-  display: grid;
-  grid-template-columns: 100px 1fr;
+  display: flex;
+  justify-content: flex-end;
   margin-right: 15px;
   position: relative;
 `
@@ -121,7 +140,7 @@ const BadgeWrap = styled.div`
   display: grid;
   place-items: center;
   transform: translateY(6px);
-  padding-left: 20px;
+  padding-right: 20px;
 `
 
 const CustomizedTooltip = styled(
@@ -131,6 +150,6 @@ const CustomizedTooltip = styled(
 )({
   [`& .${tooltipClasses.tooltip}`]: {
     fontSize: '16px',
-    fontFamily: 'inherit', // 원하는 폰트로 변경
+    fontFamily: 'inherit',
   },
 })

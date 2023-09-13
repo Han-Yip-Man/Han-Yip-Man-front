@@ -1,4 +1,4 @@
-import axiosClient from './axios'
+import axiosClient from './axiosInstance'
 interface APIPayload {
   endpoint: string
   payload: UserSignUpPayload | OwnerSignUpPayload | SignInType

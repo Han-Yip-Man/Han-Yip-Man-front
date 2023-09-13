@@ -18,3 +18,13 @@ declare interface BtnThemeProps {
     secondary: string
   }
 }
+
+declare interface CurrentAddr {
+  id: string
+  address: string
+  road_address: string
+  place_name: string
+  lat: string
+  lng: string
+  isDefault: boolean
+}

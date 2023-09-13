@@ -4,7 +4,16 @@ import { css } from '@emotion/css'
 import BtnHeader from './BtnHeader'
 import LoginBtnComponent from './LoginBtnComponent'
 import AddressModal from './AddressModal'
-import { Button, Toolbar, Container, Stack, AppBar, Dialog, Slide } from '@mui/material'
+import {
+  Button,
+  Toolbar,
+  Container,
+  Stack,
+  AppBar,
+  Dialog,
+  Slide,
+  ButtonProps,
+} from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import LocalPizzaOutlinedIcon from '@mui/icons-material/LocalPizzaOutlined'
@@ -13,8 +22,10 @@ import LunchDiningOutlinedIcon from '@mui/icons-material/LunchDiningOutlined'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import { useState, forwardRef } from 'react'
-
-type LoginState = 'login' | 'logout'
+import { useRecoilValue } from 'recoil'
+import { userAddr } from '../../atoms/addressAtoms'
+import { userInfo } from '../../atoms/userInfoAtoms'
+import useRouter from '../../hooks/useRouter'
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -25,13 +36,19 @@ const Transition = forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />
 })
 
-function Header() {
-  const { pathname } = useLocation()
-  // const [isLoggedIn, setIsLoggedIn] = useState<LoginState>('login')
-  const [open, setOpen] = useState(false)
+const AddressBtn = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
+  <Button {...props} ref={ref} />
+))
 
+function Header() {
+  const isLoggedIn = useRecoilValue(userInfo)
+  const currentAddr = useRecoilValue(userAddr)
+  const { routeTo } = useRouter()
+  const { pathname } = useLocation()
+  const [open, setOpen] = useState(false)
   const currentPath = pathname === '/'
-  const isLoggedIn: LoginState = 'login'
+
+  console.log(currentAddr)
 
   return (
     <AppBar
@@ -56,9 +73,18 @@ function Header() {
       >
         <CustomToolbar
           className={css`
-            &&&&&& {
+            && {
               ${transition}
               margin-top: ${!currentPath && '5px'};
+              ${currentPath
+                ? css`
+                    display: flex;
+                    justify-content: space-between;
+                  `
+                : css`
+                    display: grid;
+                    grid-template-columns: 400px 1fr 400px;
+                  `}
             }
           `}
         >
@@ -74,34 +100,44 @@ function Header() {
             />
           </CustomLink>
           {!currentPath && (
-            <Button
+            <AddressBtn
               startIcon={<LocationOnIcon />}
               sx={{
                 color: `${currentPath ? 'white' : 'black'}`,
-                transform: `${currentPath && 'scale(1.4)'}`,
                 fontSize: '20px',
                 mt: '3px',
-                position: 'absolute',
-                left: `calc(50% - 74.2px)`,
-                transition: 'all .4s',
+                transition: 'width .4s',
               }}
               onClick={() => setOpen(true)}
             >
-              {'분당구 백현동'}
-            </Button>
+              {currentAddr.place_name}
+            </AddressBtn>
           )}
           <Dialog open={open} TransitionComponent={Transition} onClose={() => setOpen(false)}>
             <AddressModal />
           </Dialog>
-          {isLoggedIn === 'login' ? (
+          {isLoggedIn ? (
             <LoginBtnComponent />
           ) : (
-            <Stack direction="row" spacing={currentPath ? 5 : -3}>
-              <BtnHeader width={120} currentPath={currentPath}>
+            <Stack
+              direction="row"
+              spacing={currentPath ? 5 : -3}
+              sx={{ display: 'flex', justifyContent: 'flex-end' }}
+            >
+              <BtnHeader
+                width={120}
+                currentPath={currentPath}
+                onClick={() => routeTo('/user/customer/sign-in')}
+              >
                 <LocalPizzaOutlinedIcon />
                 &nbsp;로그인
               </BtnHeader>
-              <BtnHeader primary={true} width={140} currentPath={currentPath}>
+              <BtnHeader
+                primary={true}
+                width={140}
+                currentPath={currentPath}
+                onClick={() => routeTo('/user/customer/sign-up')}
+              >
                 <LunchDiningOutlinedIcon />
                 &nbsp;회원가입
               </BtnHeader>

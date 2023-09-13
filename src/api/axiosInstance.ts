@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-const BASE_URL = 'http://54.180.103.214:8080'
+const BASE_URL = '/api/api'
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -9,7 +9,7 @@ const axiosClient: AxiosInstance = axios.create({
 axiosClient.interceptors.response.use((response) => {
   if (response.headers['authorization']) {
     const accessToken = response.headers['authorization']
-    localStorage.setItem('accessToken', accessToken)
+    sessionStorage.setItem('accessToken', JSON.stringify(accessToken))
   }
   return response.data
 })
@@ -18,9 +18,12 @@ axiosClient.interceptors.request.use((config) => {
   config.headers['Content-Type'] = 'application/json; charset=utf-8'
   config.headers['X-API-VERSION'] = '1'
 
-  const token = localStorage.getItem('accessToken')
+  // const token = sessionStorage.getItem('accessToken')
+  const token =
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcklkeCI6MjYsImVtYWlsIjoidGVzdCIsInJvbGUiOiJCVVlFUiIsImlhdCI6MTY5NDYyMTcyMiwiZXhwIjoxNjk0NjY0OTIyfQ.DBayp9YY144xE9j5iagO5Yr9KZXMpiOp9xstJbKYG-k'
+
   if (token) {
-    config.headers['Authorization'] = `${token}`
+    config.headers['Authorization'] = `Bearer ${token}`
   }
 
   return config

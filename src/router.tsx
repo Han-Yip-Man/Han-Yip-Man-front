@@ -5,7 +5,7 @@ import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
-import Main from './pages/Main'
+import Main from './pages/Main/Main'
 import CategoryMain from './pages/CategoryMain/CategoryMain'
 import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
 import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
@@ -63,32 +63,32 @@ const routerData: RouterElement[] = [
   },
   {
     id: 50,
-    path: '/123',
+    path: '/user',
     label: 'signlayout',
     element: <SignLayout />,
     withAuth: false,
     children: [
       {
         id: 51,
-        path: '1',
+        path: 'owner/sign-up',
         label: 'test',
         element: <OwnerSignup />,
       },
       {
         id: 52,
-        path: '2',
+        path: 'owner/sign-in',
         label: 'test',
         element: <OwnerSignin />,
       },
       {
         id: 53,
-        path: '3',
+        path: 'customer/sign-up',
         label: 'test',
         element: <CustomerSignup />,
       },
       {
         id: 54,
-        path: '4',
+        path: 'customer/sign-in',
         label: 'test',
         element: <CustomerSignin />,
       },
