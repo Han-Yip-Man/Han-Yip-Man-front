@@ -12,6 +12,8 @@ import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
 import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
 import Mypage from './components/Mypage/Mypage/Mypage'
+import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
+import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -63,57 +65,71 @@ const routerData: RouterElement[] = [
   },
   {
     id: 50,
-    path: '/user',
+    path: '/auth',
     label: 'signlayout',
     element: <SignLayout />,
     withAuth: false,
     children: [
       {
         id: 51,
-        path: 'owner/sign-up',
-        label: 'test',
+        path: 'sellersignup',
+        label: 'sellersignup',
         element: <OwnerSignup />,
       },
       {
         id: 52,
-        path: 'owner/sign-in',
-        label: 'test',
+        path: 'sellersignin',
+        label: 'sellersignin',
         element: <OwnerSignin />,
       },
       {
         id: 53,
-        path: 'customer/sign-up',
-        label: 'test',
+        path: 'usersignup',
+        label: 'usersignup',
         element: <CustomerSignup />,
       },
       {
         id: 54,
-        path: 'customer/sign-in',
-        label: 'test',
+        path: 'usersignin',
+        label: 'usersignin',
         element: <CustomerSignin />,
       },
     ],
   },
   {
     id: 60,
-    path: '/11',
+    path: '/dashboard',
     label: 'mypagelayout',
     element: <MypageLayout />,
     withAuth: false,
     children: [
       {
         id: 61,
-        path: '1',
-        label: 'test',
+        path: 'seller',
+        label: 'sellerdashboard',
         element: <OwnerDashboard />,
       },
       {
         id: 62,
-        path: '2',
-        label: 'test',
+        path: 'user',
+        label: 'userdashboard',
         element: <Mypage />,
       },
     ],
+  },
+  {
+    id: 70,
+    path: '/selectedsignup',
+    label: 'selectedsignup',
+    element: <SignupSelectionPage />,
+    withAuth: false,
+  },
+  {
+    id: 71,
+    path: '/selectedsignin',
+    label: 'selectedsignin',
+    element: <SignInSelectionPage />,
+    withAuth: false,
   },
 ]
 

@@ -3,8 +3,10 @@ import { useForm } from 'react-hook-form'
 import InputField from '../../components/common/InputField'
 import * as S from './OwnerSignup.style'
 import { useTheme } from '@mui/material/styles'
-import { FormData } from '../../types/user'
-import { OwnerSignUp } from '../../api/user'
+import { FormDataType } from '../../types/user'
+import { ownerSignUp } from '../../api/user'
+import useAlert from '../../hooks/useAlert'
+import { emailCheck } from '../../api/user'
 
 const OwnerSignup = () => {
   const theme = useTheme()
@@ -14,11 +16,13 @@ const OwnerSignup = () => {
     handleSubmit,
     watch,
     formState: { errors, isSubmitted },
-  } = useForm<FormData>()
+  } = useForm<FormDataType>()
   const password = useRef<string | undefined>()
   password.current = watch('password')
+  const email = watch('email')
+  const toast = useAlert()
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: FormDataType) => {
     try {
       const payload = {
         businessNumber: data.BusinessNumber,
@@ -29,7 +33,7 @@ const OwnerSignup = () => {
         phoneNumber: data.phoneNumber,
       }
 
-      const response = await OwnerSignUp(payload)
+      const response = await ownerSignUp(payload)
       console.log('회원가입 성공:', response)
     } catch (error) {
       console.error('회원가입 실패:', error)
@@ -37,7 +41,17 @@ const OwnerSignup = () => {
   }
 
   //중복체크 검사할떄 쓸 함수~~
-  const checkIdDuplication = () => {}
+  const checkIdDuplication = async () => {
+    const emailtrim = email?.trim()
+    if (emailtrim && emailtrim.length > 0) {
+      try {
+        await emailCheck({ checkEmail: emailtrim })
+        toast('사용가능한 아이디입니다.', 3000, 'success')
+      } catch (error) {
+        toast('이미 사용중인 아이디입니다.', 3000, 'error')
+      }
+    }
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '')
@@ -56,7 +70,12 @@ const OwnerSignup = () => {
         label="아이디"
         type="email"
         placeholder="아이디는 이메일 형식입니다."
-        {...register('email', { required: true, minLength: 5, pattern: /^\S+@\S+$/i })}
+        {...register('email', {
+          required: true,
+          minLength: 5,
+          maxLength: 50,
+          pattern: /^\S+@\S+$/i,
+        })}
         errorMessage={isSubmitted && errors.email && '이메일 형식으로 작성해야 합니다.'}
         checkDuplication={() => checkIdDuplication()}
       />
@@ -68,6 +87,7 @@ const OwnerSignup = () => {
         {...register('password', {
           required: true,
           minLength: 6,
+          maxLength: 30,
           pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
         })}
         errorMessage={
