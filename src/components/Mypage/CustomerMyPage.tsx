@@ -10,8 +10,13 @@ import {
   styled,
 } from '@mui/material'
 import { ReviewCard } from '../store/ReviewCard'
+import { useQuery } from '@tanstack/react-query'
+import { getMypageInfo } from '../../api/mypage'
+import AddressTabs from './AddressTabs'
 
 export const CustomerMyPage = () => {
+  const { data } = useQuery(['mypage'], () => getMypageInfo())
+
   return (
     <MypageWrap>
       <CustomerInfoTitle variant="h5">내 정보</CustomerInfoTitle>
@@ -19,8 +24,8 @@ export const CustomerMyPage = () => {
         <CustomerInfoInner>
           <AvatarWarp>
             <AvatarPaper>
-              <StyledAvatar />
-              <Nickname variant="h5">ninkname</Nickname>
+              <StyledAvatar alt={'' + data?.buyNumber} src={data?.profileImageUrl} />
+              <Nickname variant="h5">{data?.nickName}</Nickname>
             </AvatarPaper>
           </AvatarWarp>
           <Stack bgcolor={'white'} flexDirection={'column'} justifyContent={'center'}>
@@ -28,10 +33,10 @@ export const CustomerMyPage = () => {
               <TableBody>
                 <TableRow>
                   <StyledTableCell>
-                    <Typography>ID :</Typography>
+                    <Typography>EMAIL :</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography> id</Typography>
+                    <Typography> {data?.email}</Typography>
                   </StyledTableCell>
                 </TableRow>
                 <TableRow>
@@ -39,30 +44,42 @@ export const CustomerMyPage = () => {
                     <Typography>PHONE :</Typography>
                   </StyledTableCell>
                   <StyledTableCell>
-                    <Typography> 010-1234-5678</Typography>
+                    <Typography> {data?.phoneNumber}</Typography>
                   </StyledTableCell>
                 </TableRow>
-                <TableRow>
-                  <StyledTableCell>
-                    <Typography>ADDRESS :</Typography>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Typography> 서울특별시 강남구 역삼동 837-24</Typography>
-                  </StyledTableCell>
-                </TableRow>
-                <TableRow>
-                  <StyledTableCell>
-                    <Typography>DETAIL ADDRESS :</Typography>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Typography> 9F</Typography>
-                  </StyledTableCell>
-                </TableRow>
+                {data?.addressList.map((addressInfo) => (
+                  <>
+                    {addressInfo.isDefault ? (
+                      <>
+                        <TableRow>
+                          <StyledTableCell>
+                            <Typography>ADDRESS :</Typography>
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            <Typography> {addressInfo.address}</Typography>
+                          </StyledTableCell>
+                        </TableRow>
+                        <TableRow>
+                          <StyledTableCell>
+                            <Typography>DETAIL ADDRESS :</Typography>
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            <Typography> {addressInfo.detailAddress}</Typography>
+                          </StyledTableCell>
+                        </TableRow>
+                      </>
+                    ) : null}
+                  </>
+                ))}
               </TableBody>
             </Table>
           </Stack>
         </CustomerInfoInner>
       </CustomerInfo>
+      <CustomerInfoTitle variant="h5">주소관리</CustomerInfoTitle>
+      <Stack>
+        <AddressTabs addressList={data?.addressList} />
+      </Stack>
       <CustomerInfoTitle variant="h5">리뷰관리</CustomerInfoTitle>
       <ReviewPaper>
         <ReviewCard />
@@ -105,6 +122,9 @@ const AvatarWarp = styled(Stack)`
 
 const AvatarPaper = styled(Paper)`
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const StyledAvatar = styled(Avatar)`
