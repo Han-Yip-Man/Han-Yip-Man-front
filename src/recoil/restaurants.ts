@@ -47,3 +47,9 @@ export const shopMenuGroups = atom<MenuGroupsType[]>({
   key: 'shopMenuGroups',
   default: [],
 })
+
+//가게 메뉴 대분류
+export const shopdeletemodal = atom({
+  key: 'shopdeletemodal',
+  default: false,
+})

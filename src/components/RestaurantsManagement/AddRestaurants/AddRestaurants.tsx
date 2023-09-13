@@ -4,7 +4,7 @@ import InputField from '../../common/InputField'
 import * as S from './AddRestaurants.style'
 import useImageCompression from '../../../hooks/useImageCompression'
 import { FormDataType } from '../../../types/user'
-import { addShop } from '../../../api/restaurant'
+import { addShop, shopNameCheck } from '../../../api/restaurant'
 import { SelectChangeEvent } from '@mui/material'
 import MenuItem from '@mui/material/MenuItem'
 import { CategoryData } from '../../../assets/data/restaurantdata.js'
@@ -21,6 +21,7 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors = {}, isSubmitted },
   } = useForm()
   const toast = useAlert()
@@ -28,7 +29,8 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
   const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
   const openPostcodePopup = useAddressSearch(scriptUrl)
   const [catavalue, setCatevalue] = useState('카테고리 선택하기')
-
+  const storeName = watch('storeName')
+  const [isDuplicateChecked, setIsDuplicateChecked] = useState(false)
   const [address, setAddress] = useState<DaumPostcodeData | null>({
     address: '',
     zonecode: '',
@@ -36,6 +38,10 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
   })
 
   console.log(address)
+
+  useEffect(() => {
+    setIsDuplicateChecked(false)
+  }, [storeName])
 
   const handleAddressPopup = () => {
     openPostcodePopup()
@@ -90,6 +96,11 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
   }, [mainCompressedFile, bannerCompressedFile, setValue])
 
   const onSubmit = async (data: FormDataType) => {
+    if (!isDuplicateChecked) {
+      toast('중복 검사를 완료해주세요.', 2000, 'warning')
+      return
+    }
+
     try {
       const payload = {
         address: data.address,
@@ -122,12 +133,29 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
         window.location.reload()
       }, 2000)
     } catch (error) {
-      toast('가게등록에 실패하였습니다.', 3000, 'error')
+      toast('가게등록에 실패하였습니다.', 2000, 'error')
     }
   }
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setCatevalue(event.target.value as string)
+  }
+
+  const checkIdDuplication = () => {
+    setIsDuplicateChecked(false)
+    const pattern = /^[A-Za-z가-힣\s]+$/
+    if (storeName && pattern.test(storeName)) {
+      shopNameCheck(storeName)
+        .then(() => {
+          toast('사용가능한 상호명 입니다.', 2000, 'success')
+          setIsDuplicateChecked(true)
+        })
+        .catch(() => {
+          toast('이미 존재하는 상호명 입니다.', 2000, 'error')
+        })
+    } else {
+      toast('상호명은 한글 혹은 영어만 사용해야 합니다.', 2000, 'error')
+    }
   }
 
   return (
@@ -170,6 +198,7 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
                 '상호명은 한글 혹은 영어만 입력 가능합니다.') ||
               (errors.storeName?.type === 'required' && '상호명은 필수 입력입니다.')
             }
+            checkDuplication={() => checkIdDuplication()}
           />
 
           <InputField
