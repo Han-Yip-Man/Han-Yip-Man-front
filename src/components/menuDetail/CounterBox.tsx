@@ -1,19 +1,21 @@
-import { useState } from 'react'
-
+import { Dispatch, SetStateAction } from 'react'
 import * as S from './CounterBox.Styles'
 
-export default function CounterBox() {
-  const [quantity, setQuanity] = useState(0)
+interface CounterBoxProps {
+  quantity: number
+  setQuantity: Dispatch<SetStateAction<number>>
+}
 
+export default function CounterBox({ quantity, setQuantity }: CounterBoxProps) {
   const increaseQuantity = () => {
     const newQuantity = quantity + 1
-    setQuanity(newQuantity)
+    setQuantity(newQuantity)
   }
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
       const newQuantity = quantity - 1
-      setQuanity(newQuantity)
+      setQuantity(newQuantity)
     }
   }
 

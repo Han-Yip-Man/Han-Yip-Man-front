@@ -23,19 +23,31 @@ export const OptionTitle = styled.div`
   margin-left: 5px;
   font-weight: bold;
 `
+
+export const CheckboxWrapper = styled.div`
+  display: flex;
+  margin: 8px 0;
+`
+
 export const Input = styled.input`
-  margin: 10px 10px;
+  margin: 5px 10px;
+  width: 20px;
 `
 export const MidLabel = styled.label`
-  margin-right: 220px;
+  display: flex;
+  font-size: 18px;
+  & > div:first-of-type {
+    margin-right: 190px;
+  }
 `
 export const LargeLabel = styled.label`
-  margin-right: 240px;
+  display: flex;
+  font-size: 18px;
+  & > div:first-of-type {
+    margin-right: 210px;
+  }
 `
-export const Span = styled.span`
-  width: 50px;
-  text-align: right;
-`
+
 export const LabelOne = styled.label`
   margin-right: 125px;
 `
@@ -51,3 +63,24 @@ export const LabelFour = styled.label`
 export const Li = styled.li`
   list-style: none;
 `
+
+// AddOptionOne.tsx
+export const OptionOneInput = styled.input`
+  margin: 5px 10px;
+  width: 20px;
+`
+
+export const OptionOneLabel = styled.label`
+  display: flex;
+  font-size: 18px;
+  & > div:first-of-type {
+    margin-right: 190px;
+  }
+`
+// export const LargeLabel = styled.label`
+//   display: flex;
+//   font-size: 18px;
+//   & > div:first-of-type {
+//     margin-right: 210px;
+//   }
+// `

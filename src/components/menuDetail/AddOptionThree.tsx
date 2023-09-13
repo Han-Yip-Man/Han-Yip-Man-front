@@ -12,13 +12,11 @@ export default function AddOptionThree() {
       <div>
         <S.Input type="checkbox" id="medium" name="medium" />
         <S.MidLabel htmlFor="medium">Medium</S.MidLabel>
-        <S.Span>+2,000원</S.Span>
       </div>
 
       <div>
         <S.Input type="checkbox" id="large" name="large" />
         <S.LargeLabel htmlFor="large">Large</S.LargeLabel>
-        <S.Span>+5,000원</S.Span>
       </div>
     </>
   )

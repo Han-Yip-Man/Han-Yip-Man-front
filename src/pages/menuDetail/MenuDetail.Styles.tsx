@@ -63,6 +63,17 @@ export const MenuExpDiv = styled.div`
   font-size: 15px;
   margin-bottom: 30px;
 `
+export const MenuPriceDiv = styled.div`
+  width: 150px;
+  height: 45px;
+  text-align: center;
+  background-color: rgb(115, 115, 222, 0.7);
+  color: white;
+  font-size: 20px;
+  padding-top: 10px;
+  border: none;
+  border-radius: 50px;
+`
 
 export const OptionBox = styled.div`
   box-sizing: border-box;
@@ -114,7 +125,7 @@ export const OrderButton = styled.button`
   border: none;
   width: 150px;
   height: 50px;
-  background-color: red;
+  background-color: blue;
   color: white;
   cursor: pointer;
 `

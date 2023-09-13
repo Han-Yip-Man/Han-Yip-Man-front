@@ -1,11 +1,30 @@
 import { useNavigate } from 'react-router-dom'
-import CounterBox from '../../components/menuDetail/CounterBox'
+import { useState } from 'react'
 import * as S from './MenuDetail.Styles'
+import CounterBox from '../../components/menuDetail/CounterBox'
 import SizeOption from '../../components/menuDetail/SizeOption'
 import AddOptionOne from '../../components/menuDetail/AddOptionOne'
+import AddOptionTwo from '../../components/menuDetail/AddOptionTwo'
+import AddOptionThree from '../../components/menuDetail/AddOptionThree'
+
+// MenuData의 타입 정의
+interface MenuData {
+  menuId: number
+  menuPrice: number
+  menuName: string
+  menuDescription: string
+}
 
 const MenuDetail = () => {
   const navigate = useNavigate()
+  const [data, setData] = useState<MenuData>({
+    menuId: 1,
+    menuPrice: 27000,
+    menuName: '',
+    menuDescription: '',
+  })
+
+  const [quantity, setQuantity] = useState<number>(1)
 
   return (
     <>
@@ -19,6 +38,7 @@ const MenuDetail = () => {
             <S.MenuInfoDiv>
               <S.MenuNameDiv>아보카도 새우</S.MenuNameDiv>
               <S.MenuExpDiv>#슈퍼시드 화이버 함유 도우로 더 맛있게!</S.MenuExpDiv>
+              <S.MenuPriceDiv> {data.menuPrice.toLocaleString('ko-KR')}원</S.MenuPriceDiv>
             </S.MenuInfoDiv>
 
             <S.OptionBox>
@@ -30,7 +50,15 @@ const MenuDetail = () => {
             </S.OptionBox>
 
             <S.OptionBox>
-              <CounterBox />
+              <AddOptionTwo />
+            </S.OptionBox>
+
+            <S.OptionBox>
+              <AddOptionThree />
+            </S.OptionBox>
+
+            <S.OptionBox>
+              <CounterBox quantity={quantity} setQuantity={setQuantity} />
             </S.OptionBox>
           </S.OptionDiv>
         </S.MainWrapperDiv>
@@ -50,7 +78,7 @@ const MenuDetail = () => {
               <S.PickedMenuDiv>코카콜라 1.25L(+2,300원)</S.PickedMenuDiv>
             </S.MainDiv>
             <S.MainDiv>
-              <S.TotalPriceDiv>총 금액</S.TotalPriceDiv>
+              <S.TotalPriceDiv>총 금액 {(data.menuPrice * quantity).toLocaleString('ko-KR')}원</S.TotalPriceDiv>
               <S.OrderButton
                 onClick={() => {
                   navigate('/cart')
