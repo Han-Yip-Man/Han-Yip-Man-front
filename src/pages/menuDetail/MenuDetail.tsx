@@ -8,21 +8,21 @@ import AddOptionTwo from '../../components/menuDetail/AddOptionTwo'
 import AddOptionThree from '../../components/menuDetail/AddOptionThree'
 
 // MenuData의 타입 정의
-interface MenuData {
-  menuId: number
-  menuPrice: number
-  menuName: string
-  menuDescription: string
-}
+// interface MenuData {
+//   menuId: number
+//   menuPrice: number
+//   menuName: string
+//   menuDescription: string
+// }
 
 const MenuDetail = () => {
   const navigate = useNavigate()
-  const [data, setData] = useState<MenuData>({
-    menuId: 1,
-    menuPrice: 27000,
-    menuName: '',
-    menuDescription: '',
-  })
+  // const [data, setData] = useState<MenuData>({
+  //   menuId: 1,
+  //   menuPrice: 27000,
+  //   menuName: '',
+  //   menuDescription: '',
+  // })
 
   const [quantity, setQuantity] = useState<number>(1)
 
@@ -38,7 +38,7 @@ const MenuDetail = () => {
             <S.MenuInfoDiv>
               <S.MenuNameDiv>아보카도 새우</S.MenuNameDiv>
               <S.MenuExpDiv>#슈퍼시드 화이버 함유 도우로 더 맛있게!</S.MenuExpDiv>
-              <S.MenuPriceDiv> {data.menuPrice.toLocaleString('ko-KR')}원</S.MenuPriceDiv>
+              {/* <S.MenuPriceDiv> {data.menuPrice.toLocaleString('ko-KR')}원</S.MenuPriceDiv> */}
             </S.MenuInfoDiv>
 
             <S.OptionBox>
@@ -78,7 +78,7 @@ const MenuDetail = () => {
               <S.PickedMenuDiv>코카콜라 1.25L(+2,300원)</S.PickedMenuDiv>
             </S.MainDiv>
             <S.MainDiv>
-              <S.TotalPriceDiv>총 금액 {(data.menuPrice * quantity).toLocaleString('ko-KR')}원</S.TotalPriceDiv>
+              {/* <S.TotalPriceDiv>총 금액 {(data.menuPrice * quantity).toLocaleString('ko-KR')}원</S.TotalPriceDiv> */}
               <S.OrderButton
                 onClick={() => {
                   navigate('/cart')
