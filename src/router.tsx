@@ -5,7 +5,7 @@ import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
-import Main from './pages/Main'
+import Main from './pages/Main/Main'
 import CategoryMain from './pages/CategoryMain/CategoryMain'
 import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
 import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
@@ -13,7 +13,7 @@ import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
 import Mypage from './components/Mypage/Mypage/Mypage'
 import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
-import SignInSelectionPage from './pages/SigninSelectionPage/SigninSelectionPage'
+import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)

@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       // 프록시 설정 입력
       '/api': {
-        target: '',
+        target: 'http://54.180.103.214:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,

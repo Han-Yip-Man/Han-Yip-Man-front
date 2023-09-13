@@ -22,6 +22,9 @@ const CustomerSignin = () => {
         password: data.password,
       }
 
+      // 비회원이 회원가입하고 나서 기존에 등록한 주소가 있으면
+      // 전역상태 userAddr 에 주소가 있으면
+      // 주소를 등록하고 default 주소로 등록요청
       const response = await signIn(payload)
       console.log('로그인 성공:', response)
       sessionStorage.setItem('accessToken', response.accessToken)
