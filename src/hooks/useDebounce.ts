@@ -16,7 +16,7 @@ function useDebounce(value: string, delay: number) {
     }
   }, [value, delay])
 
-  return { debouncedKeyword, isLoading }
+  return { debouncedKeyword, setDebouncedKeyword, isLoading }
 }
 
 export default useDebounce
