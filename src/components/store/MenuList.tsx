@@ -1,19 +1,31 @@
 import { List, ListItem, ListItemButton } from '@mui/material'
 import { MenuCard } from './MenuCard'
 
-export default function MenuList() {
-  const menus = [0, 1, 2, 3]
-  const handleToggle = (value: number) => () => {
-    console.log('메뉴상세로', value)
+type menuInfo = {
+  menuDescription: string
+  menuDiscountPrice: number
+  menuId: number
+  menuName: string
+  menuPrice: number
+  menuThumbnailUrl: string
+}
+
+type MenuListProps = {
+  menuList: menuInfo[]
+}
+
+export default function MenuList({ menuList }: MenuListProps) {
+  const handleToggle = (menuId: number) => () => {
+    console.log('메뉴상세로', menuId)
   }
 
   return (
-    <List sx={{ width: '100%' }}>
-      {menus.map((value) => {
+    <List>
+      {menuList.map((menu) => {
         return (
-          <ListItem key={value} disablePadding>
-            <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-              <MenuCard />
+          <ListItem key={menu.menuId} disablePadding>
+            <ListItemButton role={undefined} onClick={handleToggle(menu.menuId)} dense>
+              <MenuCard menu={menu} />
             </ListItemButton>
           </ListItem>
         )

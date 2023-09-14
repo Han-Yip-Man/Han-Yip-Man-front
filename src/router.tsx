@@ -5,7 +5,7 @@ import GeneralLayout from './layout/GeneralLayout'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
-import Main from './pages/Main/Main'
+import { Store } from './pages/Store'
 import CategoryMain from './pages/CategoryMain/CategoryMain'
 import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
 import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
@@ -14,6 +14,7 @@ import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
 import Mypage from './components/Mypage/Mypage/Mypage'
 import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
 import SignInSelectionPage from './pages/SigninSelectionPage/SigninSelectionPage'
+import Main from './pages/Main/Main'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -60,6 +61,12 @@ const routerData: RouterElement[] = [
         path: '/main',
         label: 'CategoryMain',
         element: <CategoryMain />,
+      },
+      {
+        id: 3,
+        path: '/store/:shopId',
+        label: 'Store',
+        element: <Store />,
       },
     ],
   },
