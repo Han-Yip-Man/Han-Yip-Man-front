@@ -1,4 +1,4 @@
-import axiosClient from './axios'
+import axiosClient from './axiosInstance'
 
 type StoreDetail = {
   storeDetail: {
@@ -34,15 +34,14 @@ type menuGroup = {
 
 type StoreMenus = menuGroup[]
 
-export const getStoreDetail = async (shopId: number): Promise<StoreDetail> => {
-  const infoResponse = await axiosClient.get(`/api/buyer-shops/${shopId}/info`)
-  // const rvAvgResponse = await axiosClient.get(`/api/buyer-shops/${shopId}/review-average`)
+export const getStoreDetail = async (shopId: string | undefined): Promise<StoreDetail> => {
+  const infoResponse = await axiosClient.get(`/buyer-shops/${shopId}/info`)
+  const rvAvgResponse = await axiosClient.get(`/buyer-shops/${shopId}/review-average`)
 
   const returnValue = {
     storeDetail: {
       info: infoResponse.data,
-      // rvAvg: rvAvgResponse.data,
-      rvAvg: 4.4,
+      rvAvg: rvAvgResponse.data,
     },
   }
 
@@ -50,6 +49,6 @@ export const getStoreDetail = async (shopId: number): Promise<StoreDetail> => {
 }
 
 export const getStoreMenus = async (shopId: number): Promise<StoreMenus> => {
-  const menuResponse = await axiosClient.get(`/api/buyer-shops/${shopId}/menus`)
+  const menuResponse = await axiosClient.get(`/buyer-shops/${shopId}/menus`)
   return menuResponse.data
 }

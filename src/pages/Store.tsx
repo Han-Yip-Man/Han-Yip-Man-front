@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query'
 import { getStoreDetail } from '../api/storeDetail'
 import BasicTabs from '../components/store/BasicTabs'
 import { Box, CardMedia, Rating, Stack, Typography, styled } from '@mui/material'
-import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 export const Store = () => {
-  const [shopId] = useState(10)
+  const { shopId } = useParams()
+  console.log(shopId)
   const { data, isLoading } = useQuery(['stores', shopId], () => getStoreDetail(shopId))
-  // console.log(data)
 
   return (
     <>
