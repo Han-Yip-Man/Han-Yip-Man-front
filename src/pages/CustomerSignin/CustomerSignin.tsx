@@ -22,11 +22,14 @@ const CustomerSignin = () => {
         password: data.password,
       }
 
+      // 비회원이 회원가입하고 나서 기존에 등록한 주소가 있으면
+      // 전역상태 userAddr 에 주소가 있으면
+      // 주소를 등록하고 default 주소로 등록요청
       const response = await signIn(payload)
       console.log('로그인 성공:', response)
-      localStorage.setItem('accessToken', response.accessToken)
-      localStorage.setItem('role', response.role)
-      localStorage.setItem('profileUrl', response.profileUrl)
+      sessionStorage.setItem('accessToken', response.accessToken)
+      sessionStorage.setItem('role', response.role)
+      sessionStorage.setItem('profileUrl', response.profileUrl)
     } catch (error) {
       toast('로그인 정보가 올바르지 않습니다.', 3000, 'error')
     }

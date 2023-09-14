@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import Button from '@mui/material/Button'
+import { Select } from '@mui/material'
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -90,4 +91,22 @@ export const SubmitButton = styled(Button)`
   width: 100%;
   font-size: 20px;
   margin-bottom: 40px;
+`
+
+export const StyleSelect = styled(Select)`
+  width: 100%;
+  margin-bottom: 30px;
+`
+
+export const AddressBtnbox = styled.div`
+  display: flex;
+  height: 56px;
+  width: 100%;
+  gap: 30px;
+  margin-bottom: 30px;
+`
+
+export const AddressBtn = styled(Button)`
+  width: 500px;
+  font-size: 18px;
 `

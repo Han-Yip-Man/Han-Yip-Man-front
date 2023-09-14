@@ -9,6 +9,7 @@ interface Props {
   primary?: boolean
   width?: number
   currentPath?: boolean
+  onClick: () => void
 }
 
 interface BtnProps {
@@ -18,7 +19,7 @@ interface BtnProps {
   width?: number
 }
 
-function BtnHeader({ children, primary, width, currentPath }: Props) {
+function BtnHeader({ children, primary, width, currentPath, onClick }: Props) {
   const {
     palette: { custom },
   } = useTheme()
@@ -35,6 +36,7 @@ function BtnHeader({ children, primary, width, currentPath }: Props) {
           transition: all 0.4s;
         }
       `}
+      onClick={onClick}
     >
       {children}
     </CustomBtn>

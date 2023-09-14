@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 
-export const useRouter = () => {
+const useRouter = () => {
   const router = useNavigate()
   const location = useLocation()
 
@@ -9,3 +9,5 @@ export const useRouter = () => {
     routeTo: (path: string) => router(path),
   }
 }
+
+export default useRouter

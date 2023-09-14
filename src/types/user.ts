@@ -38,6 +38,10 @@ export interface AddShopType {
   shopPhone: string // 필수
   showDescription: string // 필수
   thumbnailImage?: File // 선택적
+  coordinates?: {
+    latitude: string | undefined
+    longitude: string | undefined
+  } | null
 }
 
 export interface FormDataType {

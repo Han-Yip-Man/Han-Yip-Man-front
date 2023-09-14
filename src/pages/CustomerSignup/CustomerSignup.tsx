@@ -30,16 +30,6 @@ const CustomerSignup = () => {
   const [address, setAddress] = useState<DaumPostcodeData | null>({
     address: '',
     zonecode: '',
-    addressEnglish: '',
-    addressType: '',
-    userSelectedType: '',
-    roadAddress: '',
-    roadAddressEnglish: '',
-    jibunAddress: '',
-    jibunAddressEnglish: '',
-    bname: '',
-    buildingName: '',
-    apartment: '',
     coordinates: null,
   })
 
@@ -149,7 +139,12 @@ const CustomerSignup = () => {
         label="아이디"
         type="email"
         placeholder="아이디는 이메일 형식입니다."
-        {...register('email', { required: true, minLength: 5, pattern: /^\S+@\S+$/i })}
+        {...register('email', {
+          required: true,
+          minLength: 5,
+          maxLength: 50,
+          pattern: /^\S+@\S+$/i,
+        })}
         errorMessage={isSubmitted && errors.email && '이메일 형식으로 작성해야 합니다.'}
         checkDuplication={() => checkIdDuplication()}
       />
@@ -161,6 +156,7 @@ const CustomerSignup = () => {
         {...register('password', {
           required: true,
           minLength: 6,
+          maxLength: 30,
           pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
         })}
         errorMessage={
@@ -232,6 +228,8 @@ const CustomerSignup = () => {
         maxLength={25}
         {...register('detailaddress', {
           required: true,
+          minLength: 2,
+          maxLength: 30,
           pattern: /^[가-힣0-9\s]+$/,
         })}
         errorMessage={
