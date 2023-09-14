@@ -6,6 +6,10 @@ interface CustomBtnProps extends ButtonProps {
   active: boolean
 }
 
+export const MainWrap = styled.div`
+  min-height: 1600px;
+`
+
 export const ChickenIcon = styled.img`
   height: 20px;
   width: 20px;
@@ -17,7 +21,7 @@ export const SushiIcon = styled.img`
 `
 
 export const CategoryImg = styled.div`
-  background: url('/img/category2.jpg') no-repeat 0 68px / cover fixed;
+  background: url('/img/category3.jpg') no-repeat 0 68px / cover fixed;
   height: 650px;
 `
 
@@ -46,7 +50,7 @@ export const BtnGrid = styled(Grid)`
   /* max-width: 100%; */
   grid-template-rows: 1fr;
   margin: 0 auto;
-  gap: 3px;
+  gap: 2px;
   background-color: white;
   padding-bottom: 20px;
 `
@@ -114,8 +118,9 @@ export const FilterBtn = styled(Button, {
 
 export const Wrap = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(5, minmax(250px, 1fr));
   gap: 20px;
+  align-items: start;
 `
 
 export const CustomFab = styled(Fab)`
