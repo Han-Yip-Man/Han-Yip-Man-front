@@ -40,10 +40,21 @@ export const Stylelist = styled.li`
   font-size: 18px;
 `
 
+export const StyledSelect = styled(Select)`
+  width: 60px;
+  height: 40px;
+
+  .MuiSelect-select {
+    padding: 10px;
+  }
+`
+
 export const CheckWrapper = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 30px;
+  width: 80%;
   label {
     display: flex;
     align-items: center;
@@ -68,7 +79,7 @@ export const OptionCateContainer = styled.div`
 `
 
 export const OptionCatebox = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   padding: 20px;
   flex-direction: column;

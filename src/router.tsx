@@ -13,7 +13,7 @@ import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
 import Mypage from './components/Mypage/Mypage/Mypage'
 import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
-import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage'
+import SignInSelectionPage from './pages/SigninSelectionPage/SigninSelectionPage'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)

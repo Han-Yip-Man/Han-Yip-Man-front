@@ -81,6 +81,7 @@ const MainMenuCategory: React.FC = () => {
       })
       .catch(() => {
         toast('카테고리 순서변경에 실패하였습니다.', 2000, 'error')
+        setMenugroup(menugroup)
       })
   }
 

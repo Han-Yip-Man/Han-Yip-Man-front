@@ -35,6 +35,7 @@ const AddMenu = () => {
   const [category, setCategory] = useState('뼈치킨')
   const [options, setOptions] = useState<MenuOption[]>([])
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(0)
+  const [optionmax, setOptionmax] = useState<number>(0)
   const [mainImage, setMainImage] = useState<string | null>('/img/preview.jpg')
   const toast = useAlert()
 
@@ -114,35 +115,40 @@ const AddMenu = () => {
   }
 
   const onSubmit = (data: MenuType) => {
-    if (!data.menuName?.trim()) {
-      toast('메뉴 이름을 입력해주세요.', 3000, 'error')
-      return
-    }
-    const priceStr = data.price?.toString()
-    if (!priceStr?.trim() || Number(priceStr) === 0) {
-      toast('메뉴 가격을 입력해주세요.', 3000, 'error')
-      return
-    }
-    if (!data.description?.trim()) {
-      toast('메뉴 설명을 입력해주세요.', 3000, 'error')
-      return
-    }
+    console.log(data)
+    // if (!data.menuName?.trim()) {
+    //   toast('메뉴 이름을 입력해주세요.', 3000, 'error')
+    //   return
+    // }
+    // const priceStr = data.price?.toString()
+    // if (!priceStr?.trim() || Number(priceStr) === 0) {
+    //   toast('메뉴 가격을 입력해주세요.', 3000, 'error')
+    //   return
+    // }
+    // if (!data.description?.trim()) {
+    //   toast('메뉴 설명을 입력해주세요.', 3000, 'error')
+    //   return
+    // }
 
-    const completeData = {
-      ...data,
-      options,
-    }
+    // const completeData = {
+    //   ...data,
+    //   options,
+    // }
 
-    console.log(completeData)
+    // console.log(completeData)
 
-    reset({
-      menuName: '',
-      price: 0,
-      description: '',
-      option: { optionName: '', isMultiple: false },
-      optionItem: { itemName: '', itemPrice: 0 },
-    })
-    setOptions([])
+    // reset({
+    //   menuName: '',
+    //   price: 0,
+    //   description: '',
+    //   option: { optionName: '', isMultiple: false },
+    //   optionItem: { itemName: '', itemPrice: 0 },
+    // })
+    // setOptions([])
+  }
+
+  const handleoptionvalue = (event: SelectChangeEvent<unknown>, _child: React.ReactNode) => {
+    setOptionmax(event.target.value as number)
   }
 
   console.log(options)
@@ -208,22 +214,43 @@ const AddMenu = () => {
               render={({ field }) => (
                 <S.OptionCatebox>
                   <S.CateTitle>메뉴 옵션 카테고리 등록</S.CateTitle>
-                  <InputField
-                    label="옵션 이름"
-                    value={field.value.optionName !== null ? field.value.optionName : ''}
-                    onChange={(e) => field.onChange({ ...field.value, optionName: e.target.value })}
-                  />
+                  <div>
+                    <InputField
+                      label="옵션 이름"
+                      value={field.value.optionName !== null ? field.value.optionName : ''}
+                      onChange={(e) =>
+                        field.onChange({ ...field.value, optionName: e.target.value })
+                      }
+                    />
+                  </div>
+
                   <S.CheckWrapper>
                     <label>
                       <span>다중 선택:</span>
                       <S.OptionCheck
                         type="checkbox"
                         checked={field.value.isMultiple || false}
-                        onChange={(e) =>
+                        onChange={(e) => {
                           field.onChange({ ...field.value, isMultiple: e.target.checked })
-                        }
+                          if (!e.target.checked) {
+                            setOptionmax(0)
+                          }
+                          if (e.target.checked) {
+                            setOptionmax(2)
+                          }
+                        }}
                       />
                     </label>
+                    {field.value.isMultiple && (
+                      <S.StyledSelect value={optionmax} onChange={handleoptionvalue}>
+                        {Array.from({ length: 8 }, (_, index) => (
+                          <MenuItem value={index + 2} key={index + 2}>
+                            {index + 2}
+                          </MenuItem>
+                        ))}
+                      </S.StyledSelect>
+                    )}
+
                     <Button
                       variant="contained"
                       type="button"

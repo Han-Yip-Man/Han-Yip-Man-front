@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-const BASE_URL = '/api/api'
+const BASE_URL = 'http://54.180.103.214:8080/api'
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -23,9 +23,9 @@ axiosClient.interceptors.request.use((config) => {
   }
   config.headers['X-API-VERSION'] = '1'
 
-  // const token = sessionStorage.getItem('accessToken')
-  const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcklkeCI6MjYsImVtYWlsIjoidGVzdCIsInJvbGUiOiJCVVlFUiIsImlhdCI6MTY5NDYyMTcyMiwiZXhwIjoxNjk0NjY0OTIyfQ.DBayp9YY144xE9j5iagO5Yr9KZXMpiOp9xstJbKYG-k'
+  const token = sessionStorage.getItem('accessToken')
+  // const token =
+  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcklkeCI6MjYsImVtYWlsIjoidGVzdCIsInJvbGUiOiJCVVlFUiIsImlhdCI6MTY5NDYyMTcyMiwiZXhwIjoxNjk0NjY0OTIyfQ.DBayp9YY144xE9j5iagO5Yr9KZXMpiOp9xstJbKYG-k'
 
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`

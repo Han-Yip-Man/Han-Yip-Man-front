@@ -24,7 +24,7 @@ const apiRequest = async ({ endpoint, payload, errorMessage, method }: APIPayloa
 //사용자 회원가입
 export const userSignUp = (payload: FormData) =>
   apiRequest({
-    endpoint: '/api/buyers/signup',
+    endpoint: '/buyers/signup',
     payload,
     errorMessage: '회원가입 실패',
     method: 'POST',
@@ -33,7 +33,7 @@ export const userSignUp = (payload: FormData) =>
 //싸장님 회원가입
 export const ownerSignUp = (payload: OwnerSignUpPayload) =>
   apiRequest({
-    endpoint: '/api/sellers/signup',
+    endpoint: '/sellers/signup',
     payload,
     errorMessage: '회원가입 실패',
     method: 'POST',
@@ -42,7 +42,7 @@ export const ownerSignUp = (payload: OwnerSignUpPayload) =>
 //공통 로그인
 export const signIn = (payload: SignInType) =>
   apiRequest({
-    endpoint: '/api/users/login',
+    endpoint: '/users/login',
     payload,
     errorMessage: '로그인 실패',
     method: 'POST',
@@ -51,7 +51,7 @@ export const signIn = (payload: SignInType) =>
 //이메일 중복체크
 export const emailCheck = (payload: EmailCheckType) =>
   apiRequest({
-    endpoint: '/api/users/check-email-duplicate',
+    endpoint: '/users/check-email-duplicate',
     payload,
     errorMessage: '존재하는 아이디입니다',
     method: 'GET',
