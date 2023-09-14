@@ -16,16 +16,20 @@ export const Media = styled(CardMedia)`
 `
 export const TitleWrap = styled.div`
   display: grid;
-  grid-template-columns: 1fr 58px;
+  grid-template-columns: 1fr 78px;
+  padding-right: 5px;
 `
 
-export const Title = styled(Typography)``
+export const Title = styled(Typography)`
+  overflow: hidden;
+`
 
 export const ChipWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
   margin-bottom: 11px;
+  width: 100%;
 `
 
 export const CustomChip = styled(Chip)`
