@@ -32,7 +32,7 @@ export const UserSetAddressKakaoMap = ({
 
     const mapOption = {
       center: new kakao.maps.LatLng(latitude, longitude),
-      level: 5,
+      level: 3,
     }
 
     const map = new kakao.maps.Map(mapContainer, mapOption)
@@ -130,3 +130,5 @@ export const KakaoMap = ({ mapId, width, height, latitude, longitude }: KakaoMap
     </>
   )
 }
+
+export default { kakao }
