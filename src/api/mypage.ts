@@ -1,4 +1,4 @@
-import axiosClient from './axios'
+import axiosClient from './axiosInstance'
 
 type Address = {
   addressNumber: number
@@ -22,6 +22,6 @@ type MypageInfo = {
   addressList: Address[]
 }
 export const getMypageInfo = async (): Promise<MypageInfo> => {
-  const response = await axiosClient.get(`/api/users/my-info`)
+  const response = await axiosClient.get(`/users/my-info`)
   return response.data
 }
