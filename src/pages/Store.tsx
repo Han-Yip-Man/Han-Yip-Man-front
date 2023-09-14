@@ -1,31 +1,42 @@
+import { useQuery } from '@tanstack/react-query'
+import { getStoreDetail } from '../api/storeDetail'
 import BasicTabs from '../components/store/BasicTabs'
-import { Box, CardMedia, Rating, Stack, Typography } from '@mui/material'
+import { Box, CardMedia, Rating, Stack, Typography, styled } from '@mui/material'
+import { useParams } from 'react-router-dom'
 
 export const Store = () => {
+  const { shopId } = useParams()
+  console.log(shopId)
+  const { data, isLoading } = useQuery(['stores', shopId], () => getStoreDetail(shopId))
+
   return (
-    <Stack width={'100%'} direction={'column'} marginX={'auto'}>
-      <Box>
-        <CardMedia component="img" image="/src/assets/pizzahut.png" alt="banner" />
-      </Box>
-      <Box
-        sx={{
-          width: '100%',
-          height: 100,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h4">피자헛 피자 어느 지점</Typography>
-        <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
-      </Box>
-      <Box display={'flex'} justifyContent={'center'}>
-        <Typography>리뷰 N개</Typography>
-      </Box>
-      <Box sx={{ width: '100%', height: '100%' }}>
-        <BasicTabs />
-      </Box>
-    </Stack>
+    <>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <StoreWrap>
+          <Box>
+            <CardMedia component="img" image={data?.storeDetail.info.bannerUrl} alt="banner" />
+          </Box>
+          <StyledStoreInfoBox>
+            <Typography variant="h4">{data?.storeDetail.info.shopName}</Typography>
+            <Typography variant="h6">{data?.storeDetail.info.description}</Typography>
+            <Rating name="rating" defaultValue={data?.storeDetail.rvAvg} precision={0.1} readOnly />
+            <Typography>리뷰 N개</Typography>
+          </StyledStoreInfoBox>
+          <BasicTabs />
+        </StoreWrap>
+      )}
+    </>
   )
 }
+
+const StoreWrap = styled(Stack)`
+  width: 100%;
+  background-color: white;
+`
+
+const StyledStoreInfoBox = styled(Stack)`
+  padding: 10px;
+  align-items: center;
+`

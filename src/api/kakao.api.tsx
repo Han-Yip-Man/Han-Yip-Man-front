@@ -144,11 +144,11 @@ export const UserSetAddressKakaoMap = ({
 
     const mapOption = {
       center: new kakao.maps.LatLng(latitude, longitude),
-      level: 5,
+      level: 3,
     }
 
     const map = new kakao.maps.Map(mapContainer, mapOption)
-    console.log(map)
+    // console.log(map)
 
     const markerPosition = new kakao.maps.LatLng(latitude, longitude)
 
@@ -201,8 +201,8 @@ type KakaoMapProps = {
   mapId: string
   width: string
   height: string
-  latitude: number
-  longitude: number
+  latitude: number | undefined
+  longitude: number | undefined
 }
 
 export const KakaoMap = ({ mapId, width, height, latitude, longitude }: KakaoMapProps) => {
@@ -211,11 +211,11 @@ export const KakaoMap = ({ mapId, width, height, latitude, longitude }: KakaoMap
 
     const mapOption = {
       center: new kakao.maps.LatLng(latitude, longitude),
-      level: 5,
+      level: 3,
     }
 
     const map = new kakao.maps.Map(mapContainer, mapOption)
-    console.log(map)
+    // console.log(map)
 
     const markerPosition = new kakao.maps.LatLng(latitude, longitude)
 
@@ -238,7 +238,9 @@ export const KakaoMap = ({ mapId, width, height, latitude, longitude }: KakaoMap
 
   return (
     <>
-      <div id={mapId} style={{ margin: 10, width: width, height: height }}></div>
+      <div id={mapId} style={{ width: width, height: height }}></div>
     </>
   )
 }
+
+export default { kakao }
