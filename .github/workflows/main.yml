@@ -30,13 +30,31 @@ jobs:
           name: frontend-app
           path: dist
 
+      - name: Clone Backend Repository
+        run: git clone https://github.com/Han-Yip-Man/Han-Yip-Man-back ../backend-repo
+
+      - name: Copy Frontend Build to Backend
+        run: cp -r dist/* ../backend-repo/src/main/frontend/
+        
+      - name: Commit and Push Changes
+        working-directory: ../backend-repo
+        run: |
+          git config --local user.email "oneho.dev@github.com"
+          git config --local user.name "oneho"
+          git add -A
+          git commit -m "Update frontend build"
+          git push
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           title: Update Frontend
           labels: auto-generated
-          branch: main #pr 생성할 대상 레파지토리
+          branch: main
           commit-message: Update Frontend
           body: |
             This PR updates the frontend app.
           token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      
