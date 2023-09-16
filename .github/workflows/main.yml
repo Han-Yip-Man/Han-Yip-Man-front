@@ -40,7 +40,7 @@ jobs:
         working-directory: ../backend-repo
         run: |
           git config --local user.email "oneho.dev@github.com"
-          git config --local user.name "oneho"
+          git config --local user.name "no.oneho"
           git add -A
           git commit -m "Update frontend build"
           git push
