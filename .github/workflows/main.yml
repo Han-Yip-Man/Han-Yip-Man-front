@@ -13,8 +13,28 @@ jobs:
       - name: Checkout Frontend Repo
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-app
+          path: dist
+
       - name: Clone Backend Repository
         run: git clone https://github.com/Han-Yip-Man/Han-Yip-Man-back ../backend-repo
+
+      - name: Copy Frontend Build to Backend
+        run: cp -r dist/* ../backend-repo/src/main/frontend/
 
       - name: Commit and Push Changes
         working-directory: ../backend-repo
