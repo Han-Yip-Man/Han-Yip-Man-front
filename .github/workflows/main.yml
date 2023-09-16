@@ -1,7 +1,7 @@
 name: Create Backend PR on Fr Push
 
 on:
-  push: 
+  push:
     branches:
       - buildtest #푸시할 때 액션이 실행 될 대상 브랜치 이름
 
