@@ -13,23 +13,6 @@ jobs:
       - name: Checkout Frontend Repo
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-
-      - name: Install Dependencies
-        run: yarn install
-
-      - name: Build Frontend
-        run: npm run build
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: frontend-app
-          path: dist
-
       - name: Clone Backend Repository
         run: git clone https://github.com/Han-Yip-Man/Han-Yip-Man-back ../backend-repo
 
@@ -41,6 +24,8 @@ jobs:
         run: |
           git add -A
           git commit -m "Update frontend build"
+          git config --local user.email "oneho.dev@gmail.com"
+          git config --local user.name "no.oneho"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Han-Yip-Man/Han-Yip-Man-back.git
 
       - name: Create Pull Request
