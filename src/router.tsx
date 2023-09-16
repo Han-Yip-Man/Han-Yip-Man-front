@@ -13,7 +13,7 @@ import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
 import Mypage from './components/Mypage/Mypage/Mypage'
 import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
-import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage'
+import SignInSelectionPage from './pages/SigninSelectionPage/SigninSelectionPage'
 import Main from './pages/Main/Main'
 
 interface RouterBase {

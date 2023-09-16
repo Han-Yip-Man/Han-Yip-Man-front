@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import Accordion from '@mui/material/Accordion'
 import Typography from '@mui/material/Typography'
-import { Button, Select } from '@mui/material'
 
 export const Stylespan = styled.span<{ isMultiple: boolean }>`
   font-size: 15px;
@@ -49,6 +48,7 @@ export const OptionNamebox = styled.h3`
 
 export const StyleAccordion = styled(Accordion)`
   margin-bottom: 20px;
+  width: 650px;
   /* &.Mui-expanded {
     margin: 0;
   } */
@@ -87,35 +87,17 @@ export const MenuImg = styled.img`
 
 export const Wrapper = styled.div`
   width: 100%;
-  height: calc(100% - 80px);
-`
-export const Navigation = styled.div`
-  height: 60px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 30px;
-  padding-right: 30px;
-  align-items: center;
-`
-
-export const StyleBtn = styled(Button)`
-  height: 40px;
-  width: 100px;
-`
-
-export const StyleSelect = styled(Select)`
-  height: 40px;
-  width: 220px;
-
-  /* &.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: red;
-  } */
+  height: calc(100% - 140px);
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const MenuItemWrapper = styled.div`
   width: 100%;
   margin-top: 50px;
-  height: calc(100% - 110px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

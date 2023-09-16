@@ -2,14 +2,19 @@ import MenuItem from '@mui/material/MenuItem'
 import { SelectChangeEvent } from '@mui/material/Select'
 import { useEffect } from 'react'
 import * as S from './RestaurantsManagementHeader.style'
-import { useRecoilValue } from 'recoil'
 import { shopListState } from '../../../recoil/restaurants'
-import { useRecoilState } from 'recoil'
-import { selectedShopIdState } from '../../../recoil/restaurants'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import {
+  selectedShopIdState,
+  selectedShopNameState,
+  sellerDashboardNum,
+} from '../../../recoil/restaurants'
 
 const RestaurantsManagementHeader = () => {
   const shopList = useRecoilValue(shopListState)
+  const currentShopName = useRecoilValue(selectedShopNameState)
   const [selectedShopId, setSelectedShopId] = useRecoilState(selectedShopIdState || undefined)
+  const pageset = useSetRecoilState(sellerDashboardNum)
 
   const handlemyRestaurants = (e: SelectChangeEvent<unknown>, _child: React.ReactNode) => {
     if (typeof e.target.value === 'number') {
@@ -23,12 +28,11 @@ const RestaurantsManagementHeader = () => {
     }
   }, [shopList])
 
-  const selectedShop =
-    shopList && shopList.length > 0 ? shopList.find((shop) => shop.shopId === selectedShopId) : null
-
   return (
     <S.Wrapper>
-      <S.CenteredDiv>{selectedShop?.name}</S.CenteredDiv>
+      <S.CenteredDiv>
+        <h2 onClick={() => pageset(1)}>{currentShopName}</h2>
+      </S.CenteredDiv>
       <S.StyledSelect
         id="demo-simple-select"
         value={selectedShopId || ''}

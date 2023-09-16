@@ -2,15 +2,12 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import * as S from './RestaurantsTabController.style'
-import { useRecoilValue } from 'recoil'
-import { selectedShopNameState } from '../../../recoil/restaurants'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { selectedShopNameState, sellerDashboardNum } from '../../../recoil/restaurants'
 
-type TabControllerProps = {
-  setMenupage: React.Dispatch<React.SetStateAction<number>>
-}
-
-const RestaurantsTabController: React.FC<TabControllerProps> = ({ setMenupage }) => {
+const RestaurantsTabController = () => {
   const selectedShopName = useRecoilValue(selectedShopNameState)
+  const pageset = useSetRecoilState(sellerDashboardNum)
 
   return (
     <S.Wrapper>
@@ -24,17 +21,17 @@ const RestaurantsTabController: React.FC<TabControllerProps> = ({ setMenupage })
           <Typography>가게관리</Typography>
         </S.StlyedAccordionSummary>
         <S.StyledAccordionDetails>
-          <Typography onClick={() => setMenupage(1)}>가게관리</Typography>
+          <Typography onClick={() => pageset(1)}>가게관리</Typography>
         </S.StyledAccordionDetails>
         <S.StyledAccordionDetails>
-          <Typography onClick={() => setMenupage(2)}>메뉴 대분류 관리</Typography>
+          <Typography onClick={() => pageset(2)}>메뉴 대분류 관리</Typography>
         </S.StyledAccordionDetails>
         <S.StyledAccordionDetails>
-          <Typography onClick={() => setMenupage(3)}>메뉴 관리</Typography>
+          <Typography onClick={() => pageset(3)}>메뉴 관리</Typography>
         </S.StyledAccordionDetails>
       </S.StyledAccordion>
-      <S.STyledTabmenu onClick={() => setMenupage(4)}>주문관리</S.STyledTabmenu>
-      <S.STyledTabmenu onClick={() => setMenupage(5)}>판매내역</S.STyledTabmenu>
+      <S.STyledTabmenu onClick={() => pageset(4)}>주문관리</S.STyledTabmenu>
+      <S.STyledTabmenu onClick={() => pageset(5)}>판매내역</S.STyledTabmenu>
     </S.Wrapper>
   )
 }

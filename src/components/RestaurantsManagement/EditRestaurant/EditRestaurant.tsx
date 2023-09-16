@@ -3,13 +3,12 @@ import { useForm } from 'react-hook-form'
 import InputField from '../../common/InputField'
 import * as S from './EditRestaurant.style'
 import useImageCompression from '../../../hooks/useImageCompression'
-import { FormData } from '../../../types/user'
+import { FormDataType } from '../../../types/user'
+import { useSetRecoilState } from 'recoil'
+import { sellerDashboardNum } from '../../../recoil/restaurants'
 
-interface EditRestaurantProps {
-  setMenupage: (value: number) => void
-}
-
-const EditRestaurant: React.FC<EditRestaurantProps> = ({ setMenupage }) => {
+const EditRestaurant = () => {
+  const pageset = useSetRecoilState(sellerDashboardNum)
   const {
     register,
     handleSubmit,
@@ -17,7 +16,7 @@ const EditRestaurant: React.FC<EditRestaurantProps> = ({ setMenupage }) => {
     formState: { errors = {} },
   } = useForm()
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: FormDataType) => {
     console.log('데이따!', data)
   }
 
@@ -58,7 +57,7 @@ const EditRestaurant: React.FC<EditRestaurantProps> = ({ setMenupage }) => {
   return (
     <S.Wrapper>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <S.BackBtn src="/img/back.svg" alt="" onClick={() => setMenupage(1)} />
+        <S.BackBtn src="/img/back.svg" alt="" onClick={() => pageset(1)} />
         <S.FormFrame>
           <S.Addtitle>
             <h1>가게 정보 수정</h1>
