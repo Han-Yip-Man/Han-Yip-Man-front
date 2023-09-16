@@ -24,7 +24,7 @@ jobs:
         run: |
           git add -A
           git commit -m "Update frontend build"
-          git push https://***@github.com/Han-Yip-Man/Han-Yip-Man-back.git
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Han-Yip-Man/Han-Yip-Man-back.git
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
