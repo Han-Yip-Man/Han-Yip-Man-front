@@ -39,11 +39,11 @@ jobs:
       - name: Commit and Push Changes
         working-directory: ../backend-repo
         run: |
+          git config user.email "oneho.dev@gmail.com"
+          git config user.name "no.oneho"
           git add -A
           git commit -m "Update frontend build"
           git push
-          git config user.email "oneho.dev@gmail.com"
-          git config user.name "no.oneho"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
