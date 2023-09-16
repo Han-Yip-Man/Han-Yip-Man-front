@@ -38,15 +38,18 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --local user.email "oneho.dev@gmail.com"
-          git config --local user.name "no.oneho"
+          git config --global user.email "oneho.dev@gmail.com"
+          git config --global user.name "no.oneho"
 
       - name: Commit and Push Changes
         working-directory: ../backend-repo
+        env:
+          GIT_COMMITTER_NAME: no.oneho
+          GIT_COMMITTER_EMAIL: oneho.dev@gmail.com
         run: |
           git add -A
           git commit -m "Update frontend build"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Han-Yip-Man/Han-Yip-Man-back.git
+          git push
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
