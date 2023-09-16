@@ -1,0 +1,42 @@
+name: Create Backend PR on Fr Push
+
+on:
+  push: 
+    branches:
+      - buildtest #푸시할 때 액션이 실행 될 대상 브랜치 이름
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Frontend Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-app
+          path: dist
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: Update Frontend
+          labels: auto-generated
+          branch: main #pr 생성할 대상 레파지토리
+          commit-message: Update Frontend
+          body: |
+            This PR updates the frontend app.
+          token: ${{ secrets.GITHUB_TOKEN }}
