@@ -21,8 +21,8 @@ jobs:
         run: |
           git add -A
           git commit -m "Update frontend build"
-          git config --local user.email "oneho.dev@gmail.com"
-          git config --local user.name "no.oneho"
+          git config user.email "oneho.dev@gmail.com"
+          git config user.name "no.oneho"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Han-Yip-Man/Han-Yip-Man-back.git
 
       - name: Create Pull Request
