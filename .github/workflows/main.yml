@@ -36,13 +36,13 @@ jobs:
       - name: Copy Frontend Build to Backend
         run: cp -r dist/* ../backend-repo/src/main/frontend/
 
+      - name: Set up Git
+        run: |
+          git config --local user.email "oneho.dev@gmail.com"
+          git config --local user.name "no.oneho"
+
       - name: Commit and Push Changes
         working-directory: ../backend-repo
-        env:
-          GIT_COMMITTER_NAME: no.oneho
-          GIT_COMMITTER_EMAIL: oneho.dev@gmail.com
-          GIT_AUTHOR_NAME: no.oneho
-          GIT_AUTHOR_EMAIL: oneho.dev@gmail.com
         run: |
           git add -A
           git commit -m "Update frontend build"
