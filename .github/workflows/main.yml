@@ -35,6 +35,11 @@ jobs:
 
       - name: Copy Frontend Build to Backend
         run: cp -r dist/* ../backend-repo/src/main/frontend/
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "oneho.dev@gmail.com"
+          git config --global user.name "no.oneho"
         
       - name: Commit and Push Changes
         working-directory: ../backend-repo
@@ -42,8 +47,6 @@ jobs:
           git add -A
           git commit -m "Update frontend build"
           git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
