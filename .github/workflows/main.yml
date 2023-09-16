@@ -43,9 +43,6 @@ jobs:
 
       - name: Commit and Push Changes
         working-directory: ../backend-repo
-        env:
-          GIT_COMMITTER_NAME: no.oneho
-          GIT_COMMITTER_EMAIL: oneho.dev@gmail.com
         run: |
           git add -A
           git commit -m "Update frontend build"
