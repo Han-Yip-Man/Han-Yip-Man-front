@@ -29,3 +29,8 @@ export interface PatchindexMenuGroupsType {
   menuGroupId: number
   menuGroupSequence: number
 }
+
+export interface addsellerMenuType {
+  groupid: number | null
+  formdata: FormData
+}

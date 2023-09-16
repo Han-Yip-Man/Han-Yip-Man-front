@@ -127,7 +127,7 @@ function Header() {
               <BtnHeader
                 width={120}
                 currentPath={currentPath}
-                onClick={() => routeTo('/user/customer/sign-in')}
+                onClick={() => routeTo('/selectedsignin')}
               >
                 <LocalPizzaOutlinedIcon />
                 &nbsp;로그인
@@ -136,7 +136,7 @@ function Header() {
                 primary={true}
                 width={140}
                 currentPath={currentPath}
-                onClick={() => routeTo('/user/customer/sign-up')}
+                onClick={() => routeTo('/selectedsignup')}
               >
                 <LunchDiningOutlinedIcon />
                 &nbsp;회원가입

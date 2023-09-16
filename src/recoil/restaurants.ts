@@ -2,6 +2,12 @@ import { atom } from 'recoil'
 import { ShopType, MenuGroupsType } from '../types/restaurantsAtom'
 import { selector } from 'recoil'
 
+//사장님 관리페이지에서 컴포넌트 이동
+export const sellerDashboardNum = atom({
+  key: 'sellerDashboardNum',
+  default: 1,
+})
+
 //내 가게들 조회
 export const shopListState = atom<ShopType[]>({
   key: 'shopListState',
@@ -52,4 +58,16 @@ export const shopMenuGroups = atom<MenuGroupsType[]>({
 export const shopdeletemodal = atom({
   key: 'shopdeletemodal',
   default: false,
+})
+
+//가게 대분류 ID
+export const shopGroupid = atom<number | null>({
+  key: 'shopGroupid',
+  default: undefined,
+})
+
+//메뉴관리 페이지
+export const shopmenupage = atom({
+  key: 'shopmenupage',
+  default: 1,
 })

@@ -6,7 +6,10 @@ import InputField from '../../common/InputField'
 import Button from '@mui/material/Button'
 import { useForm, Controller } from 'react-hook-form'
 import useAlert from '../../../hooks/useAlert'
-
+import useImageCompression from '../../../hooks/useImageCompression'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { shopGroupid, shopmenupage } from '../../../recoil/restaurants'
+import { addsellerMenu } from '../../../api/restaurant'
 interface MenuOptionItem {
   itemName: string
   itemPrice: number
@@ -15,7 +18,8 @@ interface MenuOptionItem {
 interface MenuOption {
   optionName: string
   isMultiple: boolean
-  optionItem: MenuOptionItem[]
+  maxSelected?: number
+  optionItems: MenuOptionItem[]
 }
 
 interface MenuType {
@@ -32,17 +36,36 @@ interface MenuType {
 
 const AddMenu = () => {
   const { control, handleSubmit, reset, getValues } = useForm<MenuType>()
-  const [category, setCategory] = useState('뼈치킨')
   const [options, setOptions] = useState<MenuOption[]>([])
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(0)
-  const [mainImage, setMainImage] = useState<string | null>('/img/preview.jpg')
+  const [optionmax, setOptionmax] = useState<number>(0)
   const toast = useAlert()
+  const groupid = useRecoilValue(shopGroupid)
+  const setmenupage = useSetRecoilState(shopmenupage)
+
+  const handleMenuImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      await compressProfileImage(file)
+    }
+  }
+
+  const {
+    image: menuImage,
+    compressImage: compressProfileImage,
+    compressedFile: profileCompressedFile,
+  } = useImageCompression('/img/preview.jpg')
 
   // 새 옵션을 추가하는 함수입니다.
   // data 파라미터로 전달된 옵션 정보를 기반으로 옵션 리스트에 새 옵션을 추가합니다.
   const handleAddOption = (data: MenuOption) => {
     if (!data.optionName.trim()) {
-      toast('옵션 이름을 입력해주세요.', 3000, 'error')
+      toast('옵션 이름을 입력해주세요.', 2000, 'error')
+      return
+    }
+    const regex = /^[a-zA-Z가-힣\s]+$/
+    if (!regex.test(data.optionName.trim())) {
+      toast('정확한 이름을 입력해주세요.', 2000, 'error')
       return
     }
 
@@ -51,7 +74,8 @@ const AddMenu = () => {
       {
         optionName: data.optionName,
         isMultiple: data.isMultiple,
-        optionItem: [],
+        maxSelected: optionmax,
+        optionItems: [],
       },
     ])
 
@@ -64,42 +88,36 @@ const AddMenu = () => {
     setSelectedOptionIndex(event.target.value as number | null)
   }
 
-  // 메인 이미지 변경을 처리하는 함수입니다.
-  // 선택된 파일을 읽어와 상태로 설정하여 이미지 미리보기를 제공합니다.
-  const handleMainImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      setMainImage(URL.createObjectURL(file))
-    }
-  }
-
   // 옵션 아이템을 추가하는 함수입니다.
   // 선택된 옵션 카테고리에 새 옵션 아이템을 추가합니다.
   const handleAddOptionItem = (data: MenuOptionItem) => {
     if (selectedOptionIndex === null) {
-      toast('옵션 종류를 선택해주세요', 3000, 'error')
+      toast('옵션 종류를 선택해주세요', 2000, 'error')
       return
     }
 
     if (!data.itemName.trim()) {
-      toast('옵션아이템 이름을 입력해주세요', 3000, 'error')
+      toast('옵션아이템 이름을 입력해주세요', 2000, 'error')
+      return
+    }
+    const regex = /^[a-zA-Z가-힣\s]+$/
+    if (!regex.test(data.itemName.trim())) {
+      toast('이름을 정확히 입력해주세요.', 2000, 'error')
       return
     }
 
     const PriceTest = data.itemPrice.toString()
-    if (!PriceTest.trim() || Number(PriceTest) === 0) {
-      toast('옵션아이템 가격을 입력해주세요.', 3000, 'error')
+    if (!PriceTest.trim() || Number(PriceTest) === 0 || /^0/.test(PriceTest)) {
+      toast('옵션아이템 가격을 입력해주세요.', 2000, 'error')
       return
     }
-
-    console.log('Data: ', data)
 
     setOptions((prevOptions) => {
       const newOptions = [...prevOptions]
       console.log('Selected Option: ', newOptions[selectedOptionIndex])
 
       if (newOptions[selectedOptionIndex]) {
-        newOptions[selectedOptionIndex].optionItem.push(data)
+        newOptions[selectedOptionIndex].optionItems.push(data)
       }
       return newOptions
     })
@@ -107,62 +125,73 @@ const AddMenu = () => {
     reset({ ...getValues(), optionItem: { itemName: '', itemPrice: 0 } })
   }
 
-  // 카테고리 변경을 처리하는 함수입니다.
-  // 선택된 카테고리 값을 상태로 설정합니다.
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
-    setCategory(event.target.value as string)
+  const handleoptionvalue = (event: SelectChangeEvent<unknown>, _child: React.ReactNode) => {
+    setOptionmax(event.target.value as number)
+  }
+
+  const handleDeltetOption = (index: number): void => {
+    setOptions((prevOptions) => prevOptions.filter((_, i) => i !== index))
   }
 
   const onSubmit = (data: MenuType) => {
     if (!data.menuName?.trim()) {
-      toast('메뉴 이름을 입력해주세요.', 3000, 'error')
+      toast('메뉴 이름을 입력해주세요.', 2000, 'error')
       return
     }
     const priceStr = data.price?.toString()
-    if (!priceStr?.trim() || Number(priceStr) === 0) {
-      toast('메뉴 가격을 입력해주세요.', 3000, 'error')
+    if (!priceStr?.trim() || Number(priceStr) === 0 || /^0/.test(priceStr)) {
+      toast('메뉴 가격을 올바르게 입력해주세요.', 2000, 'error')
       return
     }
     if (!data.description?.trim()) {
-      toast('메뉴 설명을 입력해주세요.', 3000, 'error')
+      toast('메뉴 설명을 입력해주세요.', 2000, 'error')
       return
     }
 
-    const completeData = {
-      ...data,
-      options,
+    const Addmenuformdata = new FormData()
+    if (profileCompressedFile) {
+      Addmenuformdata.append('menuThumbnailImage', profileCompressedFile)
     }
+    const completeData = {
+      menuName: data.menuName,
+      price: data.price,
+      description: data.description,
+      options: options,
+    }
+    Addmenuformdata.append(
+      'registerMenuRequest',
+      new Blob([JSON.stringify(completeData)], { type: 'application/json' }),
+    )
 
-    console.log(completeData)
-
-    reset({
-      menuName: '',
-      price: 0,
-      description: '',
-      option: { optionName: '', isMultiple: false },
-      optionItem: { itemName: '', itemPrice: 0 },
-    })
-    setOptions([])
+    addsellerMenu({ groupid, formdata: Addmenuformdata })
+      .then(() => {
+        toast('메뉴 등록에 성공하였습니다.', 2000, 'success')
+        reset({
+          menuName: '',
+          price: 0,
+          description: '',
+          option: { optionName: '', isMultiple: false },
+          optionItem: { itemName: '', itemPrice: 0 },
+        })
+        setOptions([])
+        setTimeout(() => {
+          setmenupage(1)
+        }, 2000)
+      })
+      .catch(() => {
+        toast('메뉴 등록에 실패했습니다.', 2000, 'error')
+      })
   }
 
-  console.log(options)
   return (
     <S.Wrapper onSubmit={handleSubmit(onSubmit)}>
-      <S.CategorySelectbox>
-        <S.StyleSelect value={category} onChange={handleChange}>
-          <MenuItem value="뼈치킨">뼈치킨</MenuItem>
-          <MenuItem value="순살치킨">순살치킨</MenuItem>
-          <MenuItem value="사이드메뉴">사이드메뉴</MenuItem>
-        </S.StyleSelect>
-      </S.CategorySelectbox>
-
       <S.WritingContainer>
         <S.MenuWritingWrapper>
           <S.Menubox>
             <S.ImgContainer>
               <S.PreviewBox>
-                <input type="file" id="mainImage" onChange={handleMainImageChange} />
-                {mainImage && <img src={mainImage} alt="대표 이미지 미리보기" />}
+                <input type="file" id="mainImage" onChange={handleMenuImageChange} />
+                {menuImage && <img src={menuImage} alt="대표 이미지 미리보기" />}
               </S.PreviewBox>
               <S.ImageDescription>메뉴 이미지</S.ImageDescription>
             </S.ImgContainer>
@@ -199,7 +228,6 @@ const AddMenu = () => {
               />
             </S.TextContainer>
           </S.Menubox>
-
           <S.OptionCateContainer>
             <Controller
               name="option"
@@ -208,26 +236,47 @@ const AddMenu = () => {
               render={({ field }) => (
                 <S.OptionCatebox>
                   <S.CateTitle>메뉴 옵션 카테고리 등록</S.CateTitle>
-                  <InputField
-                    label="옵션 이름"
-                    value={field.value.optionName !== null ? field.value.optionName : ''}
-                    onChange={(e) => field.onChange({ ...field.value, optionName: e.target.value })}
-                  />
+                  <div>
+                    <InputField
+                      label="옵션 이름"
+                      value={field.value.optionName !== null ? field.value.optionName : ''}
+                      onChange={(e) =>
+                        field.onChange({ ...field.value, optionName: e.target.value })
+                      }
+                    />
+                  </div>
+
                   <S.CheckWrapper>
                     <label>
                       <span>다중 선택:</span>
                       <S.OptionCheck
                         type="checkbox"
                         checked={field.value.isMultiple || false}
-                        onChange={(e) =>
+                        onChange={(e) => {
                           field.onChange({ ...field.value, isMultiple: e.target.checked })
-                        }
+                          if (!e.target.checked) {
+                            setOptionmax(0)
+                          }
+                          if (e.target.checked) {
+                            setOptionmax(2)
+                          }
+                        }}
                       />
                     </label>
+                    {field.value.isMultiple && (
+                      <S.StyledSelect value={optionmax} onChange={handleoptionvalue}>
+                        {Array.from({ length: 8 }, (_, index) => (
+                          <MenuItem value={index + 2} key={index + 2}>
+                            {index + 2}
+                          </MenuItem>
+                        ))}
+                      </S.StyledSelect>
+                    )}
+
                     <Button
                       variant="contained"
                       type="button"
-                      onClick={() => handleAddOption({ ...field.value, optionItem: [] })}
+                      onClick={() => handleAddOption({ ...field.value, optionItems: [] })}
                     >
                       옵션 종류 등록
                     </Button>
@@ -236,7 +285,6 @@ const AddMenu = () => {
               )}
             />
           </S.OptionCateContainer>
-
           {options.length > 0 && (
             <S.DetailoptionContainer>
               <Controller
@@ -282,7 +330,6 @@ const AddMenu = () => {
             </S.DetailoptionContainer>
           )}
         </S.MenuWritingWrapper>
-
         <S.MenuOptionView>
           <ul>
             {options.map((option, optionIndex) => (
@@ -290,7 +337,7 @@ const AddMenu = () => {
                 옵션 종류: {option.optionName},{' '}
                 <span>다중 선택 : {option.isMultiple ? '가능' : '불가능'}</span>
                 <ul>
-                  {option.optionItem
+                  {option.optionItems
                     .filter((item) => item && item.itemName && item.itemPrice)
                     .map((item, itemIndex) => (
                       <S.Detailli key={itemIndex}>
@@ -298,6 +345,9 @@ const AddMenu = () => {
                       </S.Detailli>
                     ))}
                 </ul>
+                <S.Optiondeletebtn onClick={() => handleDeltetOption(optionIndex)}>
+                  <img src="/img/delete.svg" alt="" />
+                </S.Optiondeletebtn>
               </S.Stylelist>
             ))}
           </ul>
