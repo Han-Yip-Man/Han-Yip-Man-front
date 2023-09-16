@@ -18,12 +18,13 @@ jobs:
 
       - name: Commit and Push Changes
         working-directory: ../backend-repo
+        env:
+          GIT_COMMITTER_NAME: "no.oneho"
+          GIT_COMMITTER_EMAIL: "oneho.dev@gmail.com"
         run: |
           git add -A
           git commit -m "Update frontend build"
-          git config user.email "oneho.dev@gmail.com"
-          git config user.name "no.oneho"
-          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/Han-Yip-Man/Han-Yip-Man-back.git
+          git push https://***@github.com/Han-Yip-Man/Han-Yip-Man-back.git
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
