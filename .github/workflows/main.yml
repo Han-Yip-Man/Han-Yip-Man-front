@@ -16,9 +16,6 @@ jobs:
       - name: Clone Backend Repository
         run: git clone https://github.com/Han-Yip-Man/Han-Yip-Man-back ../backend-repo
 
-      - name: Copy Frontend Build to Backend
-        run: cp -r dist/* ../backend-repo/src/main/frontend/
-        
       - name: Commit and Push Changes
         working-directory: ../backend-repo
         run: |
