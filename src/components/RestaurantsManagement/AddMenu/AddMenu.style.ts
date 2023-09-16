@@ -38,6 +38,26 @@ export const Detailli = styled.li`
 export const Stylelist = styled.li`
   margin-bottom: 30px;
   font-size: 18px;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+  position: relative;
+`
+
+export const Optiondeletebtn = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  img {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    &:hover {
+      filter: invert(10%) sepia(91%) saturate(5889%) hue-rotate(14deg) brightness(96%)
+        contrast(123%);
+    }
+  }
 `
 
 export const StyledSelect = styled(Select)`
@@ -152,7 +172,7 @@ export const StyleSelect = styled(Select)`
 
 export const Wrapper = styled.form`
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 60px);
   display: flex;
   flex-direction: column;
 `
@@ -168,7 +188,7 @@ export const CategorySelectbox = styled.div`
 
 export const WritingContainer = styled.div`
   width: 100%;
-  height: calc(100% - 110px);
+  height: calc(100% - 50px);
   display: flex;
 `
 
@@ -178,7 +198,11 @@ export const MenuWritingWrapper = styled.div`
 `
 export const MenuOptionView = styled.div`
   width: 40%;
-  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const AddMenuBtnbox = styled.div`

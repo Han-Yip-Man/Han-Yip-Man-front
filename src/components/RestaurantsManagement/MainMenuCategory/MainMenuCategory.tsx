@@ -20,6 +20,7 @@ import { shopMenuGroups } from '../../../recoil/restaurants'
 const MainMenuCategory: React.FC = () => {
   const currentId = useRecoilValue(selectedShopIdState)
   const [menugroup, setMenugroup] = useRecoilState(shopMenuGroups)
+  console.log(menugroup)
 
   // 카드 데이터 및 드래그/드롭 관련 상태
   const [placeholderIndex, setPlaceholderIndex] = React.useState<number | null>(null) // placeholder의 위치를 결정

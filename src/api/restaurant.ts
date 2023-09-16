@@ -4,6 +4,7 @@ import {
   DeleteMenuGroupsType,
   PatchMenuGroupsType,
   PatchindexMenuGroupsType,
+  addsellerMenuType,
 } from '../types/restaurantsAtom'
 
 // 가게등록
@@ -157,33 +158,33 @@ export const patchindexMenuGroups = async (payload: PatchindexMenuGroupsType) =>
   }
 }
 
-// //가게 메뉴 등록
-// export const addMenu = async (payload) => {
-//   try {
-//     const response = await axiosClient.patch(`/seller-shops/menus/${payload.menugroupid}`, {
-//       description: 'string',
-//       menuName: 'string',
-//       options: [
-//         {
-//           isMultiple: true,
-//           maxSelected: 0,
-//           optionItems: [
-//             {
-//               itemName: 'string',
-//               itemPrice: 0,
-//             },
-//           ],
-//           optionName: 'string',
-//         },
-//       ],
-//       price: 0,
-//     })
-//     if (response.status >= 400) {
-//       throw new Error(`Server responded with status code ${response.status}`)
-//     }
-//     return response.data
-//   } catch (error) {
-//     console.error('실패', error)
-//     throw error
-//   }
-// }
+//가게 메뉴 등록
+export const addsellerMenu = async (payload: addsellerMenuType) => {
+  try {
+    const response = await axiosClient.post(
+      `/seller-shops/menus/${payload.groupid}`,
+      payload.formdata,
+    )
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 메뉴 조회
+export const getsellerMenu = async (payload: number | null) => {
+  try {
+    const response = await axiosClient.get(`/seller-shops/menus/${payload}`)
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}

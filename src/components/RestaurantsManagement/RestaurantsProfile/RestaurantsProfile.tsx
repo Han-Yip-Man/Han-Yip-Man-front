@@ -1,5 +1,5 @@
 import { Typography, Card, CardContent, CardMedia, Grid } from '@mui/material'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import * as S from './RestaurantsProfile.style'
 import { getShopDetail } from '../../../api/restaurant'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
@@ -7,15 +7,13 @@ import { selectedShopIdState } from '../../../recoil/restaurants'
 import { shopDetailState, shopdeletemodal } from '../../../recoil/restaurants'
 import { useRecoilState } from 'recoil'
 import RestaurantDeleteModal from '../RestaurantDeleteModal/RestaurantDeleteModal'
+import { sellerDashboardNum } from '../../../recoil/restaurants'
 
-interface ProfileProps {
-  setMenupage: (value: number) => void
-}
-
-const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
+const RestaurantsProfile = () => {
   const currentId = useRecoilValue(selectedShopIdState)
   const [shop, setShop] = useRecoilState(shopDetailState)
   const ModalOpen = useSetRecoilState(shopdeletemodal)
+  const pageset = useSetRecoilState(sellerDashboardNum)
 
   useEffect(() => {
     const getDatil = async () => {
@@ -45,10 +43,10 @@ const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
             가게 삭제하기
           </S.StyledButton>
         )}
-        <S.StyledButton variant="outlined" onClick={() => setMenupage(6)}>
+        <S.StyledButton variant="outlined" onClick={() => pageset(6)}>
           가게 정보수정
         </S.StyledButton>
-        <S.StyledButton variant="outlined" onClick={() => setMenupage(7)}>
+        <S.StyledButton variant="outlined" onClick={() => pageset(7)}>
           가게 신규등록
         </S.StyledButton>
       </S.ProfileBtnWrapper>
