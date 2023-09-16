@@ -24,3 +24,43 @@ export interface User {
   sub: string
   updated_at: string
 }
+
+export interface AddShopType {
+  address?: string // 필수
+  addressDetail?: string // 선택적
+  bannerImage?: File // 선택적
+  businessNumber?: string // 필수
+  categoryId: number // 필수
+  latitude: number // 필수
+  longitude: number // 필수
+  minOrderPrice: number // 필수
+  shopName: string // 필수
+  shopPhone: string // 필수
+  showDescription: string // 필수
+  thumbnailImage?: File // 선택적
+  coordinates?: {
+    latitude: string | undefined
+    longitude: string | undefined
+  } | null
+}
+
+export interface FormDataType {
+  email?: string
+  password?: string
+  password_confirm?: string
+  phoneNumber?: string
+  nickname?: string
+  address?: string
+  BusinessNumber?: string
+  storeName?: string
+  storePhone?: string
+  category?: string
+  businessNumber?: string
+  minimumOrderAmount?: string
+  mainImage?: File
+  bannerImage?: File
+  menuCategory?: string
+  zonecode?: string
+  detailaddress?: string
+  [key: string]: any
+}
