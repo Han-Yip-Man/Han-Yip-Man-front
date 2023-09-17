@@ -1,44 +1,24 @@
 import { Typography, Card, CardContent, CardMedia, Grid } from '@mui/material'
-import { useEffect } from 'react'
 import * as S from './RestaurantsProfile.style'
-import { getShopDetail } from '../../../api/restaurant'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { selectedShopIdState } from '../../../recoil/restaurants'
-import { shopDetailState, shopdeletemodal } from '../../../recoil/restaurants'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
+import { shopdeletemodal } from '../../../recoil/restaurants'
 import RestaurantDeleteModal from '../RestaurantDeleteModal/RestaurantDeleteModal'
 import { sellerDashboardNum } from '../../../recoil/restaurants'
+import { useGetshopDeatil } from '../../../hooks/useGetshopDeatil'
 
 const RestaurantsProfile = () => {
-  const currentId = useRecoilValue(selectedShopIdState)
-  const [shop, setShop] = useRecoilState(shopDetailState)
   const ModalOpen = useSetRecoilState(shopdeletemodal)
   const pageset = useSetRecoilState(sellerDashboardNum)
-
-  useEffect(() => {
-    const getDatil = async () => {
-      if (currentId !== undefined) {
-        try {
-          const response = await getShopDetail(currentId)
-          console.log(response)
-          setShop(response)
-        } catch (error) {
-          console.error('에러', error)
-        }
-      }
-    }
-
-    getDatil()
-  }, [currentId])
-
-  console.log(currentId)
+  const { shop } = useGetshopDeatil()
 
   const formatPrice = shop.minOrderPrice.toLocaleString('ko-KR')
+
+  console.log(shop)
 
   return (
     <S.Wrapper>
       <S.ProfileBtnWrapper>
-        {currentId && (
+        {shop && (
           <S.StyledButton variant="outlined" onClick={() => ModalOpen(true)}>
             가게 삭제하기
           </S.StyledButton>
@@ -50,7 +30,7 @@ const RestaurantsProfile = () => {
           가게 신규등록
         </S.StyledButton>
       </S.ProfileBtnWrapper>
-      {currentId ? (
+      {shop ? (
         <S.ProfileWrapper>
           <S.StyledCard>
             <CardContent>
@@ -122,6 +102,12 @@ const RestaurantsProfile = () => {
                 </Grid>
                 <Grid item xs={9}>
                   <Typography>{formatPrice} 원</Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography>가게설명 :</Typography>
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography>{shop.shopDescription}</Typography>
                 </Grid>
               </Grid>
             </CardContent>
