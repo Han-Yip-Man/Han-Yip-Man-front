@@ -26,6 +26,8 @@ const EditRestaurant = () => {
   const bannerInputRef = useRef<HTMLInputElement>(null)
   const { compressImage, compressedFile, setCompressedFile } = useImageCompression()
   const [imageType, setImageType] = useState<'thumbnail' | 'banner' | null>(null)
+  const thumbnailUrlImg = shop.thumbnailUrl ? shop.thumbnailUrl : '/img/shopdefault.jpg'
+  const bannerUrlImg = shop.bannerUrl ? shop.bannerUrl : '/img/shopdefault.jpg'
 
   const handleEdit = (field: FieldNames) => {
     setEditMode((prev) => ({ ...prev, [field]: true }))
@@ -153,7 +155,7 @@ const EditRestaurant = () => {
             </S.InfoGrid>
             <S.ImageGrid item xs={6.5}>
               <S.ImagePreview>
-                <img src={shop.thumbnailUrl} alt="" />
+                <img src={thumbnailUrlImg} alt="" />
               </S.ImagePreview>
             </S.ImageGrid>
             <S.ActionGrid item xs={3}>
@@ -184,7 +186,7 @@ const EditRestaurant = () => {
             </S.InfoGrid>
             <S.ImageGrid item xs={6.5}>
               <S.ImagePreview>
-                <img src={shop.bannerUrl} alt="" />
+                <img src={bannerUrlImg} alt="" />
               </S.ImagePreview>
             </S.ImageGrid>
             <S.ActionGrid item xs={3}>

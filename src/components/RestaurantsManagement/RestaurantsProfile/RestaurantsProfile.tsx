@@ -10,10 +10,9 @@ const RestaurantsProfile = () => {
   const ModalOpen = useSetRecoilState(shopdeletemodal)
   const pageset = useSetRecoilState(sellerDashboardNum)
   const { shop } = useGetshopDeatil()
-
   const formatPrice = shop.minOrderPrice.toLocaleString('ko-KR')
-
-  console.log(shop)
+  const thumbnailUrlImg = shop.thumbnailUrl ? shop.thumbnailUrl : '/img/shopdefault.jpg'
+  const bannerUrlImg = shop.bannerUrl ? shop.bannerUrl : '/img/shopdefault.jpg'
 
   return (
     <S.Wrapper>
@@ -45,7 +44,7 @@ const RestaurantsProfile = () => {
                       component="img"
                       alt="메인 사진"
                       height="200"
-                      image={shop.thumbnailUrl}
+                      image={thumbnailUrlImg}
                     />
                     <S.Imgdescription>
                       <Typography variant="body2" color="textSecondary" component="p">
@@ -57,12 +56,7 @@ const RestaurantsProfile = () => {
                 <Grid item xs={2}></Grid>
                 <Grid item xs={4}>
                   <Card elevation={0}>
-                    <CardMedia
-                      component="img"
-                      alt="배너 사진"
-                      height="200"
-                      image={shop.bannerUrl}
-                    />
+                    <CardMedia component="img" alt="배너 사진" height="200" image={bannerUrlImg} />
                     <S.Imgdescription>
                       <Typography variant="body2" color="textSecondary" component="p">
                         배너 이미지
