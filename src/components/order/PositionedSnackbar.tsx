@@ -41,7 +41,13 @@ export default function PositionedSnackbar() {
     <Box sx={{ width: 500 }}>
       <DivSome></DivSome>
       {buttons}
-      <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} onClose={handleClose} message="쿠폰이 적용 되었습니다." key={vertical + horizontal} />
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleClose}
+        message="쿠폰이 적용 되었습니다."
+        key={vertical + horizontal}
+      />
     </Box>
   )
 }

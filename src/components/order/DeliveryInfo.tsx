@@ -2,7 +2,9 @@ import * as S from './DeliveryInfo.Styles'
 import IconClock from '../../assets/iconClock.svg'
 
 const DeliveryInfo = () => {
-  const phoneMidInput: HTMLInputElement | null = document.getElementById('phoneMidInput') as HTMLInputElement
+  const phoneMidInput: HTMLInputElement | null = document.getElementById(
+    'phoneMidInput',
+  ) as HTMLInputElement
 
   if (phoneMidInput) {
     phoneMidInput.maxLength = 4

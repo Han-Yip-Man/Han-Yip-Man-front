@@ -32,6 +32,7 @@ export const CheckboxWrapper = styled.div`
 export const Input = styled.input`
   margin: 5px 10px;
   width: 20px;
+  cursor: pointer;
 `
 export const MidLabel = styled.label`
   display: flex;
@@ -74,7 +75,7 @@ export const OptionOneLabel = styled.label`
   display: flex;
   font-size: 18px;
   & > div:first-of-type {
-    margin-right: 190px;
+    margin-right: 150px;
   }
 `
 // export const LargeLabel = styled.label`

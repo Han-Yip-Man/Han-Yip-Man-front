@@ -29,7 +29,12 @@ export default function CouponModal({ title, content }: ModalProps) {
 
       dialogElement.addEventListener('click', (event) => {
         const dialogArea = dialogElement.getBoundingClientRect()
-        if (event.clientX < dialogArea.left || event.clientX > dialogArea.right || event.clientY < dialogArea.top || event.clientY > dialogArea.bottom) {
+        if (
+          event.clientX < dialogArea.left ||
+          event.clientX > dialogArea.right ||
+          event.clientY < dialogArea.top ||
+          event.clientY > dialogArea.bottom
+        ) {
           dialogElement.close()
         }
       })

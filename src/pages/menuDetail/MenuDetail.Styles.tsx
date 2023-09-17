@@ -6,7 +6,7 @@ export const WrapperDiv = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   max-width: 100vw;
-  margin: 0 auto;
+  margin: 50px auto 0;
   box-sizing: border-box;
   gap: 20px;
 `

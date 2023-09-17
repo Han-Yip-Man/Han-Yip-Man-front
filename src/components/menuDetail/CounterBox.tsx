@@ -27,7 +27,12 @@ export default function CounterBox({ quantity, setQuantity }: CounterBoxProps) {
           <S.PlusMinus>
             <S.MinusBox onClick={decreaseQuantity}>-</S.MinusBox>
             <S.CountNum>
-              <input type="number" value={quantity} style={{ width: '30px', textAlign: 'center', fontSize: '25px' }} min="1" />
+              <input
+                type="number"
+                value={quantity}
+                style={{ width: '30px', textAlign: 'center', fontSize: '25px' }}
+                min="1"
+              />
             </S.CountNum>
             <S.PlusBox onClick={increaseQuantity}>+</S.PlusBox>
           </S.PlusMinus>

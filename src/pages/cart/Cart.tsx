@@ -27,7 +27,10 @@ const Cart = () => {
         </S.Thead>
         <S.Tr>
           <S.ProductDiv>
-            <S.Img alt="sample_img" src="https://cdn.dominos.co.kr/admin/upload/goods/20230619_hybtjkBv.jpg" />
+            <S.Img
+              alt="sample_img"
+              src="https://cdn.dominos.co.kr/admin/upload/goods/20230619_hybtjkBv.jpg"
+            />
             <S.ProductNameDiv>페퍼로니 피자</S.ProductNameDiv>
           </S.ProductDiv>
           <S.Td2>
