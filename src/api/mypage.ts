@@ -23,5 +23,6 @@ type MypageInfo = {
 }
 export const getMypageInfo = async (): Promise<MypageInfo> => {
   const response = await axiosClient.get(`/users/my-info`)
+  console.log(response)
   return response.data
 }
