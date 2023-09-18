@@ -1,80 +1,62 @@
 import { useState } from 'react'
 import * as S from './Option.Styles'
+import CustomCheckbox from './CustomCheckbox'
 
-type Option = 'drink1' | 'drink2' | 'drink3'
-export default function AddOptionThree() {
-  const [isChecked, setIsChecked] = useState<Record<Option, boolean>>({
-    drink1: false,
-    drink2: false,
-    drink3: false,
-  })
+interface OptionItem {
+  optionItemId: number
+  optionItemName: string
+  optionItemPrice: number
+}
 
-  const handleCheckChange = (option: Option) => {
-    setIsChecked({ drink1: false, drink2: false, drink3: false, [option]: true })
+interface OptionValue {
+  optionId: number
+  optionName: string
+  isMultiple: boolean
+  maxSelected: number
+  optionItems: OptionItem[]
+}
+
+type AddOptionThreeProps = {
+  optionValue: OptionValue
+  onOptionChange: (
+    id: string,
+    name: string,
+    price: number,
+    isChecked: boolean,
+    optionType: string,
+  ) => void
+}
+
+export default function AddOptionThree({ optionValue, onOptionChange }: AddOptionThreeProps) {
+  const [checkValue, setCheckValue] = useState('')
+
+  const checkDuplicate = (checkbox: HTMLInputElement) => {
+    if (!checkbox.checked) {
+      checkbox.checked = false
+      setCheckValue('')
+    } else {
+      const checkItem = document.getElementsByName(optionValue.optionName)
+      Array.prototype.forEach.call(checkItem, function (el) {
+        el.checked = false
+      })
+      checkbox.checked = true
+      setCheckValue(checkbox.defaultValue)
+    }
   }
 
   return (
     <>
-      <S.OptionTitle>음료 추가 선택</S.OptionTitle>
-      <S.CheckboxWrapper>
-        <S.OptionOneInput
-          type="checkbox"
-          id="drink1"
-          name="drink1"
-          checked={isChecked.drink1}
-          onChange={() => handleCheckChange('drink1')}
+      <S.OptionTitle>{optionValue.optionName} 추가 선택</S.OptionTitle>
+      {optionValue.optionItems.map((optionItem) => (
+        <CustomCheckbox
+          key={optionItem.optionItemId}
+          optionItem={optionItem}
+          optionType={optionValue.optionName}
+          onOptionChange={onOptionChange}
+          checkDuplicate={checkDuplicate}
+          checkValue={checkValue}
         />
-        <S.OptionOneLabel
-          htmlFor="drink1"
-          style={{
-            color: isChecked.drink1 ? 'blue' : 'black',
-            fontWeight: isChecked.drink1 ? 'bold' : 'lighter',
-          }}
-        >
-          <div>콜라</div>
-          <div>+1,000원</div>
-        </S.OptionOneLabel>
-      </S.CheckboxWrapper>
-
-      <S.CheckboxWrapper>
-        <S.OptionOneInput
-          type="checkbox"
-          id="drink2"
-          name="drink2"
-          checked={isChecked.drink2}
-          onChange={() => handleCheckChange('drink2')}
-        />
-        <S.OptionOneLabel
-          htmlFor="drink2"
-          style={{
-            color: isChecked.drink2 ? 'blue' : 'black',
-            fontWeight: isChecked.drink2 ? 'bold' : 'lighter',
-          }}
-        >
-          <div>사이다</div>
-          <div>+1,000원</div>
-        </S.OptionOneLabel>
-      </S.CheckboxWrapper>
-
-      <S.CheckboxWrapper>
-        <S.OptionOneInput
-          type="checkbox"
-          id="drink3"
-          name="drink3"
-          checked={isChecked.drink3}
-          onChange={() => handleCheckChange('drink3')}
-        />
-        <S.OptionOneLabel
-          htmlFor="drink3"
-          style={{
-            color: isChecked.drink3 ? 'blue' : 'black',
-            fontWeight: isChecked.drink3 ? 'bold' : 'lighter',
-          }}
-        >
-          <div>웰치스</div>
-          <div>+1,000원</div>
-        </S.OptionOneLabel>
-      </S.CheckboxWrapper>
+      ))}
     </>
   )
 }

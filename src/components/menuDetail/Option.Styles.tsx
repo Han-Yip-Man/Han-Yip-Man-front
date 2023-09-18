@@ -18,6 +18,15 @@ export const ItemPriceDiv = styled.div`
   letter-spacing: 0.00938em;
 `
 
+export const OptionWrapper = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid black;
+`
+
 export const OptionTitle = styled.div`
   margin-bottom: 10px;
   margin-left: 5px;
@@ -75,7 +84,7 @@ export const OptionOneLabel = styled.label`
   display: flex;
   font-size: 18px;
   & > div:first-of-type {
-    margin-right: 150px;
+    margin-right: 140px;
   }
 `
 // export const LargeLabel = styled.label`
