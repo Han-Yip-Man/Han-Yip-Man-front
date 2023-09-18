@@ -6,10 +6,6 @@ const KaKao = () => {
   const params = new URL(href).searchParams
   const code = params.get('code')
 
-  console.log(params)
-  console.log(code)
-  console.log(code)
-
   useEffect(() => {
     axiosClient
       .get(`/auth/kakao/login?code=${code}`)

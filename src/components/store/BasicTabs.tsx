@@ -52,7 +52,7 @@ export default function BasicTabs() {
   const [value, setValue] = useState(0)
   const [shopId] = useState(10)
   const { data: menuData } = useQuery(['storeMenus', shopId], () => getStoreMenus(shopId))
-  const { data: infoData } = useQuery(['stores', shopId], () => getStoreDetail(shopId))
+  const { data: infoData } = useQuery(['stores', shopId], () => getStoreDetail(String(shopId)))
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     event.preventDefault()
