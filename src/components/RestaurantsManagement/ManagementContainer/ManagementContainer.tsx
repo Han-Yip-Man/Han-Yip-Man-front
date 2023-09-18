@@ -1,34 +1,32 @@
 import RestaurantsManagementHeader from '../RestaurantsManagementHeader/RestaurantsManagementHeader'
-import React from 'react'
 import RestaurantsProfile from '../RestaurantsProfile/RestaurantsProfile'
 import AddRestaurants from '../AddRestaurants/AddRestaurants'
 import EditRestaurant from '../EditRestaurant/EditRestaurant'
 import MainMenuCategory from '../MainMenuCategory/MainMenuCategory'
-import Menumanagement from '../Menumanagement/Menumanagement'
 import AddMenu from '../AddMenu/AddMenu'
 import * as S from './ManagementContainer.style'
 import OrderManagement from '../OrderManagement/OrderManagement'
+import { sellerDashboardNum } from '../../../recoil/restaurants'
+import { useRecoilValue } from 'recoil'
+import MenuContainer from '../MenuContainer/MenuContainer'
 
-interface ContainerProps {
-  menupage: number
-  setMenupage: (value: number) => void
-}
+const ManagementContainer = () => {
+  const pagenum = useRecoilValue(sellerDashboardNum)
 
-const ManagementContainer: React.FC<ContainerProps> = ({ menupage, setMenupage }) => {
   const renderManagement = () => {
-    switch (menupage) {
+    switch (pagenum) {
       case 1:
-        return <RestaurantsProfile setMenupage={setMenupage} />
+        return <RestaurantsProfile />
       case 2:
         return <MainMenuCategory />
       case 3:
-        return <Menumanagement setMenupage={setMenupage} />
+        return <MenuContainer />
       case 4:
         return <OrderManagement />
       case 6:
-        return <EditRestaurant setMenupage={setMenupage} />
+        return <EditRestaurant />
       case 7:
-        return <AddRestaurants setMenupage={setMenupage} />
+        return <AddRestaurants />
       case 8:
         return <AddMenu />
       default:

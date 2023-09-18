@@ -1,58 +1,35 @@
 import { Typography, Card, CardContent, CardMedia, Grid } from '@mui/material'
-import React, { useEffect } from 'react'
 import * as S from './RestaurantsProfile.style'
-import { getShopDetail } from '../../../api/restaurant'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { selectedShopIdState } from '../../../recoil/restaurants'
-import { shopDetailState, shopdeletemodal } from '../../../recoil/restaurants'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
+import { shopdeletemodal } from '../../../recoil/restaurants'
 import RestaurantDeleteModal from '../RestaurantDeleteModal/RestaurantDeleteModal'
+import { sellerDashboardNum } from '../../../recoil/restaurants'
+import { useGetshopDeatil } from '../../../hooks/useGetshopDeatil'
 
-interface ProfileProps {
-  setMenupage: (value: number) => void
-}
-
-const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
-  const currentId = useRecoilValue(selectedShopIdState)
-  const [shop, setShop] = useRecoilState(shopDetailState)
+const RestaurantsProfile = () => {
   const ModalOpen = useSetRecoilState(shopdeletemodal)
-
-  useEffect(() => {
-    const getDatil = async () => {
-      if (currentId !== undefined) {
-        try {
-          const response = await getShopDetail(currentId)
-          console.log(response)
-          setShop(response)
-        } catch (error) {
-          console.error('에러', error)
-        }
-      }
-    }
-
-    getDatil()
-  }, [currentId])
-
-  console.log(currentId)
-
+  const pageset = useSetRecoilState(sellerDashboardNum)
+  const { shop } = useGetshopDeatil()
   const formatPrice = shop.minOrderPrice.toLocaleString('ko-KR')
+  const thumbnailUrlImg = shop.thumbnailUrl ? shop.thumbnailUrl : '/img/shopdefault.jpg'
+  const bannerUrlImg = shop.bannerUrl ? shop.bannerUrl : '/img/shopdefault.jpg'
 
   return (
     <S.Wrapper>
       <S.ProfileBtnWrapper>
-        {currentId && (
+        {shop && (
           <S.StyledButton variant="outlined" onClick={() => ModalOpen(true)}>
             가게 삭제하기
           </S.StyledButton>
         )}
-        <S.StyledButton variant="outlined" onClick={() => setMenupage(6)}>
+        <S.StyledButton variant="outlined" onClick={() => pageset(6)}>
           가게 정보수정
         </S.StyledButton>
-        <S.StyledButton variant="outlined" onClick={() => setMenupage(7)}>
+        <S.StyledButton variant="outlined" onClick={() => pageset(7)}>
           가게 신규등록
         </S.StyledButton>
       </S.ProfileBtnWrapper>
-      {currentId ? (
+      {shop ? (
         <S.ProfileWrapper>
           <S.StyledCard>
             <CardContent>
@@ -67,7 +44,7 @@ const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
                       component="img"
                       alt="메인 사진"
                       height="200"
-                      image={shop.thumbnailUrl}
+                      image={thumbnailUrlImg}
                     />
                     <S.Imgdescription>
                       <Typography variant="body2" color="textSecondary" component="p">
@@ -79,12 +56,7 @@ const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
                 <Grid item xs={2}></Grid>
                 <Grid item xs={4}>
                   <Card elevation={0}>
-                    <CardMedia
-                      component="img"
-                      alt="배너 사진"
-                      height="200"
-                      image={shop.bannerUrl}
-                    />
+                    <CardMedia component="img" alt="배너 사진" height="200" image={bannerUrlImg} />
                     <S.Imgdescription>
                       <Typography variant="body2" color="textSecondary" component="p">
                         배너 이미지
@@ -124,6 +96,12 @@ const RestaurantsProfile: React.FC<ProfileProps> = ({ setMenupage }) => {
                 </Grid>
                 <Grid item xs={9}>
                   <Typography>{formatPrice} 원</Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography>가게설명 :</Typography>
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography>{shop.shopDescription}</Typography>
                 </Grid>
               </Grid>
             </CardContent>

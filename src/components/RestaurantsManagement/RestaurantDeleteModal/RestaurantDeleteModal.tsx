@@ -35,8 +35,6 @@ const RestaurantDeleteModal = () => {
     }
   }
 
-  console.log(ShopId)
-
   return (
     <div>
       <Modal

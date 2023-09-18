@@ -18,6 +18,7 @@ const InputField = React.forwardRef<
     showErrorMessage?: boolean
     multiline?: boolean
     rows?: number
+    style?: React.CSSProperties
   }
 >(
   (
@@ -31,6 +32,7 @@ const InputField = React.forwardRef<
       value,
       maxLength,
       placeholder,
+      style,
       ...props
     },
     ref,
@@ -49,6 +51,7 @@ const InputField = React.forwardRef<
           variant="outlined"
           inputProps={{ maxLength: maxLength }}
           placeholder={placeholder}
+          style={style}
           {...props}
         />
         {checkDuplication && (

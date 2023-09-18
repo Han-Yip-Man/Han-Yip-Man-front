@@ -11,12 +11,11 @@ import { CategoryData } from '../../../assets/data/restaurantdata.js'
 import useAddressSearch from '../../../hooks/useAddressSearch.js'
 import { DaumPostcodeData } from '../../../types/Address.js'
 import useAlert from '../../../hooks/useAlert.js'
+import { useSetRecoilState } from 'recoil'
+import { sellerDashboardNum } from '../../../recoil/restaurants.js'
 
-interface AddRestaurantsProps {
-  setMenupage: (value: number) => void
-}
-
-const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
+const AddRestaurants = () => {
+  const pageset = useSetRecoilState(sellerDashboardNum)
   const {
     register,
     handleSubmit,
@@ -161,7 +160,7 @@ const AddRestaurants: React.FC<AddRestaurantsProps> = ({ setMenupage }) => {
   return (
     <S.Wrapper>
       <S.Form>
-        <S.BackBtn src="/img/back.svg" alt="" onClick={() => setMenupage(1)} />
+        <S.BackBtn src="/img/back.svg" alt="" onClick={() => pageset(1)} />
         <S.FormFrame>
           <S.Addtitle>
             <h1>신규 가게 등록</h1>

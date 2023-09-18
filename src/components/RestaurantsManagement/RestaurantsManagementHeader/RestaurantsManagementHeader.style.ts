@@ -13,6 +13,14 @@ export const CenteredDiv = styled.div`
   flex: 1;
   text-align: center;
   font-size: 28px;
+
+  display: flex;
+  justify-content: center;
+  h2 {
+    width: auto;
+    height: auto;
+    cursor: pointer;
+  }
 `
 
 export const StyledSelect = styled(Select)`

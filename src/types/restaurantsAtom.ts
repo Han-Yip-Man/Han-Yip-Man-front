@@ -29,3 +29,30 @@ export interface PatchindexMenuGroupsType {
   menuGroupId: number
   menuGroupSequence: number
 }
+
+export interface addsellerMenuType {
+  groupid: number | null
+  formdata: FormData
+}
+
+export interface patchShopNameType {
+  shop_id: number
+  shopName: string
+}
+
+export type FieldNames =
+  | 'categoryName'
+  | 'shopName'
+  | 'shopDescription'
+  | 'minOrderPrice'
+  | 'businessNumber'
+  | 'shopPhone'
+
+export interface ShopInfo {
+  categoryName?: string | number
+  shopName?: string
+  shopDescription?: string
+  minOrderPrice?: string
+  businessNumber?: string
+  shopPhone?: string
+}
