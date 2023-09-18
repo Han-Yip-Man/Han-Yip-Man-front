@@ -3,6 +3,7 @@ import IconMinus from '../../assets/iconMinus.svg'
 import IconPlus from '../../assets/iconPlus.svg'
 import IconX from '../../assets/iconX.svg'
 import { useNavigate } from 'react-router-dom'
+import { Divider, Typography } from '@mui/material'
 
 const Cart = () => {
   const navigate = useNavigate()
@@ -12,46 +13,72 @@ const Cart = () => {
       <S.TopDiv>
         <S.TitleDiv>장바구니</S.TitleDiv>
       </S.TopDiv>
-      <S.ItemTable>
-        <S.Title>
-          <S.Td1Title>주문내역</S.Td1Title>
-          <S.Td2></S.Td2>
-          <S.Td3></S.Td3>
-          <S.Td4Title>전체 삭제</S.Td4Title>
-        </S.Title>
-        <S.Thead>
-          <S.Td1>상품 정보</S.Td1>
-          <S.Td2>수량</S.Td2>
-          <S.Td3>금액</S.Td3>
-          <S.Td4></S.Td4>
-        </S.Thead>
-        <S.Tr>
-          <S.ProductDiv>
-            <S.Img
-              alt="sample_img"
-              src="https://cdn.dominos.co.kr/admin/upload/goods/20230619_hybtjkBv.jpg"
-            />
-            <S.ProductNameDiv>페퍼로니 피자</S.ProductNameDiv>
-          </S.ProductDiv>
-          <S.Td2>
-            <S.CounterOuterDiv>
-              <S.CountDiv>
-                <S.MinusButton>
-                  <S.MinusPlusImg src={IconMinus} />
-                </S.MinusButton>
-                <S.CountInput value="1" />
-                <S.PlusButton>
-                  <S.MinusPlusImg src={IconPlus} />
-                </S.PlusButton>
-              </S.CountDiv>
-            </S.CounterOuterDiv>
-          </S.Td2>
-          <S.Td3>10원</S.Td3>
-          <S.Td4>
-            <S.XImg src={IconX} />
-          </S.Td4>
-        </S.Tr>
-      </S.ItemTable>
+      <S.CustomDivider />
+      <S.ListWrap>
+        <S.TitleWrap>
+          <S.ListTitleWrap>
+            <S.CustomTypo>주문내역</S.CustomTypo>
+            <S.BtnWrap>
+              <S.CustomBtn>전체 삭제</S.CustomBtn>
+            </S.BtnWrap>
+          </S.ListTitleWrap>
+          <S.SubTitleWrap>
+            <S.SubTitleTypo>상품정보</S.SubTitleTypo>
+            <S.SubTitleTypo>수량</S.SubTitleTypo>
+            <S.SubTitleTypo>금액</S.SubTitleTypo>
+          </S.SubTitleWrap>
+        </S.TitleWrap>
+        <S.ItemList>
+          <S.ItemLi>
+            <S.ItemDescWrap>
+              <S.ItemImg
+                alt="이미지"
+                src="https://d3af5evjz6cdzs.cloudfront.net/images/uploads/800x0/salsa-roja_2e9f10fb5c8d2e95a393ad17f4064c5b1666594266.jpg"
+              />
+              <S.ImgTitle>페퍼로니 피자</S.ImgTitle>
+            </S.ItemDescWrap>
+            <S.OptionWrap>
+              <S.CounterWrap>
+                <S.CounterBtnWrap>
+                  <S.CounterBtnMinus>-</S.CounterBtnMinus>
+                  <S.CounterDisplay>0</S.CounterDisplay>
+                  <S.CounterBtnPlus>+</S.CounterBtnPlus>
+                </S.CounterBtnWrap>
+              </S.CounterWrap>
+              <S.TotalWrap>
+                <S.DelBtnWrap>
+                  <button>X</button>
+                </S.DelBtnWrap>
+                <S.Total>10,000원</S.Total>
+              </S.TotalWrap>
+            </S.OptionWrap>
+          </S.ItemLi>
+          <S.ItemLi>
+            <S.ItemDescWrap>
+              <S.ItemImg
+                alt="이미지"
+                src="https://d3af5evjz6cdzs.cloudfront.net/images/uploads/800x0/salsa-roja_2e9f10fb5c8d2e95a393ad17f4064c5b1666594266.jpg"
+              />
+              <S.ImgTitle>페퍼로니 피자</S.ImgTitle>
+            </S.ItemDescWrap>
+            <S.OptionWrap>
+              <S.CounterWrap>
+                <S.CounterBtnWrap>
+                  <S.CounterBtnMinus>-</S.CounterBtnMinus>
+                  <S.CounterDisplay>0</S.CounterDisplay>
+                  <S.CounterBtnPlus>+</S.CounterBtnPlus>
+                </S.CounterBtnWrap>
+              </S.CounterWrap>
+              <S.TotalWrap>
+                <S.DelBtnWrap>
+                  <button>X</button>
+                </S.DelBtnWrap>
+                <S.Total>10,000원</S.Total>
+              </S.TotalWrap>
+            </S.OptionWrap>
+          </S.ItemLi>
+        </S.ItemList>
+      </S.ListWrap>
       <S.TotalPriceDiv>
         총 금액&nbsp;&nbsp;&nbsp;<S.Span>10,000</S.Span>원
       </S.TotalPriceDiv>

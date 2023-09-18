@@ -86,7 +86,7 @@ const routerData: RouterElement[] = [
       },
       {
         id: 3,
-        path: '/store/:shopId',
+        path: '/store/:storeId',
         label: 'Store',
         element: <Store />,
       },
