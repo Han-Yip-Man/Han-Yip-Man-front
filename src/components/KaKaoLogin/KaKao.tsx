@@ -6,16 +6,12 @@ const KaKao = () => {
   const params = new URL(href).searchParams
   const code = params.get('code')
 
-  console.log(params)
-  console.log(code)
-  console.log(code)
-
   useEffect(() => {
     axiosClient
       .get(`/auth/kakao/login?code=${code}`)
       .then((response) => {
         console.log(response)
-        console.log('어흥')
+        console.log('axios push test')
       })
       .catch((error) => {
         console.log(error)
