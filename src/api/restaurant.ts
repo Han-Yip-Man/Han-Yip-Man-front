@@ -5,6 +5,7 @@ import {
   PatchMenuGroupsType,
   PatchindexMenuGroupsType,
   addsellerMenuType,
+  patchShopNameType,
 } from '../types/restaurantsAtom'
 
 // 가게등록
@@ -179,6 +180,130 @@ export const addsellerMenu = async (payload: addsellerMenuType) => {
 export const getsellerMenu = async (payload: number | null) => {
   try {
     const response = await axiosClient.get(`/seller-shops/menus/${payload}`)
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 이름 수정
+export const patchShopName = async (currentId: number, data: string) => {
+  try {
+    const response = await axiosClient.patch(
+      `/seller-shops/shops/${currentId}/name?shopName=${data}`,
+    )
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 설명 수정
+export const patchShopDescription = async (currentId: number, data: string) => {
+  try {
+    const response = await axiosClient.patch(
+      `/seller-shops/shops/${currentId}/description?description=${data}`,
+    )
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 사업자번호 변경
+export const patchShopbusinessNumber = async (currentId: number, data: string) => {
+  try {
+    const response = await axiosClient.patch(
+      `/seller-shops/shops/${currentId}/business-number?businessNumber=${data}`,
+    )
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 최소주문금액 변경
+export const patchShopminOrderPrice = async (currentId: number, data: string) => {
+  try {
+    const response = await axiosClient.patch(
+      `/seller-shops/shops/${currentId}/min-order-price?minOrderPrice=${data}`,
+    )
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 전화번호 변경
+export const patchShopphoneNum = async (currentId: number, data: string) => {
+  try {
+    const response = await axiosClient.patch(
+      `/seller-shops/shops/${currentId}/phone-number?phoneNum=${data}`,
+    )
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 카테고리 변경
+export const patchShopcategory = async (currentId: number, data: number) => {
+  try {
+    const response = await axiosClient.patch(
+      `/seller-shops/shops/${currentId}/category?categoryId=${data + 1}`,
+    )
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 대표이미지 변경
+export const patchShopbanner = async (currentId: number, formdata: FormData) => {
+  try {
+    const response = await axiosClient.patch(`/seller-shops/shops/${currentId}/banner`, formdata)
+    if (response.status >= 400) {
+      throw new Error(`Server responded with status code ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('실패', error)
+    throw error
+  }
+}
+
+//가게 배너이미지 변경
+export const patchShopthumbnail = async (currentId: number, formdata: FormData) => {
+  try {
+    const response = await axiosClient.patch(`/seller-shops/shops/${currentId}/thumbnail`, formdata)
     if (response.status >= 400) {
       throw new Error(`Server responded with status code ${response.status}`)
     }

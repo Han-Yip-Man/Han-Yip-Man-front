@@ -42,7 +42,7 @@ const useImageCompression = (initialImage?: string) => {
   }
 
   // 훅에서 반환된 객체; 이를 사용하여 컴포넌트에서 상태 변수와 compressImage 함수에 액세스할 수 있습니다.
-  return { image, setImage, compressImage, compressedFile }
+  return { image, setImage, compressImage, compressedFile, setCompressedFile }
 }
 
 // 커스텀 훅을 내보냅니다, 이를 통해 다른 파일에서 이 훅을 임포트할 수 있습니다.
