@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import axiosClient from '../../api/axiosInstance'
-import axios from 'axios'
 
 const KaKaoLogin = () => {
   const href = window.location.href
@@ -11,8 +10,8 @@ const KaKaoLogin = () => {
   console.log(code)
 
   useEffect(() => {
-    axios
-      .get(`http://54.180.103.214:8080/auth/kakao/callback?code=${code}`)
+    axiosClient
+      .get(`/auth/kakao/login?code=${code}`)
       .then((response) => {
         console.log(response)
         console.log('어흥')
