@@ -28,11 +28,13 @@ export const Logobox = styled.div`
   }
 `
 
-export const KaKaoBtn = styled.div`
+export const KaKaoBtn = styled.a`
   width: 100%;
   height: 60px;
   margin-top: 20px;
-  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
   img {
     width: 100%;
     height: 60px;
