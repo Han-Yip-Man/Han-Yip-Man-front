@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Divider, Typography, Button } from '@mui/material'
 
 export const OuterDiv = styled.div`
   max-width: 1200px;
@@ -41,85 +42,106 @@ export const TotalCountDiv = styled.div`
   margin: -3px;
 `
 
-export const ItemTable = styled.table`
-  width: 100%;
-  border-top: 1px solid rgba(68, 68, 68, 0.3);
-  border-collapse: collapse;
+export const CustomDivider = styled(Divider)`
+  border: 1px solid black;
 `
 
-export const Title = styled.tr`
-  background-color: #f5f5f5;
-  border-top: 2px solid black;
-`
-
-export const Thead = styled.tr`
-  font-weight: normal;
-  font-size: 15px;
-  border-bottom: 1.2px solid rgba(68, 68, 68, 0.3);
-  height: 50px;
+export const ListWrap = styled.div`
   display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
 `
 
-export const Td1Title = styled.td`
-  width: 500px;
-  text-align: left;
-  padding: 16px 30px;
-  margin: 0;
-  font-size: 20px;
-  font-weight: bold;
+export const TitleWrap = styled.div`
+  display: grid;
+  grid-template-rows: 60px 60px;
 `
 
-export const Td4Title = styled.td`
-  text-align: center;
-  font-size: 15px;
-  color: gray;
-  cursor: pointer;
-`
-
-export const Td1 = styled.td`
-  padding: 16px 2px;
-  margin: 0;
-  font-weight: bold;
-`
-
-export const Td2 = styled.td`
-  font-weight: bold;
-`
-
-export const Td3 = styled.td`
-  font-weight: bold;
-  /* font-weight: bold; */
-
-  & > * {
-    :not(:first-child) {
-      font-weight: bold;
-    }
-  }
-`
-
-export const Td4 = styled.td`
-  font-weight: bold;
-`
-
-export const Tr = styled.tr`
-  border-bottom: 1px solid rgba(68, 68, 68, 0.3);
-  border-left: none;
-  padding: 10px;
-  height: 110px;
-  display: flex;
+export const ListTitleWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
   align-items: center;
+  height: 60px;
+  background-color: rgb(128, 128, 128, 0.4);
 `
 
-export const ProductDiv = styled.div`
+export const CustomTypo = styled(Typography)``
+
+export const BtnWrap = styled.div`
+  justify-self: end;
+  margin-right: 50px;
+`
+
+export const CustomBtn = styled(Button)`
+  color: black;
+`
+
+export const SubTitleWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  height: 60px;
+  padding-top: 10px;
+  /* background-color: gray; */
+`
+
+export const SubTitleTypo = styled(Typography)``
+
+export const ItemList = styled.ul`
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 10px;
+`
+
+export const ItemLi = styled.li`
+  height: 150px;
+  background-color: rgb(128, 128, 128, 0.2);
+  display: grid;
+  grid-template-columns: 400px 1fr;
+`
+
+export const ItemDescWrap = styled.div`
   display: flex;
-  margin: 0;
-  padding: 15px;
 `
 
-export const Img = styled.img`
-  width: 150px;
+export const ItemImg = styled.img`
+  object-fit: cover;
+  width: 200px;
 `
+
+export const ImgTitle = styled(Typography)`
+  padding: 10px;
+  width: 100%;
+`
+
+export const OptionWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`
+
+export const CounterWrap = styled.div`
+  align-self: end;
+  justify-self: center;
+  padding-bottom: 10px;
+`
+
+export const CounterBtnWrap = styled.div`
+  display: flex;
+`
+export const CounterBtnMinus = styled.button``
+
+export const CounterDisplay = styled.div``
+
+export const CounterBtnPlus = styled.button``
+
+export const TotalWrap = styled.div`
+  align-self: end;
+  justify-self: end;
+  padding: 10px;
+  padding-right: 20px;
+`
+
+export const Total = styled(Typography)``
 
 export const ProductNameDiv = styled.div`
   padding: 15px;
