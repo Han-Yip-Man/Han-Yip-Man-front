@@ -34,7 +34,7 @@ type menuGroup = {
 
 type StoreMenus = menuGroup[]
 
-export const getStoreDetail = async (shopId: string | undefined): Promise<StoreDetail> => {
+export const getStoreDetail = async (shopId: any | undefined): Promise<StoreDetail> => {
   const infoResponse = await axiosClient.get(`/buyer-shops/${shopId}/info`)
   const rvAvgResponse = await axiosClient.get(`/buyer-shops/${shopId}/review-average`)
 
