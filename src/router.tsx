@@ -141,7 +141,7 @@ const routerData: RouterElement[] = [
   },
   {
     id: 80,
-    path: '/auth/kakao/callback',
+    path: '/auth/kakao/',
     label: 'kakaologin',
     element: <KaKaoLogin />,
     withAuth: false,

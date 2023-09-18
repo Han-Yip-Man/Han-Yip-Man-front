@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import { useEffect } from 'react'
 import axiosClient from '../../api/axiosInstance'
 
@@ -12,16 +11,17 @@ const KaKaoLogin = () => {
 
   useEffect(() => {
     axiosClient
-      .get(`/auth/kakao/callback?code=${code}`)
+      .get(`/auth/kakao?code=${code}`)
       .then((response) => {
         console.log(response)
+        console.log('어흥')
       })
       .catch((error) => {
         console.log(error)
       })
   }, [])
 
-  return <></>
+  return <>어흥</>
 }
 
 export default KaKaoLogin
