@@ -82,10 +82,10 @@ export const CustomerMyPage = () => {
       </Stack>
       <CustomerInfoTitle variant="h5">리뷰관리</CustomerInfoTitle>
       <ReviewPaper>
+        {/* <ReviewCard />
         <ReviewCard />
         <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
+        <ReviewCard /> */}
       </ReviewPaper>
     </MypageWrap>
   )
