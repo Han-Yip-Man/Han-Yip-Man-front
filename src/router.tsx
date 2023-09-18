@@ -140,7 +140,7 @@ const routerData: RouterElement[] = [
     withAuth: false,
   },
   {
-    id: 80,
+    id: 90,
     path: '/auth/kakao',
     label: 'kakaologin',
     element: <KaKao />,
