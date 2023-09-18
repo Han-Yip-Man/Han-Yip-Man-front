@@ -5,7 +5,8 @@ import * as S from './CustomerSignin.style'
 import { useTheme } from '@mui/material/styles'
 import { FormDataType } from '../../types/user'
 import { signIn } from '../../api/user'
-import { useAlert } from '../../hooks'
+import useAlert from '../../hooks/useAlert'
+import { KAKAO_AUTH_URL } from '../../components/KaKaoLogin/AuthKaKao'
 
 const CustomerSignin = () => {
   const theme = useTheme()
@@ -50,7 +51,7 @@ const CustomerSignin = () => {
       <S.SubmitBtn variant="contained" type="submit">
         로그인
       </S.SubmitBtn>
-      <S.KaKaoBtn>
+      <S.KaKaoBtn href={KAKAO_AUTH_URL}>
         <img src="/img/kakaologin.jpg" alt="" />
       </S.KaKaoBtn>
     </S.Form>

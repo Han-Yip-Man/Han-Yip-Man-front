@@ -127,7 +127,7 @@ const EditRestaurant = () => {
 
   console.log(compressedFile)
 
-  function handleImageDelete(type: 'thumbnail' | 'banner') {
+  const handleImageDelete = (type: 'thumbnail' | 'banner') => {
     const apiMethod = type === 'thumbnail' ? patchShopthumbnail : patchShopbanner
 
     if (currentId !== null) {

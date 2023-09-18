@@ -90,11 +90,13 @@ const CustomerSignup = () => {
         profileImageFile: data.profileImage,
       }
 
+      console.log(payload)
+
       const formData = new FormData()
 
       Object.entries(payload).forEach(([key, value]) => {
         if (value !== undefined) {
-          formData.append(key, value.toString())
+          formData.append(key, value)
         }
       })
 
