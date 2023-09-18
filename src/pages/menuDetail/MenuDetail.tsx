@@ -3,15 +3,15 @@ import * as S from './MenuDetail.Styles'
 import CounterBox from '../../components/menuDetail/CounterBox'
 import AddOptionOne from '../../components/menuDetail/AddOptionOne'
 // import AddOptionTwo from '../../components/menuDetail/AddOptionTwo'
-import AddOptionThree from '../../components/menuDetail/AddOptionThree'
+// import AddOptionThree from '../../components/menuDetail/AddOptionThree'
 import useAlert from '../../hooks/useAlert'
 import MenuDetailModal from './MenuDetailModal'
-// import { getMenuDetail } from '../../api/menu'
+import { getMenuDetail } from '../../api/menu'
 // import useRouter from '../../hooks/useRouter'
 // import { useRecoilState } from 'recoil'
 // import { jeeinAtom } from '../../atoms'
-// import { isAxiosError, AxiosResponse } from 'axios'
-import { mmdata } from './menuDetailMockData'
+import { isAxiosError, AxiosResponse } from 'axios'
+// import { mmdata } from './menuDetailMockData'
 // import SizeOption from '../../components/menuDetail/SizeOption'
 
 type optionItem = {
@@ -39,12 +39,12 @@ interface MenuData {
 }
 
 const initialMenuData = {
-  menuId: 5,
-  menuName: 'asd',
-  menuDescription: 'qwe',
+  menuId: 2,
+  menuName: '',
+  menuDescription: '',
   thumbnailUrl: '',
-  menuPrice: 12000,
-  discountPrice: 34000,
+  menuPrice: 0,
+  discountPrice: 0,
   options: [],
 }
 
@@ -63,28 +63,28 @@ const MenuDetail = () => {
   const [sauceOptions, setSauceOptions] = useState<Array<{ name: string; price: number }>>([])
   const [drinkOptions, setDrinkOptions] = useState<Array<{ name: string; price: number }>>([])
 
-  useEffect(() => {
-    const mock_data = mmdata
-    console.log(mock_data)
-    // setMockData(mmdata)
-    setData(mock_data)
-
-    return () => {}
-  }, [])
-
   // useEffect(() => {
-  //   getMenuDetail(data.menuId)
-  //     .then((response: AxiosResponse) => {
-  //       console.log(response)
-  //       console.log('데이터', response.data.menuName)
-  //       setData(response.data)
-  //     })
-  //     .catch((error) => {
-  //       if (isAxiosError(error)) {
-  //         toast(`${error.message}`, 3000, 'error')
-  //       }
-  //     })
-  // }, [data.menuId])
+  //   const mock_data = mmdata
+  //   console.log(mock_data)
+  //   // setMockData(mmdata)
+  //   setData(mock_data)
+
+  //   return () => {}
+  // }, [])
+
+  useEffect(() => {
+    getMenuDetail(data.menuId)
+      .then((response: AxiosResponse) => {
+        console.log(response)
+        console.log('데이터', response.data.menuName)
+        setData(response.data)
+      })
+      .catch((error) => {
+        if (isAxiosError(error)) {
+          toast(`${error.message}`, 3000, 'error')
+        }
+      })
+  }, [data.menuId])
 
   const handleClick = () => {
     toast('장바구니에 담겼습니다.', 3000, 'success')
@@ -142,7 +142,7 @@ const MenuDetail = () => {
              * 화면 잘 나오나요?
              *   */}
 
-            {data.options?.map((option) =>
+            {/* {data.options?.map((option) =>
               option.isMultiple ? (
                 <>
                   <S.OptionBox>
@@ -156,14 +156,14 @@ const MenuDetail = () => {
                   </S.OptionBox>
                 </>
               ),
-            )}
+            )} */}
 
-            {/* <S.OptionBox>
+            <S.OptionBox>
               {data.options &&
                 data.options.map((option) => (
                   <AddOptionOne option={option} onOptionChange={handleOptionChange} />
                 ))}
-            </S.OptionBox> */}
+            </S.OptionBox>
 
             {/* <S.OptionBox>
               <AddOptionTwo />
