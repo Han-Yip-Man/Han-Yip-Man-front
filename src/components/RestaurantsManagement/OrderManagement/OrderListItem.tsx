@@ -18,10 +18,11 @@ type OmittedDraggableProvided = Omit<DraggableProvided, 'innerRef'>
 
 interface Props extends OmittedDraggableProvided {
   textColor: string
+  title: string
 }
 
 const OrderListItem = forwardRef<HTMLLIElement, Props>(
-  ({ draggableProps, dragHandleProps, textColor }: Props, ref) => {
+  ({ draggableProps, dragHandleProps, textColor, title }: Props, ref) => {
     const [expanded, setExpanded] = useRecoilState<string | false>(accordionExpand)
 
     const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -51,13 +52,16 @@ const OrderListItem = forwardRef<HTMLLIElement, Props>(
             <CustomDivider />
             <Typography>주문시간: 20분전</Typography>
             <Typography>주문번호: 오더아이디1233</Typography>
-            <Typography sx={{ display: 'flex' }}>
-              상태:&nbsp;<Typography sx={{ color: textColor }}>배달출발</Typography>
+            <Typography component="div" sx={{ display: 'flex' }}>
+              상태:&nbsp;
+              <Typography sx={{ color: textColor }}>배달출발</Typography>
             </Typography>
-            <ButtonWrap>
-              <Button sx={{ color: 'green', fontSize: '18px' }}>수락</Button>
-              <Button sx={{ color: 'red', fontSize: '18px' }}>거절</Button>
-            </ButtonWrap>
+            {title === '주문대기' && (
+              <ButtonWrap>
+                <Button sx={{ color: 'green', fontSize: '18px' }}>수락</Button>
+                <Button sx={{ color: 'red', fontSize: '18px' }}>거절</Button>
+              </ButtonWrap>
+            )}
           </AccordionDetails>
         </CustomAccordion>
       </ListItem>

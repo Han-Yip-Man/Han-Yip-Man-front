@@ -37,6 +37,7 @@ function OrderManagementList({ title, items }: Props) {
                 dragHandleProps={provided.dragHandleProps}
                 ref={provided.innerRef}
                 textColor={switchColor(title)}
+                title={title}
               />
             )}
           </Draggable>

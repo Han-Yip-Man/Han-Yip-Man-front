@@ -44,6 +44,7 @@ function AddressModal() {
           .then(() => {
             setCurrentUserAddr(selectedAddr)
             qc.invalidateQueries(['modalAddr'])
+            qc.invalidateQueries(['category'])
           })
           .catch((e) => {
             toast(e.response.data.message, 3000, 'error')
@@ -87,7 +88,7 @@ function AddressModal() {
   }, [data])
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && nonAddrList.length === 0) {
       setNonAddrList([currentUserAddr])
     }
   }, [])

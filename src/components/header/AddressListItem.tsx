@@ -2,11 +2,12 @@ import styled from '@emotion/styled'
 import DeleteIcon from '@mui/icons-material/Delete'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import { Button, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { currentAddr, userAddr } from '../../atoms/addressAtoms'
 import { useAlert } from '../../hooks'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { delUserAddr, setDefaultAddr } from '../../api/address'
+import { useEffect } from 'react'
 
 interface Props extends CurrentAddr {
   isLoggedIn: any
@@ -15,17 +16,17 @@ interface Props extends CurrentAddr {
 
 function AddressListItem({
   id,
-  address,
+  // address,
   road_address,
   isDefault,
   place_name,
-  lat,
-  lng,
+  // lat,
+  // lng,
   isLoggedIn,
   addressId,
 }: Props) {
   const [nonAddrList, setNonAddrList] = useRecoilState(currentAddr)
-  const setCurrentAddr = useSetRecoilState(userAddr)
+  const [currentUser, setCurrentAddr] = useRecoilState(userAddr)
   const toast = useAlert()
   const delMutation = useMutation(delUserAddr)
   const setDefaultMutation = useMutation(setDefaultAddr)
@@ -92,6 +93,11 @@ function AddressListItem({
       setNonAddrList(mappedAddr)
     }
   }
+
+  useEffect(() => {
+    qc.removeQueries(['category'])
+    qc.refetchQueries(['category'])
+  }, [currentUser])
 
   return (
     <ListItem

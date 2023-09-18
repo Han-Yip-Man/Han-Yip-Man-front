@@ -19,12 +19,14 @@ const StoreList = ({ currentCategory, debouncedKeyword, currentFilter, fetchData
     fetchData,
     {
       getNextPageParam: (lastPage: StoreListResponse) => {
-        console.log('다음 커서', lastPage.nextCursor)
         return lastPage.nextCursor
       },
       useErrorBoundary: true,
+      staleTime: 50000,
+      cacheTime: 50000,
     },
   )
+
   const ref = useIntersection(fetchNextPage, hasNextPage)
 
   return (

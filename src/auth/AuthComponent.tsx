@@ -22,7 +22,7 @@ const AuthComponent: React.FC<GeneralLayoutProps> = ({ children }) => {
     }
 
     if (token === null) {
-      routeTo('/selectedsignin')
+      // routeTo('/selectedsignin')
       return
     }
 

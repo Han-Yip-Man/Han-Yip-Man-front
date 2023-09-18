@@ -14,7 +14,7 @@ import { useRouter, useAlert, useDebounce, useInput } from '../../hooks'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import { userAddr } from '../../atoms/addressAtoms'
-import { QueryFunction, QueryErrorResetBoundary, InfiniteData } from '@tanstack/react-query'
+import { QueryErrorResetBoundary, InfiniteData } from '@tanstack/react-query'
 import { fetchStoreData } from '../../api/categoryMainApi'
 import { userInfo } from '../../atoms/userInfoAtoms'
 import { isAxiosError } from 'axios'
@@ -163,7 +163,7 @@ const CategoryMain = () => {
       const searchParam = keyword ? `&searchKeyword=${keyword}` : ''
       // const sortParam = `&sortType=${currentFilter}`
       const url = `categoryId=${currentCategory.categoryId}&size=${15}${searchParam}${cursorParam}`
-      const prefix = !isLoggedIn
+      const prefix = isLoggedIn
         ? '?'
         : `/guest?latitude=${currentAddr.lat}&longitude=${currentAddr.lng}&`
 
