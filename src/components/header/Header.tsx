@@ -127,7 +127,7 @@ function Header() {
                 onClick={() => routeTo('/selectedsignin')}
               >
                 <LocalPizzaOutlinedIcon />
-                &nbsp;로그인인
+                &nbsp;로그인
               </BtnHeader>
               <BtnHeader
                 primary={true}
