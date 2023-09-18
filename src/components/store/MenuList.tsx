@@ -1,5 +1,6 @@
 import { List, ListItem, ListItemButton } from '@mui/material'
 import { MenuCard } from './MenuCard'
+import { useNavigate } from 'react-router-dom'
 
 type menuInfo = {
   menuDescription: string
@@ -15,8 +16,9 @@ type MenuListProps = {
 }
 
 export default function MenuList({ menuList }: MenuListProps) {
+  const navigate = useNavigate()
   const handleToggle = (menuId: number) => () => {
-    console.log('메뉴상세로', menuId)
+    navigate(`/menuDetail/${menuId}`) //temp
   }
 
   return (
