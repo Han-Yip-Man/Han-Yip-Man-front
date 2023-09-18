@@ -15,7 +15,7 @@ const KaKao = () => {
       .get(`/auth/kakao/login?code=${code}`)
       .then((response) => {
         console.log(response)
-        console.log('어흥')
+        console.log('axios push test')
       })
       .catch((error) => {
         console.log(error)
