@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
 import { useEffect } from 'react'
 import axiosClient from '../../api/axiosInstance'
+import axios from 'axios'
 
 const KaKaoLogin = () => {
   const href = window.location.href
@@ -11,17 +11,18 @@ const KaKaoLogin = () => {
   console.log(code)
 
   useEffect(() => {
-    axiosClient
-      .get(`/auth/kakao/callback?code=${code}`)
+    axios
+      .get(`http://54.180.103.214:8080/auth/kakao/callback?code=${code}`)
       .then((response) => {
         console.log(response)
+        console.log('어흥')
       })
       .catch((error) => {
         console.log(error)
       })
   }, [])
 
-  return <></>
+  return <>어흥</>
 }
 
 export default KaKaoLogin
