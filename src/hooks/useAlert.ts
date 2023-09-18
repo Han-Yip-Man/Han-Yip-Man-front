@@ -5,6 +5,14 @@ interface Styles<T = any> {
   [key: string]: T
 }
 
+type horizontalType = 'right' | 'center' | 'left'
+type verticalType = 'bottom' | 'top'
+
+type anchorOriginType = {
+  horizontal: horizontalType
+  vertical: verticalType
+}
+
 const useAlert = () => {
   const { enqueueSnackbar } = useSnackbar()
 
@@ -12,11 +20,12 @@ const useAlert = () => {
     msg: C,
     hideDuration: number,
     variant: VariantType,
+    anchorOrigin?: anchorOriginType,
     style?: Styles<T>,
   ) => {
     enqueueSnackbar(msg, {
       variant,
-      anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+      anchorOrigin: anchorOrigin || { horizontal: 'right', vertical: 'bottom' },
       autoHideDuration: hideDuration,
       style,
     })

@@ -1,40 +1,33 @@
 import styled from '@emotion/styled'
 import { Typography, TextField, Autocomplete, Button, List } from '@mui/material'
-
 import AddressListItem from './AddressListItem'
-// import axiosClient from '../../api/axios'
-// import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+
+import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { userInfo } from '../../atoms/userInfoAtoms'
-import { useEffect, useState } from 'react'
+import { currentAddr, userAddr } from '../../atoms/addressAtoms'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAlert, useDebounce } from '../../hooks'
 import searchAddressByKeyword from '../../api/addressSearch'
-import useDebounce from '../../hooks/useDebounce'
-import { currentAddr } from '../../atoms/addressAtoms'
-import useAlert from '../../hooks/useAlert'
-
-// const getUserAddr = async () => {
-//   const response = await axiosClient.get('/addresses')
-//   return response.data
-// }
-
-// const regUserAddrPost = async (url: string) => {
-//   const response = await axiosClient.post(url)
-//   return response
-// }
+import { getUserAddr, regUserAddrPost } from '../../api/address'
 
 function AddressModal() {
   const isLoggedIn = useRecoilValue(userInfo)
+  const [currentUserAddr, setCurrentUserAddr] = useRecoilState(userAddr)
   const [nonAddrList, setNonAddrList] = useRecoilState(currentAddr)
   const [searchKeyword, setSearchKeyword] = useState<string>('')
   const { debouncedKeyword, isLoading: addrLoading } = useDebounce(searchKeyword, 600)
   const [addrData, setAddrData] = useState([])
   const [selectedAddr, setSelectedAddr] = useState<CurrentAddr>()
-  const handleAlert = useAlert()
-  // const qc = useQueryClient()
-  // const mutation = useMutation(() => regUserAddrPost('/addresses/register'))
-  // const { data, isLoading } = useQuery(['modalAddr'], getUserAddr, { enabled: !!isLoggedIn })
+  const toast = useAlert()
 
-  // 로그인시 리액트쿼리로 데이터 비로그인시 리코일 상태로
+  const mutation = useMutation(regUserAddrPost)
+  const { data } = useQuery<UserAddr[]>(['modalAddr'], getUserAddr, {
+    enabled: !!isLoggedIn,
+  })
+
+  const qc = useQueryClient()
+
   const handleChange = (_: React.SyntheticEvent<any>, keyword: string) => {
     if (!keyword) return
     setSearchKeyword(keyword)
@@ -42,18 +35,30 @@ function AddressModal() {
 
   const handleSubmit = () => {
     if (isLoggedIn) {
-      // 유저 주소에 등록해야함
-      // mutation 사용해서 selectedAddr 을 등록 하고 mutation으로 쿼리 초기화 해서 새 데이터
+      if (selectedAddr) {
+        const { address, place_name, lat, lng, road_address, id } = selectedAddr
+        mutation
+          .mutateAsync(
+            `address=${address}&addressDetail=${place_name}&latitude=${lat}&longitude=${lng}&roadAddress=${road_address}&mapId=${id}`,
+          )
+          .then(() => {
+            setCurrentUserAddr(selectedAddr)
+            qc.invalidateQueries(['modalAddr'])
+          })
+          .catch((e) => {
+            toast(e.response.data.message, 3000, 'error')
+          })
+      }
     } else {
       if (!selectedAddr) return
       const filterAddr = nonAddrList.filter((addr) => addr.id === selectedAddr.id)
       if (filterAddr.length > 0) {
-        handleAlert('이미 존재하는 주소 입니다.', 3000, 'warning')
+        toast('이미 존재하는 주소 입니다.', 3000, 'warning')
         return
       }
       setSearchKeyword('')
       setNonAddrList((prev) => [...prev, selectedAddr] as CurrentAddr[])
-      handleAlert('주소를 등록했습니다.', 3000, 'success')
+      toast('주소를 등록했습니다.', 3000, 'success')
     }
   }
 
@@ -62,7 +67,30 @@ function AddressModal() {
     searchAddressByKeyword(debouncedKeyword, (result: any) => {
       setAddrData(() => result)
     })
+    console.log('디바운싱')
   }, [debouncedKeyword])
+
+  useEffect(() => {
+    if (data) {
+      const currentAddr = data.filter(({ isDefault }) => isDefault)[0]
+      const mappedAddr = {
+        id: currentAddr.mapId,
+        address: currentAddr.address,
+        road_address: currentAddr.roadAddress,
+        place_name: currentAddr.addressDetail,
+        lat: currentAddr.latitude.toFixed(13),
+        lng: currentAddr.longitude.toFixed(13),
+        isDefault: true,
+      }
+      setCurrentUserAddr(mappedAddr)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setNonAddrList([currentUserAddr])
+    }
+  }, [])
 
   return (
     <Wrap>
@@ -118,8 +146,21 @@ function AddressModal() {
         </Search>
       </Header>
       <List dense={true}>
-        {isLoggedIn
-          ? ''
+        {isLoggedIn && data
+          ? data.map((addr: UserAddr) => (
+              <AddressListItem
+                key={addr.mapId}
+                id={addr.mapId}
+                address={addr.address}
+                place_name={addr.addressDetail}
+                road_address={addr.roadAddress}
+                isLoggedIn={isLoggedIn}
+                isDefault={addr.isDefault}
+                lat={addr.latitude.toFixed(13)}
+                lng={addr.longitude.toFixed(13)}
+                addressId={addr.addressId}
+              />
+            ))
           : nonAddrList.map((addr) => (
               <AddressListItem key={addr.id} {...addr} isLoggedIn={isLoggedIn} />
             ))}

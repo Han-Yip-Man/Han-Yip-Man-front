@@ -2,6 +2,9 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
+import MenuDetail from './pages/menuDetail/MenuDetail'
+import Cart from './pages/cart/Cart'
+import Order from './pages/order/Order'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
@@ -13,8 +16,9 @@ import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
 import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
 import Mypage from './components/Mypage/Mypage/Mypage'
 import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
-import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage'
+import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage.tsx'
 import Main from './pages/Main/Main'
+import KaKao from './components/KaKaoLogin/KaKao'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -51,6 +55,24 @@ const routerData: RouterElement[] = [
     withAuth: false,
     children: [
       {
+        id: 0,
+        path: 'menuDetail',
+        label: 'MenuDetail',
+        element: <MenuDetail />,
+      },
+      {
+        id: 1,
+        path: 'cart',
+        label: 'Cart',
+        element: <Cart />,
+      },
+      {
+        id: 2,
+        path: 'order',
+        label: 'Order',
+        element: <Order />,
+      },
+      {
         id: 1,
         path: '',
         label: 'Main',
@@ -58,7 +80,7 @@ const routerData: RouterElement[] = [
       },
       {
         id: 2,
-        path: '/main',
+        path: 'main',
         label: 'CategoryMain',
         element: <CategoryMain />,
       },
@@ -67,6 +89,12 @@ const routerData: RouterElement[] = [
         path: '/store/:storeId',
         label: 'Store',
         element: <Store />,
+      },
+      {
+        id: 4,
+        path: '*',
+        label: 'Not Found',
+        element: <div>페이지를 찾을 수 없습니다.</div>,
       },
     ],
   },
@@ -136,6 +164,13 @@ const routerData: RouterElement[] = [
     path: '/selectedsignin',
     label: 'selectedsignin',
     element: <SignInSelectionPage />,
+    withAuth: false,
+  },
+  {
+    id: 90,
+    path: '/auth/kakao',
+    label: 'kakaologin',
+    element: <KaKao />,
     withAuth: false,
   },
 ]
