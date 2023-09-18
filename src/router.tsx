@@ -15,7 +15,7 @@ import Mypage from './components/Mypage/Mypage/Mypage'
 import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
 import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage.tsx'
 import Main from './pages/Main/Main'
-import KaKaoLogin from './components/KaKaoLogin/KaKaoLogin'
+import KaKao from './components/KaKaoLogin/KaKao'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -143,7 +143,7 @@ const routerData: RouterElement[] = [
     id: 80,
     path: '/auth/kakao',
     label: 'kakaologin',
-    element: <KaKaoLogin />,
+    element: <KaKao />,
     withAuth: false,
   },
 ]
