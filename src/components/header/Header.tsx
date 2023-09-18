@@ -19,13 +19,12 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import LocalPizzaOutlinedIcon from '@mui/icons-material/LocalPizzaOutlined'
 import LunchDiningOutlinedIcon from '@mui/icons-material/LunchDiningOutlined'
 
-import { Link } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useState, forwardRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { userAddr } from '../../atoms/addressAtoms'
 import { userInfo } from '../../atoms/userInfoAtoms'
-import useRouter from '../../hooks/useRouter'
+import { useRouter } from '../../hooks'
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -47,8 +46,6 @@ function Header() {
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
   const currentPath = pathname === '/'
-
-  console.log(currentAddr)
 
   return (
     <AppBar

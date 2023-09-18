@@ -51,7 +51,9 @@ const OrderListItem = forwardRef<HTMLLIElement, Props>(
             <CustomDivider />
             <Typography>주문시간: 20분전</Typography>
             <Typography>주문번호: 오더아이디1233</Typography>
-            <Typography sx={{ color: textColor }}>상태: 배달출발 </Typography>
+            <Typography sx={{ display: 'flex' }}>
+              상태:&nbsp;<Typography sx={{ color: textColor }}>배달출발</Typography>
+            </Typography>
             <ButtonWrap>
               <Button sx={{ color: 'green', fontSize: '18px' }}>수락</Button>
               <Button sx={{ color: 'red', fontSize: '18px' }}>거절</Button>

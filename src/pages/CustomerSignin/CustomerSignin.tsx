@@ -5,7 +5,7 @@ import * as S from './CustomerSignin.style'
 import { useTheme } from '@mui/material/styles'
 import { FormDataType } from '../../types/user'
 import { signIn } from '../../api/user'
-import useAlert from '../../hooks/useAlert'
+import { useAlert } from '../../hooks'
 
 const CustomerSignin = () => {
   const theme = useTheme()
