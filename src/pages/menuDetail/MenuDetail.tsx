@@ -4,7 +4,6 @@ import CounterBox from '../../components/menuDetail/CounterBox'
 import AddOptionOne from '../../components/menuDetail/AddOptionOne'
 // import AddOptionTwo from '../../components/menuDetail/AddOptionTwo'
 // import AddOptionThree from '../../components/menuDetail/AddOptionThree'
-import useAlert from '../../hooks/useAlert'
 import MenuDetailModal from './MenuDetailModal'
 import { getMenuDetail } from '../../api/menu'
 // import useRouter from '../../hooks/useRouter'
@@ -13,6 +12,9 @@ import { getMenuDetail } from '../../api/menu'
 import { isAxiosError, AxiosResponse } from 'axios'
 // import { mmdata } from './menuDetailMockData'
 // import SizeOption from '../../components/menuDetail/SizeOption'
+import AddOptionThree from '../../components/menuDetail/AddOptionThree'
+import useAlert from '../../hooks/useAlert'
+import { mmdata } from './menuDetailMockData'
 
 type optionItem = {
   optionItemId: number
@@ -48,20 +50,22 @@ const initialMenuData = {
   options: [],
 }
 
+type DrinkOption = {
+  name: string
+  price: number
+}
+
 const MenuDetail = () => {
-  // const { routeTo } = useRouter()
   const toast = useAlert()
 
   const [isOpen, setIsOpen] = useState(false)
 
-  // const [mockdata, setMockData] = useState<MenuData>(initialMenuData)
   const [data, setData] = useState<MenuData>(initialMenuData)
 
   const [quantity, setQuantity] = useState<number>(1)
-  // const [value, setValue] = useRecoilState(jeeinAtom)
 
   const [sauceOptions, setSauceOptions] = useState<Array<{ name: string; price: number }>>([])
-  const [drinkOptions, setDrinkOptions] = useState<Array<{ name: string; price: number }>>([])
+  const [drinkOption, setDrinkOption] = useState<DrinkOption>({} as DrinkOption)
 
   // useEffect(() => {
   //   const mock_data = mmdata
@@ -85,6 +89,12 @@ const MenuDetail = () => {
         }
       })
   }, [data.menuId])
+  useEffect(() => {
+    const mock_data = mmdata
+    setData(mock_data)
+
+    return () => {}
+  }, [])
 
   const handleClick = () => {
     toast('장바구니에 담겼습니다.', 3000, 'success')
@@ -93,6 +103,7 @@ const MenuDetail = () => {
   }
 
   const handleOptionChange = (
+    id: string,
     name: string,
     price: number,
     isChecked: boolean,
@@ -102,20 +113,23 @@ const MenuDetail = () => {
       if (optionType === '소스') {
         setSauceOptions((prevOptions) => [...prevOptions, { name, price }])
       } else if (optionType === '음료') {
-        setDrinkOptions((prevOptions) => [...prevOptions, { name, price }])
+        const currentOption = data.options
+          ?.flatMap((option) => option.optionItems)
+          .filter((optionItem) => `option-${optionItem.optionItemId}` === id)
+        const curname = currentOption ? currentOption[0]['optionItemName'] : ''
+        setDrinkOption({ name: curname, price } as DrinkOption)
       }
     } else {
       if (optionType === '소스') {
         setSauceOptions((prevOptions) => prevOptions.filter((option) => option.name !== name))
       } else if (optionType === '음료') {
-        setDrinkOptions((prevOptions) => prevOptions.filter((option) => option.name !== name))
+        setDrinkOption({} as DrinkOption)
       }
     }
   }
 
   const totalOptionPrice =
-    sauceOptions.reduce((totalPrice, option) => totalPrice + option.price, 0) +
-    drinkOptions.reduce((totalPrice, option) => totalPrice + option.price, 0)
+    sauceOptions.reduce((totalPrice, option) => totalPrice + option.price, 0) + drinkOption.price
 
   const mainMenuPrice = data.menuPrice.toLocaleString('ko-KR')
 
@@ -134,44 +148,25 @@ const MenuDetail = () => {
               <S.MenuPriceDiv> {mainMenuPrice}원</S.MenuPriceDiv>
             </S.MenuInfoDiv>
 
-            {/* <S.OptionBox>
-              <SizeOption onSizeChange={handleSizeChange} />
-            </S.OptionBox> */}
-
-            {/**
-             * 화면 잘 나오나요?
-             *   */}
-
-            {/* {data.options?.map((option) =>
-              option.isMultiple ? (
-                <>
-                  <S.OptionBox>
-                    <AddOptionOne option={option} onOptionChange={handleOptionChange} />
-                  </S.OptionBox>
-                </>
-              ) : (
-                <>
-                  <S.OptionBox>
-                    <AddOptionThree />
-                  </S.OptionBox>
-                </>
-              ),
-            )} */}
-
             <S.OptionBox>
-              {data.options &&
-                data.options.map((option) => (
-                  <AddOptionOne option={option} onOptionChange={handleOptionChange} />
-                ))}
+              {data.options?.map((option) =>
+                option.isMultiple ? (
+                  <AddOptionOne
+                    key={option.optionId}
+                    option={option}
+                    onOptionChange={handleOptionChange}
+                  />
+                ) : (
+                  <>
+                    <AddOptionThree
+                      key={option.optionId}
+                      optionValue={option}
+                      onOptionChange={handleOptionChange}
+                    />
+                  </>
+                ),
+              )}
             </S.OptionBox>
-
-            {/* <S.OptionBox>
-              <AddOptionTwo />
-            </S.OptionBox> */}
-
-            {/* <S.OptionBox>
-              <AddOptionThree />
-            </S.OptionBox> */}
 
             <S.OptionBox>
               <CounterBox quantity={quantity} setQuantity={setQuantity} />
@@ -198,9 +193,7 @@ const MenuDetail = () => {
             <S.MainDiv>
               <S.TitleDiv>음료</S.TitleDiv>
               <S.PickedMenuDiv>
-                {drinkOptions
-                  .map((option) => `${option.name}/${option.price}원x${quantity}`)
-                  .join(', ')}
+                {drinkOption.name ? `${drinkOption.name}/${drinkOption.price}원x${quantity}` : null}
               </S.PickedMenuDiv>
             </S.MainDiv>
             <S.MainDiv>
