@@ -134,13 +134,19 @@ export const CounterDisplay = styled.div``
 export const CounterBtnPlus = styled.button``
 
 export const TotalWrap = styled.div`
-  align-self: end;
-  justify-self: end;
+  display: grid;
   padding: 10px;
   padding-right: 20px;
 `
 
-export const Total = styled(Typography)``
+export const DelBtnWrap = styled.div`
+  justify-self: end;
+`
+
+export const Total = styled(Typography)`
+  justify-self: end;
+  align-self: end;
+`
 
 export const ProductNameDiv = styled.div`
   padding: 15px;

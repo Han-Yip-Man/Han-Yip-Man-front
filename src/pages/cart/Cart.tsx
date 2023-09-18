@@ -46,6 +46,9 @@ const Cart = () => {
                 </S.CounterBtnWrap>
               </S.CounterWrap>
               <S.TotalWrap>
+                <S.DelBtnWrap>
+                  <button>X</button>
+                </S.DelBtnWrap>
                 <S.Total>10,000원</S.Total>
               </S.TotalWrap>
             </S.OptionWrap>
@@ -67,6 +70,9 @@ const Cart = () => {
                 </S.CounterBtnWrap>
               </S.CounterWrap>
               <S.TotalWrap>
+                <S.DelBtnWrap>
+                  <button>X</button>
+                </S.DelBtnWrap>
                 <S.Total>10,000원</S.Total>
               </S.TotalWrap>
             </S.OptionWrap>
