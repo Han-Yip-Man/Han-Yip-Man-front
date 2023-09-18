@@ -26,11 +26,27 @@ export const OptionWrapper = styled.div`
   margin-bottom: 20px;
   border-bottom: 2px solid black;
 `
+export const TitleAndMaxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 export const OptionTitle = styled.div`
   margin-bottom: 10px;
   margin-left: 5px;
   font-weight: bold;
+  text-align: center;
+`
+
+export const OptionMaxSeleted = styled.div`
+  width: 120px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  padding: 5px 0;
+  background-color: #7fd2ff;
+  color: white;
+  text-align: center;
+  border-radius: 20px;
 `
 
 export const CheckboxWrapper = styled.div`
