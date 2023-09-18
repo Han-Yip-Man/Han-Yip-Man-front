@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import Header from '../components/header/Header'
 import Container from '@mui/material/Container'
 import useRouter from '../hooks/useRouter'
+import { ErrorBoundary } from 'react-error-boundary'
 
 function GeneralLayout() {
   const { currentPath } = useRouter()

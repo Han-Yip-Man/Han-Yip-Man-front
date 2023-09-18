@@ -1,4 +1,3 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react'
 import * as S from './CategoryMain.style'
 import { SxProps } from '@mui/system'
 import { Theme } from '@mui/material/styles'
@@ -10,17 +9,18 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
 import { PiBowlFood } from 'react-icons/pi'
 import { TbEggFried, TbMeat } from 'react-icons/tb'
 import { IoCafeOutline } from 'react-icons/io5'
-import { Box } from '@mui/material'
-import { userAddr } from '../../atoms/addressAtoms'
-import { QueryFunction, useInfiniteQuery } from '@tanstack/react-query'
-import { fetchStoreData } from '../../api/categoryMainApi'
+
+import { useRouter, useAlert, useDebounce, useInput } from '../../hooks'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import StoreCard from '../../components/categoryMain/StoreCard'
-import useRouter from '../../hooks/useRouter'
-import useAlert from '../../hooks/useAlert'
-import useDebounce from '../../hooks/useDebounce'
-import useInput from '../../hooks/useInput'
-import useIntersectionObserver from '../../hooks/useIntersectionObserver'
+import { userAddr } from '../../atoms/addressAtoms'
+import { QueryFunction, QueryErrorResetBoundary, InfiniteData } from '@tanstack/react-query'
+import { fetchStoreData } from '../../api/categoryMainApi'
+import { userInfo } from '../../atoms/userInfoAtoms'
+import { isAxiosError } from 'axios'
+import { ErrorBoundary } from 'react-error-boundary'
+import StoreList from '../../components/categoryMain/StoreList'
+import ErrorFallback from '../../components/common/ErrorFallback'
 
 type CategoryType =
   | 'all'
@@ -36,11 +36,6 @@ type CategoryType =
   | 'night'
 
 type FilterType = 'distance' | 'review' | 'rating' | 'deliveryFee'
-
-interface ICategory {
-  categoryName: CategoryType
-  categoryId: number
-}
 
 interface IBtn {
   id: number
@@ -148,7 +143,7 @@ const filterBtns: IFilter[] = [
   },
 ]
 
-function CategoryMain() {
+const CategoryMain = () => {
   const { value: searchKeyword, onChange } = useInput('')
   const { debouncedKeyword } = useDebounce(searchKeyword, 600)
   const [currentCategory, setCurrentCategory] = useState<ICategory>({
@@ -158,43 +153,31 @@ function CategoryMain() {
   const [currentFilter, setCurrentFilter] = useState<FilterType>('distance')
   const currentAddr = useRecoilValue(userAddr)
   const { routeTo } = useRouter()
-  const toastAlert = useAlert()
+  const toast = useAlert()
+  const isLoggedIn = useRecoilValue(userInfo)
 
-  const fetchData: QueryFunction<any, string[]> = useCallback(
+  const fetchData = useCallback(
     async ({ pageParam = null }) => {
       const cursorParam = pageParam ? `&cursor=${pageParam}` : ''
       const keyword = debouncedKeyword.trim()
       const searchParam = keyword ? `&searchKeyword=${keyword}` : ''
       // const sortParam = `&sortType=${currentFilter}`
+      const url = `categoryId=${currentCategory.categoryId}&size=${15}${searchParam}${cursorParam}`
+      const prefix = !isLoggedIn
+        ? '?'
+        : `/guest?latitude=${currentAddr.lat}&longitude=${currentAddr.lng}&`
+
       try {
-        const response = await fetchStoreData(
-          `categoryId=${currentCategory.categoryId}&size=${10}${searchParam}${cursorParam}`,
-        )
-
-        if (!response) {
-          throw new Error('응답이 없습니다.')
-        }
-
-        return response
+        return await fetchStoreData(`${prefix}${url}`)
       } catch (error) {
-        console.log(error)
+        if (isAxiosError(error)) {
+          toast(`${error.message}`, 3000, 'error')
+        }
         throw error
       }
     },
-    [currentCategory, debouncedKeyword, currentFilter],
+    [currentCategory, debouncedKeyword, currentFilter, isLoggedIn, currentAddr],
   )
-
-  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ['category', currentCategory.categoryName, debouncedKeyword, currentFilter],
-    fetchData,
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-    },
-  )
-
-  const observer = useIntersectionObserver(fetchNextPage, hasNextPage)
-
-  // 옵저버 걸어서 무한스크롤 테스트 하면 됌
 
   const MoveToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -202,14 +185,10 @@ function CategoryMain() {
 
   useEffect(() => {
     if (currentAddr.id === '') {
-      toastAlert('주소가 없습니다.', 3000, 'error')
+      toast('주소가 없습니다.', 3000, 'error')
       return routeTo('/')
     }
-
-    // currentAddr 이 바뀔때마다
-    // 새로운 주소 기반으로 데이터 요청 비회원은 좌표로 데이터 요청 비회원 api 생기면
-    // 비회원 api에 따라서 url 바꿔야할수도 있음
-  }, [currentAddr])
+  }, [])
 
   return (
     <S.MainWrap>
@@ -253,13 +232,18 @@ function CategoryMain() {
           </S.FilterBtnWrap>
         </S.FilterWrap>
       </S.BtnWrap>
-      <Box sx={{ width: 1, mb: '70px' }}>
-        <S.Wrap>
-          {data?.pages[0].shopLists.map((shop: StoreDetail) => (
-            <StoreCard key={shop.shopId} {...shop} isLoading={isFetching} />
-          ))}
-        </S.Wrap>
-      </Box>
+      <QueryErrorResetBoundary>
+        {(reset) => (
+          <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => reset.reset()}>
+            <StoreList
+              currentCategory={currentCategory}
+              debouncedKeyword={debouncedKeyword}
+              currentFilter={currentFilter}
+              fetchData={fetchData}
+            />
+          </ErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
       <S.CustomFab onClick={MoveToTop}>
         <S.CustomUpIcon />
         Top
