@@ -4,10 +4,13 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import { Button, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { currentAddr, userAddr } from '../../atoms/addressAtoms'
-import useAlert from '../../hooks/useAlert'
+import { useAlert } from '../../hooks'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { delUserAddr, setDefaultAddr } from '../../api/address'
 
 interface Props extends CurrentAddr {
   isLoggedIn: any
+  addressId?: number
 }
 
 function AddressListItem({
@@ -19,36 +22,61 @@ function AddressListItem({
   lat,
   lng,
   isLoggedIn,
+  addressId,
 }: Props) {
   const [nonAddrList, setNonAddrList] = useRecoilState(currentAddr)
   const setCurrentAddr = useSetRecoilState(userAddr)
-  const handleAlert = useAlert()
+  const toast = useAlert()
+  const delMutation = useMutation(delUserAddr)
+  const setDefaultMutation = useMutation(setDefaultAddr)
+  const qc = useQueryClient()
 
   const handleDelete = () => {
-    if (nonAddrList.length === 1) {
-      handleAlert('주소가 하나 남아 지울 수 없습니다.', 3000, 'warning')
-      return
-    }
     if (isLoggedIn) {
       // 주소 id로 삭제 요청
+      if (addressId) {
+        delMutation
+          .mutateAsync(addressId) //
+          .then((res) => {
+            qc.invalidateQueries(['modalAddr'])
+            toast(res.message, 3000, 'info')
+          })
+          .catch((e) => {
+            toast(e.response.data.message, 3000, 'error')
+          })
+      }
     } else {
-      const filteredAddr = nonAddrList.filter((addr) => addr.id !== id)
-      const existsDefault = filteredAddr.filter((addr) => addr.isDefault)
-      if (existsDefault.length > 0) {
-        setNonAddrList(filteredAddr)
+      if (nonAddrList.length === 1) {
+        toast('주소가 하나 남아 지울 수 없습니다.', 3000, 'warning')
+        return
+      }
+
+      const filtered = nonAddrList.filter((addr) => addr.id !== id)
+      const isExist = filtered.filter((addr) => addr.isDefault)
+
+      if (isExist.length > 0) {
+        setNonAddrList(filtered)
       } else {
-        const setDefault = filteredAddr.map((addr, i) =>
+        const setDefault = filtered.map((addr, i) =>
           i === 0 ? { ...addr, isDefault: true } : addr,
         )
-        setCurrentAddr(() => setDefault[0])
-        setNonAddrList(() => setDefault)
+
+        setCurrentAddr(setDefault[0])
+        setNonAddrList(setDefault)
       }
     }
   }
 
   const handleDefault = () => {
     if (isLoggedIn) {
-      // default 설정 api 요청
+      if (addressId) {
+        setDefaultMutation
+          .mutateAsync(addressId) //
+          .then((res) => {
+            qc.invalidateQueries(['modalAddr'])
+            toast(res.message, 3000, 'success')
+          })
+      }
     } else {
       const mappedAddr = nonAddrList.map((addr) => {
         if (addr.isDefault) {

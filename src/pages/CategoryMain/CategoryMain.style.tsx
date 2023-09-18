@@ -116,13 +116,6 @@ export const FilterBtn = styled(Button, {
   }
 `
 
-export const Wrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, minmax(250px, 1fr));
-  gap: 20px;
-  align-items: start;
-`
-
 export const CustomFab = styled(Fab)`
   position: fixed;
   right: 40px;

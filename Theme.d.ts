@@ -10,10 +10,12 @@ declare module '@mui/material/styles' {
 
   interface Palette {
     custom: PaletteColorOptions
+    jeein: PaletteColorOptions
   }
 
   interface PaletteOptions {
     custom?: PaletteColorOptions
+    jeein?: PaletteColorOptions
   }
   export function createTheme(options: PaletteOptions): Palette
 }
