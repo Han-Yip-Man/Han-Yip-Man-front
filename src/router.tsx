@@ -136,7 +136,7 @@ const routerData: RouterElement[] = [
     path: '/dashboard',
     label: 'mypagelayout',
     element: <MypageLayout />,
-    withAuth: false,
+    withAuth: true,
     children: [
       {
         id: 61,

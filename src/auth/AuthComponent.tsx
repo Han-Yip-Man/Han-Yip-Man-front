@@ -13,16 +13,16 @@ const AuthComponent: React.FC<GeneralLayoutProps> = ({ children }) => {
   const { routeTo } = useRouter()
 
   const fetchUserProfile = () => {
-    const token: string | null = localStorage.getItem('accessToken')
+    const token: string | null = sessionStorage.getItem('accessToken')
 
     let decoded: User | null = null
 
     if (token) {
-      decoded = jwtDecode(token?.split(' ')[1]) as User
+      decoded = jwtDecode(token) as User
     }
 
     if (token === null) {
-      routeTo('/login')
+      routeTo('/selectedsignin')
       return
     }
 
