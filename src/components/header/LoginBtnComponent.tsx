@@ -1,11 +1,5 @@
 import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip'
-import Button from '@mui/material/Button'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import Divider from '@mui/material/Divider'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import IconButton from '@mui/material/IconButton'
-import Badge from '@mui/material/Badge'
+import { Button, Menu, MenuItem, Divider, ListItemIcon, IconButton, Badge } from '@mui/material'
 import Logout from '@mui/icons-material/Logout'
 import MopedIcon from '@mui/icons-material/Moped'
 import styled from '@emotion/styled'
@@ -15,6 +9,7 @@ import { useState, useEffect } from 'react'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { userInfo } from '../../atoms/userInfoAtoms'
 import { currentAddr, userAddr } from '../../atoms/addressAtoms'
+import { useRouter } from '../../hooks'
 
 const messages = [
   '떡볶이 한사발 하시죠?',
@@ -29,17 +24,19 @@ const messages = [
 function LoginBtnComponent() {
   const resetCurrentAddr = useResetRecoilState(userAddr)
   const resetNonLoginAddrs = useResetRecoilState(currentAddr)
-  const isLoggedIn = useRecoilValue(userInfo) // 사용자 이름
-  const { pathname } = useLocation()
-  const currentPath = pathname === '/'
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [msg, setMsg] = useState('')
-  const open = Boolean(anchorEl)
+  const { pathname } = useLocation()
+  const { routeTo } = useRouter()
+  const isLoggedIn = useRecoilValue(userInfo) // 사용자 이름
+  const currentPath = pathname === '/'
+  const open = !!anchorEl
 
-  console.log(isLoggedIn)
-
-  const handleClose = () => {
+  const handleClose = (url?: string) => {
     setAnchorEl(null)
+    if (url) {
+      routeTo(url)
+    }
   }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -99,8 +96,7 @@ function LoginBtnComponent() {
         anchorEl={anchorEl}
         id="account-menu"
         open={open}
-        onClose={handleClose}
-        onClick={handleClose}
+        onClose={() => handleClose()}
         sx={{
           overflow: 'visible',
           filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
@@ -109,8 +105,14 @@ function LoginBtnComponent() {
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>마이 페이지</MenuItem>
-        <MenuItem onClick={handleClose}>주문내역</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose('/dashboard/user')
+          }}
+        >
+          마이 페이지
+        </MenuItem>
+        {/* <MenuItem onClick={() => handleClose()}>주문내역</MenuItem> */}
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

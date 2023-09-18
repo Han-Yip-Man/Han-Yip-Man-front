@@ -18,17 +18,12 @@ declare interface ResponseData<T> {
   data?: T
 }
 
-declare type StoreListResponse = ResponseData<{
+declare type StoreListResponse = {
   shopLists: StoreDetail[]
-  nextCursor?: number
-}>
+  nextCursor: number | undefined
+}
 
-declare type QueryResponse = {
-  pages: Array<
-    ResponseData<{
-      shopLists: StoreDetail[]
-      nextCursor?: number
-    }>
-  >
-  pageParams: (string | null)[]
+declare interface ICategory {
+  categoryName: CategoryType
+  categoryId: number
 }

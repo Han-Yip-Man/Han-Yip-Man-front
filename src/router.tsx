@@ -68,6 +68,12 @@ const routerData: RouterElement[] = [
         label: 'Store',
         element: <Store />,
       },
+      {
+        id: 4,
+        path: '*',
+        label: 'Not Found',
+        element: <div>페이지를 찾을 수 없습니다.</div>,
+      },
     ],
   },
   {

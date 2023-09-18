@@ -25,7 +25,7 @@ axiosClient.interceptors.request.use((config) => {
 
   // const token = sessionStorage.getItem('accessToken')
   const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcklkeCI6MjYsImVtYWlsIjoidGVzdCIsInJvbGUiOiJCVVlFUiIsImlhdCI6MTY5NDYyMTcyMiwiZXhwIjoxNjk0NjY0OTIyfQ.DBayp9YY144xE9j5iagO5Yr9KZXMpiOp9xstJbKYG-k'
+    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcklkeCI6NCwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZSI6IkJVWUVSIiwiaWF0IjoxNjk1MDE0MzgzLCJleHAiOjE2OTUxODcxODN9.K9YbRIjIEWT451NyePurkJj2_s3btM37TRn3wlxX4kY'
 
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`

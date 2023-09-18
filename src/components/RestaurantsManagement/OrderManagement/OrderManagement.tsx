@@ -3,7 +3,9 @@ import OrderManagementList from './OrderManagementList'
 import { Stack } from '@mui/material'
 import { DragDropContext, DropResult, Droppable, DroppableId } from 'react-beautiful-dnd'
 import { useCallback, useEffect, useState } from 'react'
-import useSocket from '../../../hooks/useSocket'
+import { useSocket } from '../../../hooks'
+import { useQuery } from '@tanstack/react-query'
+import { getSellerOrderList } from '../../../api/order'
 
 interface Item {
   id: string
@@ -35,9 +37,16 @@ function OrderManagement() {
   const [acceptList, setAcceptList] = useState(acceptItems)
   const [cookingList, setCookingList] = useState(cookingItems)
   const [deliveryList, setDeliveryList] = useState(deliveryItems)
-  // const socket = useSocket('서버소켓연결주소')
+  const socket = useSocket('ws://58.123.150.14:8088')
+
+  console.log(socket)
 
   // 리액트 쿼리를 쓰던지해서 데이터 불러오기
+  // 리액트 쿼리로 불러온 데이터로 목록 그려준다음
+  // 드래그앤 드랍으로 아이템 이동하면 소켓 이벤트로 주문상태 변경및순서변경아이디 넘겨줄것
+  // const { data } = useQuery(['orderStatus'], () =>
+  //   getSellerOrderList('전역상태로 상점아이디 넣어줄것'),
+  // )
 
   const getItemArray = useCallback(
     (droppableId: string): Item[] => {
