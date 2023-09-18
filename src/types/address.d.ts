@@ -28,3 +28,14 @@ declare interface CurrentAddr {
   lng: string
   isDefault: boolean
 }
+
+declare interface UserAddr {
+  address: string
+  addressDetail: string
+  addressId: number
+  isDefault: boolean
+  latitude: number
+  longitude: number
+  mapId: string
+  roadAddress: string
+}
