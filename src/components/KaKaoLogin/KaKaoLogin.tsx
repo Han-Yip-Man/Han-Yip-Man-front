@@ -8,6 +8,7 @@ const KaKaoLogin = () => {
 
   console.log(params)
   console.log(code)
+  console.log(code)
 
   useEffect(() => {
     axiosClient
