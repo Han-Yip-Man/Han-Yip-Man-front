@@ -1,4 +1,4 @@
-import axiosClient from './axios'
+import axiosClient from './axiosInstance'
 
 // /api/buyer-shops/menus/{menu_id}
 // 메뉴 상세 조회
