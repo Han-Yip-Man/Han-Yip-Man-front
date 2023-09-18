@@ -141,7 +141,7 @@ const MenuDetail = () => {
 
     const { isMultiple, maxSelected } = currentOption
 
-    setSelectedOptions((prevOptions) => {
+    setSelectedOptions((prevOptions: any) => {
       if (isChecked) {
         // maxSelected가 1개인 경우
         if (maxSelected === 1) {
@@ -169,7 +169,9 @@ const MenuDetail = () => {
         // 체크 해제 시의 로직은 그대로 유지
         return {
           ...prevOptions,
-          [optionType]: prevOptions[optionType].filter((option) => option.optionItemName !== name),
+          [optionType]: prevOptions[optionType].filter(
+            (option: any) => option.optionItemName !== name,
+          ),
         }
       }
     })
