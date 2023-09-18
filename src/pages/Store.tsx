@@ -5,9 +5,8 @@ import { Box, CardMedia, Rating, Stack, Typography, styled } from '@mui/material
 import { useParams } from 'react-router-dom'
 
 export const Store = () => {
-  const { shopId } = useParams()
-  console.log(shopId)
-  const { data, isLoading } = useQuery(['stores', shopId], () => getStoreDetail(shopId))
+  const { storeId } = useParams()
+  const { data, isLoading } = useQuery(['stores', storeId], () => getStoreDetail(storeId))
 
   return (
     <>

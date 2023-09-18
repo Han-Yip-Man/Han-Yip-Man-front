@@ -1,18 +1,34 @@
 import { Box, Card, CardContent, CardMedia, Rating, Stack, Typography, styled } from '@mui/material'
 
-export const ReviewCard = () => {
+type ReviewCardProps = {
+  review: {
+    userId: number
+    nickName: string
+    reviewContent: string
+    reviewScore: string
+    createdAt: string
+    reviewImageUrl: string
+  }
+}
+
+export const ReviewCard = ({ review }: ReviewCardProps) => {
   return (
     <Box margin={1}>
       <CardWrap>
         <BuyerInfo>
           <Typography gutterBottom variant="h5" component="div">
-            ID
+            {review.nickName}
           </Typography>
           <Typography gutterBottom variant="h5" component="div">
-            <Rating name="half-rating-read" defaultValue={5} precision={5} readOnly />
+            <Rating
+              name="rating"
+              defaultValue={Number(review.reviewScore)}
+              precision={0.1}
+              readOnly
+            />
           </Typography>
           <Typography gutterBottom variant="h5" component="div">
-            Few Days Ago
+            {review.createdAt.slice(0, 10)}
           </Typography>
         </BuyerInfo>
         <ReviewContentWrap>
@@ -20,14 +36,11 @@ export const ReviewCard = () => {
             component="img"
             alt="green iguana"
             height="150"
-            image="/src/assets/pizzahut.png"
+            image={review.reviewImageUrl}
           />
           <ReviewContent>
-            <Typography gutterBottom variant="h5" component="div">
-              너무 맛있어요
-            </Typography>
             <Typography variant="body2" color="text.secondary">
-              사장님이 친절하고 피자가 맛있어오 정말 쵝오의 피자
+              {review.reviewContent}
             </Typography>
           </ReviewContent>
         </ReviewContentWrap>

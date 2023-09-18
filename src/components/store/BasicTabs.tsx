@@ -11,13 +11,15 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableHead,
 } from '@mui/material'
 import BasicAccordion from './BasicAccordion'
 import { ReviewCard } from './ReviewCard'
 import { KakaoMap } from '../../api/kakao.api'
 import { SyntheticEvent, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { getStoreDetail, getStoreMenus } from '../../api/storeDetail'
+import { getStoreDetail, getStoreMenus, getStoreReviews } from '../../api/storeDetail'
+import { useParams } from 'react-router-dom'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -49,26 +51,27 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = useState(0)
-  const [shopId] = useState(10)
-  const { data: menuData } = useQuery(['storeMenus', shopId], () => getStoreMenus(shopId))
-  const { data: infoData } = useQuery(['stores', shopId], () => getStoreDetail(String(shopId)))
+  const [tabValue, setTabValue] = useState(0)
+  const { storeId } = useParams()
+  const { data: menuData } = useQuery(['storeMenus', storeId], () => getStoreMenus(storeId))
+  const { data: infoData } = useQuery(['stores', storeId], () => getStoreDetail(storeId))
+  const { data: reviewData } = useQuery(['reviews', storeId], () => getStoreReviews(storeId))
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     event.preventDefault()
-    setValue(newValue)
+    setTabValue(newValue)
   }
 
   return (
     <Box>
       <TabsWrap>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" centered>
           <Tab label="메뉴" {...a11yProps(0)} />
           <Tab label="가게정보" {...a11yProps(1)} />
           <Tab label="리뷰" {...a11yProps(2)} />
         </Tabs>
       </TabsWrap>
-      <CustomTabPanel value={value} index={0}>
+      <CustomTabPanel value={tabValue} index={0}>
         {menuData
           ? menuData.map((menuList: any) => (
               <BasicAccordion key={menuList.menuGroupId} menuList={menuList} />
@@ -79,22 +82,24 @@ export default function BasicTabs() {
           <Typography>대부분 국산 아님</Typography>
         </InfoPaper>
         <InfoPaper>
-          <Typography>
-            <InfoTitle variant="h6">유의사항</InfoTitle>
-            메뉴사진은 연출된 이미지로 실제 조리된 음식과 다를 수 있습니다.
-          </Typography>
+          <InfoTitle variant="h6">유의사항</InfoTitle>
+          <Typography>메뉴사진은 연출된 이미지로 실제 조리된 음식과 다를 수 있습니다.</Typography>
         </InfoPaper>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={tabValue} index={1}>
         <StoreInfoWrap>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Table>
-                <TableBody>
-                  <StoreInfoPaper>
+              <StoreInfoPaper>
+                <Table>
+                  <TableHead>
                     <TableRow>
-                      <InfoTitle variant="h6">영업 정보</InfoTitle>
+                      <StyledTableHead>
+                        <InfoTitle variant="h6">영업 정보</InfoTitle>
+                      </StyledTableHead>
                     </TableRow>
+                  </TableHead>
+                  <TableBody>
                     <TableRow>
                       <StyledTableCell>상호명</StyledTableCell>
                       <StyledTableCell>{infoData?.storeDetail.info.shopName}</StyledTableCell>
@@ -115,22 +120,29 @@ export default function BasicTabs() {
                       <StyledTableCell>사업자 번호</StyledTableCell>
                       <StyledTableCell>123-45-67890</StyledTableCell>
                     </TableRow>
-                  </StoreInfoPaper>
-                  <StoreInfoPaper>
+                  </TableBody>
+                </Table>
+              </StoreInfoPaper>
+              <StoreInfoPaper>
+                <Table>
+                  <TableHead>
                     <TableRow>
-                      <InfoTitle variant="h6">위생 정보 내역</InfoTitle>
+                      <StyledTableHead>
+                        <InfoTitle variant="h6">위생 정보 내역</InfoTitle>
+                      </StyledTableHead>
                     </TableRow>
+                  </TableHead>
+                  <TableBody>
                     <TableRow>
                       <StyledTableCell>CESCO</StyledTableCell>
                       <StyledTableCell>2023.08. 최근 해충방제 점검월</StyledTableCell>
                     </TableRow>
-                  </StoreInfoPaper>
-                </TableBody>
-              </Table>
+                  </TableBody>
+                </Table>
+              </StoreInfoPaper>
             </Grid>
           </Grid>
           <MapBox>
-            {/* <MapTitle variant="h6">위치</MapTitle> */}
             <KakaoMap
               mapId={'map'}
               width="100%"
@@ -141,14 +153,13 @@ export default function BasicTabs() {
           </MapBox>
         </StoreInfoWrap>
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
+      <CustomTabPanel value={tabValue} index={2}>
         <ReviewPaper>
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
-          <ReviewCard />
+          {reviewData
+            ? reviewData.shopReviewsList.map((review) => (
+                <ReviewCard key={review.createdAt} review={review} />
+              ))
+            : null}
         </ReviewPaper>
       </CustomTabPanel>
     </Box>
@@ -187,10 +198,10 @@ const InfoTitle = styled(Typography)`
   margin: 16px auto;
 `
 
-// const MapTitle = styled(Typography)`
-//   font-weight: bold;
-//   margin: 16px 16px;
-// `
+const StyledTableHead = styled(TableCell)`
+  padding: 0;
+  border-style: none;
+`
 
 const StyledTableCell = styled(TableCell)`
   border-bottom: none;
