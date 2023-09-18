@@ -4,8 +4,6 @@ import { Stack } from '@mui/material'
 import { DragDropContext, DropResult, Droppable, DroppableId } from 'react-beautiful-dnd'
 import { useCallback, useEffect, useState } from 'react'
 import { useSocket } from '../../../hooks'
-import { useQuery } from '@tanstack/react-query'
-import { getSellerOrderList } from '../../../api/order'
 
 interface Item {
   id: string
@@ -37,9 +35,11 @@ function OrderManagement() {
   const [acceptList, setAcceptList] = useState(acceptItems)
   const [cookingList, setCookingList] = useState(cookingItems)
   const [deliveryList, setDeliveryList] = useState(deliveryItems)
-  const socket = useSocket('ws://58.123.150.14:8088')
+  const { socket, connected } = useSocket('ws://58.123.150.14:8088')
 
-  console.log(socket)
+  socket?.on('send_order_status_change', () => {
+    // 리액트 쿼리 데이터 다시 받아오기
+  })
 
   // 리액트 쿼리를 쓰던지해서 데이터 불러오기
   // 리액트 쿼리로 불러온 데이터로 목록 그려준다음

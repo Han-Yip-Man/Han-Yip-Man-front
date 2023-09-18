@@ -120,9 +120,8 @@ export const OptionWrap = styled.div`
 `
 
 export const CounterWrap = styled.div`
-  align-self: end;
+  align-self: center;
   justify-self: center;
-  padding-bottom: 10px;
 `
 
 export const CounterBtnWrap = styled.div`
