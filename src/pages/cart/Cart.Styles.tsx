@@ -57,6 +57,8 @@ export const Thead = styled.tr`
   font-size: 15px;
   border-bottom: 1.2px solid rgba(68, 68, 68, 0.3);
   height: 50px;
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr;
 `
 
 export const Td1Title = styled.td`
@@ -76,24 +78,19 @@ export const Td4Title = styled.td`
 `
 
 export const Td1 = styled.td`
-  width: 700px;
-  text-align: center;
   padding: 16px 2px;
   margin: 0;
   font-weight: bold;
 `
 
 export const Td2 = styled.td`
-  width: 250px;
-  text-align: center;
   font-weight: bold;
 `
 
 export const Td3 = styled.td`
-  width: 250px;
-  text-align: center;
   font-weight: bold;
   /* font-weight: bold; */
+
   & > * {
     :not(:first-child) {
       font-weight: bold;
@@ -102,8 +99,6 @@ export const Td3 = styled.td`
 `
 
 export const Td4 = styled.td`
-  width: 200px;
-  text-align: center;
   font-weight: bold;
 `
 
@@ -112,6 +107,8 @@ export const Tr = styled.tr`
   border-left: none;
   padding: 10px;
   height: 110px;
+  display: flex;
+  align-items: center;
 `
 
 export const ProductDiv = styled.div`
@@ -129,10 +126,13 @@ export const ProductNameDiv = styled.div`
 `
 
 export const CounterOuterDiv = styled.div`
-  display: inline-block;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  && {
+    vertical-align: middle;
+  }
 `
 
 export const CountDiv = styled.div`
@@ -142,7 +142,6 @@ export const CountDiv = styled.div`
 `
 
 export const MinusButton = styled.button`
-  /* margin: 20px 0; */
   padding: 0px;
   height: 50px;
   width: 40px;
