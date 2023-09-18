@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import kakaoApi, { KakaoMap, UserSetAddressKakaoMap } from '../../api/kakao.api'
 import { useForm } from 'react-hook-form'
 import { Stack } from '@mui/material'
+import { constSelector } from 'recoil'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -24,11 +25,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
 }
@@ -64,10 +61,12 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
   const { register, handleSubmit, watch, setValue, getValues } = useForm<FormValues>()
 
   const findAddressLatLng = () => {
+    console.log(watch())
     const geocoder = new kakaoApi.kakao.maps.services.Geocoder()
 
     const callback = (result: any, status: any) => {
       if (status === kakaoApi.kakao.maps.services.Status.OK) {
+        console.log(result)
         setValue('latitude', result[0].y)
         setValue('longitude', result[0].x)
       }
@@ -86,7 +85,7 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example">
           {addressList?.map((adres, index) => (
-            <Tab label={`주소 ${index + 1}`} {...a11yProps(index)} />
+            <Tab key={index} label={`주소 ${index + 1}`} {...a11yProps(index)} />
           ))}
           {addressList && addressList?.length < 3 ? (
             <Tab label={`+`} {...a11yProps(addressList.length)} />
@@ -94,19 +93,17 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
         </Tabs>
       </Box>
       {addressList?.map((adres, index) => (
-        <>
-          <CustomTabPanel value={tabValue} index={index}>
-            {adres.isDefault ? <p>기본 주소</p> : null}
-            {`주소: ${adres.address}, ${adres.detailAddress}`}
-            <KakaoMap
-              mapId={`address-map${index}`}
-              width={'550px'}
-              height={'300px'}
-              latitude={adres.latitude}
-              longitude={adres.longitude}
-            />
-          </CustomTabPanel>
-        </>
+        <CustomTabPanel key={index} value={tabValue} index={index}>
+          {adres.isDefault ? <p>기본 주소</p> : null}
+          {`주소: ${adres.address}, ${adres.detailAddress}`}
+          <KakaoMap
+            mapId={`address-map${index}`}
+            width={'550px'}
+            height={'300px'}
+            latitude={adres.latitude}
+            longitude={adres.longitude}
+          />
+        </CustomTabPanel>
       ))}
       {addressList && addressList?.length < 3 ? (
         <CustomTabPanel value={tabValue} index={addressList.length}>
@@ -131,8 +128,8 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
             mapId={`add-address-map`}
             width={'550px'}
             height={'300px'}
-            latitude={getValues('latitude')}
-            longitude={getValues('longitude')}
+            latitude={getValues('latitude') ? getValues('latitude') : 37.551843}
+            longitude={getValues('longitude') ? getValues('longitude') : 126.975791}
             // latitude={37.551843}
             // longitude={126.975791}
           />
