@@ -14,7 +14,7 @@ import { useRouter, useAlert, useDebounce, useInput } from '../../hooks'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import { userAddr } from '../../atoms/addressAtoms'
-import { QueryErrorResetBoundary, InfiniteData } from '@tanstack/react-query'
+import { QueryErrorResetBoundary, useQueryClient } from '@tanstack/react-query'
 import { fetchStoreData } from '../../api/categoryMainApi'
 import { userInfo } from '../../atoms/userInfoAtoms'
 import { isAxiosError } from 'axios'
@@ -155,6 +155,7 @@ const CategoryMain = () => {
   const { routeTo } = useRouter()
   const toast = useAlert()
   const isLoggedIn = useRecoilValue(userInfo)
+  const qc = useQueryClient()
 
   const fetchData = useCallback(
     async ({ pageParam = null }) => {
@@ -187,6 +188,10 @@ const CategoryMain = () => {
     if (currentAddr.id === '') {
       toast('주소가 없습니다.', 3000, 'error')
       return routeTo('/')
+    }
+
+    return () => {
+      qc.removeQueries(['category'])
     }
   }, [])
 

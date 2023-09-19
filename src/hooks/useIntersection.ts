@@ -18,7 +18,7 @@ const useIntersection = (
           callback()
         }
       },
-      { threshold: 0.5 },
+      { threshold: 1 },
     )
 
     if (node) observerRef.current.observe(node)
