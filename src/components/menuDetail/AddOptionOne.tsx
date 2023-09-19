@@ -84,8 +84,12 @@ export default function AddOptionOne({
               onDoubleClick={handleCheckChange}
             />
             <S.OptionOneLabel htmlFor={`option-${item.optionItemId}`}>
-              <div>{item.optionItemName}</div>
-              <div>+{item.optionItemPrice}원</div>
+              <S.OptNameAndPriceWrap>
+                <S.OptionItemNameDiv>{item.optionItemName}</S.OptionItemNameDiv>
+                <S.OptionItemPrice>
+                  +{item.optionItemPrice.toLocaleString('ko-KR')}원
+                </S.OptionItemPrice>
+              </S.OptNameAndPriceWrap>
             </S.OptionOneLabel>
           </S.CheckboxWrapper>
         )
