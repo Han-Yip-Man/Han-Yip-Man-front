@@ -15,7 +15,8 @@ import { ReviewCardForm } from './ReviewCardForm'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { useQuery } from '@tanstack/react-query'
 import { getOrder } from '../../api/customerOrder'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { getTempCurrentLatLng } from '../../utils/map.util'
 
 type CustomerOrderDetailProps = {
   setmenupage: Dispatch<SetStateAction<number>>
@@ -30,7 +31,37 @@ export const CustomerOrderDetail = ({
   setOrderIdParam,
 }: CustomerOrderDetailProps) => {
   const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
-  console.log(data)
+  // console.log(data)
+
+  /**
+   * getOrder 에서 shop lat, lng 가져와서 지도에 starting 값으로
+   * sse 로 cur lat, cur lng 받아서 지도에 lat, lng 값으로
+   *
+   */
+  type Place = {
+    lat: number
+    lng: number
+  }
+  const [currentPlace, setCurrentPlace] = useState<Place>({} as Place)
+  console.log(currentPlace)
+
+  useEffect(() => {
+    const start = { lat: 37.492569, lng: 127.026444 }
+    const end = { lat: 37.488569, lng: 127.037444 }
+    const res = getTempCurrentLatLng(start, end)
+    console.log(res)
+
+    const timer = setInterval(() => {
+      if (res.length === 1) clearInterval(timer)
+      setCurrentPlace(() => res[0])
+      res.shift()
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  // useEffect(() => {}, [currentPlace])
+
   const clickHandler = () => {
     setOrderIdParam(0)
     setmenupage(2)
@@ -60,18 +91,12 @@ export const CustomerOrderDetail = ({
           실시간 배달
           <Chip className="order_state" label="배달완료" color="primary" />
           <img width={'39px'} src="/public/svg/drone.svg" alt="drone" />
-          {/**
-           * TODO:
-           * 두 지점
-           * 선분
-           * 이동하는 점
-           * 남은 거리 시간 표시
-           * 등등
-           */}
           <DeliveryKakaoMap
             mapId="delivery"
             width="1050px"
             height="350px"
+            curLatitude={currentPlace.lat}
+            curLongitude={currentPlace.lng}
             latitude={data?.latitude}
             longitude={data?.longitude}
           />

@@ -148,6 +148,10 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
 
   useEffect(() => {}, [selectedAddr])
 
+  /**
+   * 주소지 관련 새로 가져와서 일부 생략
+   * 코드 보존 위해 그냥 둠 line 273:285
+   */
   const { register, handleSubmit, watch, setValue, getValues } = useForm<FormValues>()
 
   const findAddressLatLng = () => {
@@ -168,6 +172,31 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
   const [tabValue, setTabValue] = useState(0)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
+  }
+
+  const handleOnchange = (value: NonNullable<string | DataType>) => {
+    if (typeof value === 'string' || !value) return
+    setSelectedAddr({
+      id: value.id,
+      address: value.address_name,
+      road_address: value.road_address_name,
+      place_name: value.place_name,
+      lat: value.y,
+      lng: value.x,
+      isDefault: false,
+    })
+
+    submitMapAPI(value.x, value.y)
+  }
+
+  /**
+   * kakao.api.ts 에 만들거나 하셈
+   * 아니면 deliverymap 처럼 하든
+   * @param x
+   * @param y
+   */
+  const submitMapAPI = (x: string, y: string) => {
+    console.log(x, y)
   }
 
   return (
@@ -226,16 +255,7 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
                 }}
                 onInputChange={handleAddrChange}
                 onChange={(_, value) => {
-                  if (typeof value === 'string' || !value) return
-                  setSelectedAddr({
-                    id: value.id,
-                    address: value.address_name,
-                    road_address: value.road_address_name,
-                    place_name: value.place_name,
-                    lat: value.y,
-                    lng: value.x,
-                    isDefault: false,
-                  })
+                  handleOnchange(value)
                 }}
                 renderInput={(param) => (
                   <TextField
@@ -265,6 +285,28 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
             <input type="submit" value="주소등록" /> */}
           </form>
 
+          {/**
+           * 공통적으로 User~ Deli~ 둘 다 위도 경도 받아서 마커 표시하기
+           * 필요하고
+           * 
+           * User~ 는 지금 이 파일에서 쓰이는데
+           *  지도 <=> 인풋 서로 위도경도 공유? 비슷하게 
+           * 1. 인풋에서 주소 선택 시 지도로 위도경도 보내서 지도 이동 및 마커표시
+           * 2. 지도를 이동해서 중앙좌표값(위도경도) Autocomplete이쪽으로 데이터 보내주기
+           * 
+           *   const [selectedAddr, setSelectedAddr] = useState<CurrentAddr>()
+           * 
+                declare interface CurrentAddr {
+                  id: string
+                  address: string
+                  road_address: string
+                  place_name: string
+                  lat: string
+                  lng: string
+                  isDefault: boolean
+                }
+           * 
+           *  */}
           <UserSetAddressKakaoMap
             mapId={`add-address-map`}
             width={'550px'}
