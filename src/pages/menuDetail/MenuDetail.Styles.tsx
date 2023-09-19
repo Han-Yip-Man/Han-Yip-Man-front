@@ -67,10 +67,10 @@ export const MenuPriceDiv = styled.div`
   width: 150px;
   height: 45px;
   text-align: center;
-  background-color: rgb(115, 115, 222, 0.7);
+  background-color: rgb(231, 216, 15);
   color: white;
   font-size: 20px;
-  padding-top: 10px;
+  padding-top: 13px;
   border: none;
   border-radius: 50px;
 `
@@ -125,7 +125,7 @@ export const OrderButton = styled.button`
   border: none;
   width: 150px;
   height: 50px;
-  background-color: blue;
+  background-color: #ea7600;
   color: white;
   cursor: pointer;
 `
