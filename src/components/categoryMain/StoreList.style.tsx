@@ -13,7 +13,7 @@ export const LoadingWrap = styled.div`
 `
 
 export const Observer = styled.div`
-  height: 200px;
+  height: 400px;
   width: 100px;
   /* background-color: gray; */
   /* bottom: 50px; */

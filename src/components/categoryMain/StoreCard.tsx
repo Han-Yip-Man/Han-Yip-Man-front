@@ -1,7 +1,20 @@
-import { Divider, Skeleton } from '@mui/material'
+import { memo } from 'react'
+import { Divider } from '@mui/material'
 import * as S from './StoreCard.style'
 
 interface Props extends StoreDetail {}
+
+function areEqual(prevProps: any, nextProps: any) {
+  return (
+    prevProps.avgRating === nextProps.avgRating &&
+    prevProps.minOrderPrice === nextProps.minOrderPrice &&
+    prevProps.reviewCount === nextProps.reviewCount &&
+    prevProps.shopName === nextProps.shopName &&
+    prevProps.shopDescription === nextProps.shopDescription &&
+    prevProps.deliveryTime === nextProps.deliveryTime &&
+    prevProps.deliveryPrice === nextProps.deliveryPrice
+  )
+}
 
 function StoreCard({
   avgRating,
@@ -55,4 +68,4 @@ function StoreCard({
   )
 }
 
-export default StoreCard
+export default memo(StoreCard, areEqual)

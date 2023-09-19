@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { isAxiosError } from 'axios'
 import searchAddressByKeyword from '../../api/addressSearch'
 import { checkExistAddress, getAddressData, registerUserAddress } from '../../api/main'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import MopedOutlinedIcon from '@mui/icons-material/MopedOutlined'
 import { useTheme } from '@mui/material/styles'
 import AddrLi from '../../components/address/AddrLi'
@@ -34,7 +34,6 @@ function Main() {
     setIsFocused(false)
   })
   const { routeTo } = useRouter()
-  const qc = useQueryClient()
 
   const { data: addressData, isSuccess } = useQuery(['address'], getAddressData, {
     enabled: !!isLoggedIn,
@@ -84,7 +83,6 @@ function Main() {
 
   const successSubmit = (currentAddr: CurrentAddr) => {
     setAddr(currentAddr)
-    qc.removeQueries(['category'])
     toast('맛집을 찾아보세요 !! 😋', 3000, 'success')
     routeTo('/main')
   }
