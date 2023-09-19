@@ -58,6 +58,3 @@ jobs:
           body: |
             This PR updates the frontend app.
           token: ${{ secrets.GITHUB_TOKEN }}
-
-
-      

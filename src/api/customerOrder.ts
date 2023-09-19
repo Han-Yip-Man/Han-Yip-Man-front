@@ -1,7 +1,8 @@
 import axiosClient from './axiosInstance'
 import { getStoreDetail } from './storeDetail'
 
-export const getOrder = async () => {
+export const getOrder = async (orderId: number) => {
+  console.log('getOrder>>>', orderId)
   // axiosClient.get(`orders/${orderId}`)
   const data = await getStoreDetail('10')
   const latitude = data.storeDetail.info.shopAddressResponse.latitude,
@@ -58,4 +59,52 @@ export const getOrder = async () => {
     }
 
   return mockOrder.data
+}
+
+export const getOrders = async () => {
+  // const cursor = 10,
+  //   size = 10
+  // const response = await axiosClient.get(`orders?cursor=${cursor}&size=${size}`)
+  // return response.data
+
+  const mockData = {
+    result: true,
+    status: 200,
+    message: '성공적으로 주문내역을 조회했습니다.',
+    data: {
+      content: [
+        {
+          orderUid: 1,
+          shopName: 'BBQ-교대본점',
+          shopId: 11410, // 가게ID
+          bannerImg:
+            'https://hanyipman3.s3.ap-northeast-2.amazonaws.com/%2F%2Fshop/10/69ddc5d9-2c55-4edb-bce9-10b32e8ee299',
+          menus: ['파인애플피자 x 3', '파인애플피자 x 3', '파인애플피자 x 3'],
+          options: [
+            'tomato x 3, mustard x 3',
+            'tomato x 3, mustard x 3',
+            'tomato x 3, mustard x 3',
+          ],
+          totalPrice: 108000,
+          orderDateTime: '2023-09-11 13:17:58',
+          orderStatus: 'WAIT',
+        },
+        {
+          orderUid: 2,
+          shopName: 'BBQ-교대본점',
+          shopId: 11410, // 가게ID
+          bannerImg:
+            'https://hanyipman3.s3.ap-northeast-2.amazonaws.com/%2F%2Fshop/10/69ddc5d9-2c55-4edb-bce9-10b32e8ee299',
+          menus: ['파인애플피자 x 3', '파인애플피자 x 3'],
+          options: [],
+          orderDateTime: '2023-09-12 13:58:26',
+          orderStatus: 'WAIT',
+        },
+      ],
+      cursor: 10,
+      size: 10,
+      end: true,
+    },
+  }
+  return mockData.data
 }
