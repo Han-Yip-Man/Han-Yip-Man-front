@@ -14,17 +14,25 @@ import { DeliveryKakaoMap } from '../../api/kakao.api'
 import { ReviewCardForm } from './ReviewCardForm'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { useQuery } from '@tanstack/react-query'
-import { getOrder } from '../../api/orderDetail'
+import { getOrder } from '../../api/customerOrder'
+import { Dispatch, SetStateAction } from 'react'
 
 type CustomerOrderDetailProps = {
-  setmenupage: React.Dispatch<React.SetStateAction<number>>
+  setmenupage: Dispatch<SetStateAction<number>>
+
+  orderIdParam: number
+  setOrderIdParam: Dispatch<SetStateAction<number>>
 }
 
-export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) => {
-  // const { data } = useQuery(['order'], () => getOrder(orderId)) // orderId는 주문내역에서 들어올 때 보내기
-  const { data } = useQuery(['order'], () => getOrder())
+export const CustomerOrderDetail = ({
+  setmenupage,
+  orderIdParam,
+  setOrderIdParam,
+}: CustomerOrderDetailProps) => {
+  const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
   console.log(data)
   const clickHandler = () => {
+    setOrderIdParam(0)
     setmenupage(2)
   }
   return (
@@ -72,14 +80,14 @@ export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) =
       <Stack>
         <Typography variant="h5" component={Box}>
           주문 내역
-          {data?.orderMenus.map((menu) => (
-            <Card>
+          {data?.orderMenus.map((menu, i) => (
+            <Card key={menu.name}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {data?.shopName}
                 </Typography>
-                {menu.options.map((option) => (
-                  <Typography variant="body1" color="text.secondary">
+                {menu.options.map((option, i) => (
+                  <Typography key={option.optionName} variant="body1" color="text.secondary">
                     {menu.name} <span>옵션:{option.optionName}</span>
                   </Typography>
                 ))}
