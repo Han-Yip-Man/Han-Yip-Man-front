@@ -56,7 +56,7 @@ const routerData: RouterElement[] = [
     children: [
       {
         id: 0,
-        path: 'menuDetail',
+        path: 'menuDetail/:menuId',
         label: 'MenuDetail',
         element: <MenuDetail />,
       },

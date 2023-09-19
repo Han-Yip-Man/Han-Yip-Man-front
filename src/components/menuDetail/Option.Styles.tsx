@@ -43,7 +43,7 @@ export const OptionMaxSeleted = styled.div`
   margin-left: 20px;
   margin-bottom: 10px;
   padding: 5px 0;
-  background-color: #7fd2ff;
+  background-color: rgb(248, 193, 43);
   color: white;
   text-align: center;
   border-radius: 20px;
