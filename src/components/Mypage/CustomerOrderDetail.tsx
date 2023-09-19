@@ -21,6 +21,7 @@ type CustomerOrderDetailProps = {
 }
 
 export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) => {
+  // const { data } = useQuery(['order'], () => getOrder(orderId)) // orderId는 주문내역에서 들어올 때 보내기
   const { data } = useQuery(['order'], () => getOrder())
   console.log(data)
   const clickHandler = () => {
@@ -115,7 +116,7 @@ export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) =
       <Stack>
         <Typography variant="h5" component={Box}>
           리뷰 작성
-          <ReviewCardForm />
+          <ReviewCardForm shopId={data?.shopId} />
         </Typography>
       </Stack>
     </OrderDetailWrap>
