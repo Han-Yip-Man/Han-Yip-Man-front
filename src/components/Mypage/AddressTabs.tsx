@@ -1,12 +1,20 @@
-import * as React from 'react'
+import styled from '@emotion/styled'
+
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import kakaoApi, { KakaoMap, UserSetAddressKakaoMap } from '../../api/kakao.api'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Stack } from '@mui/material'
-import { constSelector } from 'recoil'
+import { Autocomplete, Button, Stack, TextField } from '@mui/material'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { useAlert, useDebounce } from '../../hooks'
+import { userInfo } from '../../atoms/userInfoAtoms'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { getUserAddr, regUserAddrPost } from '../../api/address'
+import { currentAddr, userAddr } from '../../atoms/addressAtoms'
+import searchAddressByKeyword from '../../api/addressSearch'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -58,6 +66,88 @@ type FormValues = {
 }
 
 export default function AddressTabs({ addressList }: AddressTabsProps) {
+  const isLoggedIn = useRecoilValue(userInfo)
+  const [currentUserAddr, setCurrentUserAddr] = useRecoilState(userAddr)
+  const [nonAddrList, setNonAddrList] = useRecoilState(currentAddr)
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
+  const { debouncedKeyword, isLoading: addrLoading } = useDebounce(searchKeyword, 600)
+  const [addrData, setAddrData] = useState([])
+  const [selectedAddr, setSelectedAddr] = useState<CurrentAddr>()
+  const toast = useAlert()
+
+  const mutation = useMutation(regUserAddrPost)
+  const { data } = useQuery<UserAddr[]>(['modalAddr'], getUserAddr, {
+    enabled: !!isLoggedIn,
+  })
+
+  const qc = useQueryClient()
+
+  const handleAddrChange = (_: React.SyntheticEvent<any>, keyword: string) => {
+    if (!keyword) return
+    setSearchKeyword(keyword)
+  }
+
+  const handleAddrSubmit = () => {
+    if (isLoggedIn) {
+      if (selectedAddr) {
+        const { address, place_name, lat, lng, road_address, id } = selectedAddr
+        mutation
+          .mutateAsync(
+            `address=${address}&addressDetail=${place_name}&latitude=${lat}&longitude=${lng}&roadAddress=${road_address}&mapId=${id}`,
+          )
+          .then(() => {
+            setCurrentUserAddr(selectedAddr)
+            qc.invalidateQueries(['modalAddr'])
+          })
+          .catch((e) => {
+            toast(e.response.data.message, 3000, 'error')
+          })
+      }
+    } else {
+      if (!selectedAddr) return
+      const filterAddr = nonAddrList.filter((addr) => addr.id === selectedAddr.id)
+      if (filterAddr.length > 0) {
+        toast('이미 존재하는 주소 입니다.', 3000, 'warning')
+        return
+      }
+      setSearchKeyword('')
+      setNonAddrList((prev) => [...prev, selectedAddr] as CurrentAddr[])
+      toast('주소를 등록했습니다.', 3000, 'success')
+    }
+  }
+
+  useEffect(() => {
+    if (!debouncedKeyword) return
+    searchAddressByKeyword(debouncedKeyword, (result: any) => {
+      setAddrData(() => result)
+    })
+    console.log('디바운싱')
+  }, [debouncedKeyword])
+
+  useEffect(() => {
+    if (data) {
+      const currentAddr = data.filter(({ isDefault }) => isDefault)[0]
+      const mappedAddr = {
+        id: currentAddr.mapId,
+        address: currentAddr.address,
+        road_address: currentAddr.roadAddress,
+        place_name: currentAddr.addressDetail,
+        lat: currentAddr.latitude.toFixed(13),
+        lng: currentAddr.longitude.toFixed(13),
+        isDefault: true,
+      }
+      setCurrentUserAddr(mappedAddr)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setNonAddrList([currentUserAddr])
+    }
+  }, [])
+
+  useEffect(() => {}, [selectedAddr])
+
   const { register, handleSubmit, watch, setValue, getValues } = useForm<FormValues>()
 
   const findAddressLatLng = () => {
@@ -75,7 +165,7 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
     geocoder.addressSearch(watch()['address'], callback)
   }
 
-  const [tabValue, setTabValue] = React.useState(0)
+  const [tabValue, setTabValue] = useState(0)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
   }
@@ -107,9 +197,60 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
       ))}
       {addressList && addressList?.length < 3 ? (
         <CustomTabPanel value={tabValue} index={addressList.length}>
-          <p>주소 입력</p>
+          {/* <p>주소 입력</p> */}
           <form onSubmit={handleSubmit((data) => console.log(data))}>
-            <Stack flexDirection={'row'}>
+            <Search>
+              <Autocomplete
+                sx={{ width: '100%' }}
+                freeSolo
+                disableClearable
+                loading={addrLoading}
+                id="address"
+                options={addrData.map((addr: DataType) => addr)} // top100Films.map((option) => option.title) 이런식으로 주소검색 데이터 받아와서 옵션 그려줌
+                getOptionLabel={(addr: DataType | string) => {
+                  if (typeof addr === 'string') return addr
+                  return `${addr.place_name} ${addr.address_name}`
+                }}
+                renderOption={(props, option) => {
+                  return (
+                    <li
+                      {...props}
+                      style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
+                    >
+                      <Typography>{option.place_name}</Typography>
+                      <Typography sx={{ fontSize: '10px', color: 'gray' }}>
+                        {option.address_name}
+                      </Typography>
+                    </li>
+                  )
+                }}
+                onInputChange={handleAddrChange}
+                onChange={(_, value) => {
+                  if (typeof value === 'string' || !value) return
+                  setSelectedAddr({
+                    id: value.id,
+                    address: value.address_name,
+                    road_address: value.road_address_name,
+                    place_name: value.place_name,
+                    lat: value.y,
+                    lng: value.x,
+                    isDefault: false,
+                  })
+                }}
+                renderInput={(param) => (
+                  <TextField
+                    {...param}
+                    label="주소 입력"
+                    placeholder="지번,도로명,건물명으로 검색"
+                  />
+                )}
+              />
+              <CustomBtn variant="outlined" onClick={handleAddrSubmit}>
+                등록
+              </CustomBtn>
+            </Search>
+
+            {/* <Stack flexDirection={'row'}>
               <label htmlFor="address">주소</label>
               <input type="text" id="address" {...register('address')} />
             </Stack>
@@ -121,20 +262,50 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
             <input type="hidden" {...register('longitude')} />
 
             <input type="button" value="주소찾기" onClick={findAddressLatLng} />
-            <input type="submit" value="주소등록" />
+            <input type="submit" value="주소등록" /> */}
           </form>
 
           <UserSetAddressKakaoMap
             mapId={`add-address-map`}
             width={'550px'}
             height={'300px'}
-            latitude={getValues('latitude') ? getValues('latitude') : 37.551843}
-            longitude={getValues('longitude') ? getValues('longitude') : 126.975791}
-            // latitude={37.551843}
-            // longitude={126.975791}
+            // latitude={getValues('latitude') ? getValues('latitude') : 37.551843}
+            // longitude={getValues('longitude') ? getValues('longitude') : 126.975791}
+            latitude={selectedAddr?.lat ? +selectedAddr?.lat : 37.551843}
+            longitude={selectedAddr?.lng ? +selectedAddr?.lng : 126.975791}
           />
         </CustomTabPanel>
       ) : null}
     </Box>
   )
 }
+
+const Search = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  padding-left: 10px;
+  padding-right: 10px;
+  place-items: center;
+  margin-left: 20px;
+  margin-right: 20px;
+  background-color: white;
+
+  & label.Mui-focused {
+    color: black;
+  }
+
+  & .MuiOutlinedInput-root {
+    &.Mui-focused fieldset {
+      border-color: black;
+    }
+  }
+`
+const CustomBtn = styled(Button)`
+  color: black;
+  border-color: black;
+
+  &:hover,
+  &:active {
+    border: 1px solid black;
+  }
+`

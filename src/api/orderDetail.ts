@@ -2,7 +2,7 @@ import axiosClient from './axiosInstance'
 import { getStoreDetail } from './storeDetail'
 
 export const getOrder = async () => {
-  // axiosClient.get(``)
+  // axiosClient.get(`orders/${orderId}`)
   const data = await getStoreDetail('10')
   const latitude = data.storeDetail.info.shopAddressResponse.latitude,
     longitude = data.storeDetail.info.shopAddressResponse.longitude,
@@ -14,6 +14,7 @@ export const getOrder = async () => {
         orderUid: '2023091209076e668873', // 주문번호
         createdAt: '2023-09-12 21:08:55', // 주문시간
         shopName: 'BBQ-교대본점', // 가게명
+        shopId: 11410, // 가게ID
         orderName: '파인애플피자 1개 외 2개', // 주문명
         orderMenus: [
           // 주문한 메뉴들
