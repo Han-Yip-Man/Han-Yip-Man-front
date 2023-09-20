@@ -40,13 +40,15 @@ export interface patchShopNameType {
   shopName: string
 }
 
-export type FieldNames =
+export type ShopField =
   | 'categoryName'
   | 'shopName'
   | 'shopDescription'
   | 'minOrderPrice'
   | 'businessNumber'
   | 'shopPhone'
+
+export type MenuField = 'menuDescription' | 'menuName' | 'menuPrice' | 'categorygroups'
 
 export interface ShopInfo {
   categoryName?: string | number

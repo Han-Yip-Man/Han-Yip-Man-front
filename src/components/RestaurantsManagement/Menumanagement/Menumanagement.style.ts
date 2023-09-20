@@ -1,19 +1,12 @@
 import styled from '@emotion/styled'
 import Accordion from '@mui/material/Accordion'
 import Typography from '@mui/material/Typography'
+import { Button } from '@mui/material'
 
 export const Stylespan = styled.span<{ isMultiple: boolean }>`
   font-size: 15px;
   margin: 0 20px 0 10px;
   color: ${(props) => (props.isMultiple ? 'blue' : 'red')};
-`
-
-export const StyleImg = styled.img`
-  cursor: pointer;
-  margin-right: 5px;
-  &:hover {
-    filter: invert(52%) sepia(91%) saturate(2957%) hue-rotate(7deg) brightness(98%) contrast(101%);
-  }
 `
 
 export const OptionTitle = styled(Typography)`
@@ -106,3 +99,12 @@ export const MenuItemWrapper = styled.div`
     display: none;
   }
 `
+export const Btnbox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  gap: 30px;
+  margin: 20px 0 20px;
+`
+export const EditBtn = styled(Button)``
+export const DeleteBtn = styled(Button)``
