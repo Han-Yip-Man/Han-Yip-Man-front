@@ -1,3 +1,5 @@
+import kakaoApi from '../api/kakao.api'
+
 /**
  * 두 점 사이에 좌표값을 생성하는 유틸함수
  *
@@ -36,4 +38,28 @@ export const getTempCurrentLatLng = (
 
   const result = getLatLngArray(latArr, lngArr)
   return result
+}
+
+/**
+ * 주소 값을 좌표값으로 변환하는 함수
+ * setAtom 사용
+ *
+ * @param address
+ * @param setEndPoint
+ * @returns
+ */
+export const getAddressToLatLng = (address: string | undefined, setAtom: any) => {
+  if (address === undefined) return console.log('address is undefined')
+  console.log(address)
+  const geocoder = new kakaoApi.kakao.maps.services.Geocoder()
+
+  const callback = (result: any, status: any) => {
+    if (status === kakaoApi.kakao.maps.services.Status.OK) {
+      setAtom({
+        lat: +parseFloat(result[0].y).toFixed(6),
+        lng: +parseFloat(result[0].x).toFixed(6),
+      })
+    }
+  }
+  geocoder.addressSearch(address, callback)
 }
