@@ -31,7 +31,7 @@ export const CustomerMyPage = () => {
           <Stack bgcolor={'white'} flexDirection={'column'} justifyContent={'center'}>
             <Table>
               <TableBody>
-                <TableRow>
+                <TableRow key={data?.email}>
                   <StyledTableCell>
                     <Typography>EMAIL :</Typography>
                   </StyledTableCell>
@@ -39,7 +39,7 @@ export const CustomerMyPage = () => {
                     <Typography> {data?.email}</Typography>
                   </StyledTableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow key={data?.phoneNumber}>
                   <StyledTableCell>
                     <Typography>PHONE :</Typography>
                   </StyledTableCell>
@@ -47,30 +47,30 @@ export const CustomerMyPage = () => {
                     <Typography> {data?.phoneNumber}</Typography>
                   </StyledTableCell>
                 </TableRow>
-                {data?.addressList.map((addressInfo) => (
-                  <>
-                    {addressInfo.isDefault ? (
-                      <>
-                        <TableRow>
-                          <StyledTableCell>
-                            <Typography>ADDRESS :</Typography>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Typography> {addressInfo.address}</Typography>
-                          </StyledTableCell>
-                        </TableRow>
-                        <TableRow>
-                          <StyledTableCell>
-                            <Typography>DETAIL ADDRESS :</Typography>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Typography> {addressInfo.detailAddress}</Typography>
-                          </StyledTableCell>
-                        </TableRow>
-                      </>
-                    ) : null}
-                  </>
-                ))}
+                {data?.addressList
+                  .filter((addressInfo) => addressInfo.isDefault)
+                  .map((addresss) => (
+                    <TableRow key={addresss.address}>
+                      <StyledTableCell>
+                        <Typography>ADDRESS :</Typography>
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        <Typography> {addresss.address}</Typography>
+                      </StyledTableCell>
+                    </TableRow>
+                  ))}
+                {data?.addressList
+                  .filter((addressInfo) => addressInfo.isDefault)
+                  .map((addresss) => (
+                    <TableRow key={addresss.detailAddress}>
+                      <StyledTableCell>
+                        <Typography>DETAIL ADDRESS :</Typography>
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        <Typography> {addresss.detailAddress}</Typography>
+                      </StyledTableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </Stack>
@@ -82,10 +82,10 @@ export const CustomerMyPage = () => {
       </Stack>
       <CustomerInfoTitle variant="h5">리뷰관리</CustomerInfoTitle>
       <ReviewPaper>
+        {/* <ReviewCard />
         <ReviewCard />
         <ReviewCard />
-        <ReviewCard />
-        <ReviewCard />
+        <ReviewCard /> */}
       </ReviewPaper>
     </MypageWrap>
   )

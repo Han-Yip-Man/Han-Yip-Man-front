@@ -56,7 +56,7 @@ const routerData: RouterElement[] = [
     children: [
       {
         id: 0,
-        path: 'menuDetail',
+        path: 'menuDetail/:menuId',
         label: 'MenuDetail',
         element: <MenuDetail />,
       },
@@ -86,7 +86,7 @@ const routerData: RouterElement[] = [
       },
       {
         id: 3,
-        path: '/store/:shopId',
+        path: '/store/:storeId',
         label: 'Store',
         element: <Store />,
       },
@@ -136,7 +136,7 @@ const routerData: RouterElement[] = [
     path: '/dashboard',
     label: 'mypagelayout',
     element: <MypageLayout />,
-    withAuth: false,
+    withAuth: true,
     children: [
       {
         id: 61,

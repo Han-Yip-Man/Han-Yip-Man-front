@@ -1,8 +1,8 @@
-type ROLE_USER = 'user'
-type ROLE_ADMIN = 'admin'
+type ROLE_USER = '"BUYER"'
+type ROLE_ADMIN = 'SELLER'
 
-export const UserRole: ROLE_USER = 'user'
-export const AdminRole: ROLE_ADMIN = 'admin'
+export const UserRole: ROLE_USER = '"BUYER"'
+export const AdminRole: ROLE_ADMIN = 'SELLER'
 
 export type UserRole = ROLE_USER | ROLE_ADMIN
 
@@ -17,7 +17,7 @@ export interface User {
   email: string
   exp: number
   iat: number
-  idx: number
+  userIdx: number
   member_img: string
   nickname: string
   phone_number: string

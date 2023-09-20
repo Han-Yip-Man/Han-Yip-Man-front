@@ -1,43 +1,95 @@
 import { Box, Card, Rating, Stack, TextField, styled } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { postReview } from '../../api/mypage'
+import useImageCompression from '../../hooks/useImageCompression'
 
-export const ReviewCardForm = () => {
-  const { register, handleSubmit, watch, control } = useForm()
-  const [imgPreview, setImgPreview] = useState('')
-  const image = watch('img')
+type ReviewRequest = {
+  reviewContent?: string
+  reviewImage?: File
+  reviewScore?: number
+  shopId?: number
+  [key: string]: any
+}
+
+type ReviewCardFormProps = {
+  shopId?: number
+}
+
+export const ReviewCardForm = ({ shopId }: ReviewCardFormProps) => {
+  const [errorMessage, setErrorMessage] = useState('')
+  const { register, handleSubmit, watch, control, setValue } = useForm() //<ReviewRequest>
+
+  const handleProfileImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      await compressProfileImage(file)
+    }
+  }
+
+  const {
+    image: reviewImage,
+    compressImage: compressProfileImage,
+    compressedFile: profileCompressedFile,
+  } = useImageCompression('/img/preview.jpg')
 
   useEffect(() => {
-    if (image && image.length > 0) {
-      const file = image[0]
-      setImgPreview(URL.createObjectURL(file))
+    if (profileCompressedFile) {
+      setValue('reviewImage', profileCompressedFile)
     }
-  }, [image])
+  }, [profileCompressedFile])
+
+  const onSubmit = async (data: any) => {
+    try {
+      setErrorMessage('')
+      const payload = {
+        reviewImag: data.reviewImage,
+        reviewContent: data.reviewContent,
+        reviewScore: data.reviewScore,
+        shopId,
+      }
+
+      const formData = new FormData()
+
+      Object.entries(payload).forEach(([key, value]) => {
+        if (value !== undefined) {
+          formData.append(key, value)
+        }
+      })
+
+      const response = await postReview(formData)
+      console.log('리뷰등록성공', response)
+    } catch (e: any) {
+      console.log('리뷰등록실패', e)
+      setErrorMessage(e.response.data.message)
+    }
+  }
 
   return (
     <Box margin={1}>
       <CardWrap>
-        {/**
-         *
-         * TODO: 별점, 사진, 내용 적어서 보냄 + 가게아이디
-         *
-         *
-         * */}
-        <form onSubmit={handleSubmit((data) => console.log(data))}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Stack flexDirection={'row'}>
             <label htmlFor="rating">별점</label>
             <Controller
-              name="rating"
+              name="reviewScore"
               control={control}
               defaultValue={5}
               rules={{ required: true }}
-              render={(props: any) => <Rating name="rating" onChange={props.onChange} />}
+              render={({ field }) => {
+                return (
+                  <Rating
+                    {...field}
+                    onChange={(e) => field.onChange(parseInt((e.target as HTMLInputElement).value))}
+                  />
+                )
+              }}
             />
           </Stack>
           <Stack flexDirection={'row'}>
             <label htmlFor="image">이미지</label>
-            <input type="file" id="img" {...register('img')} />
-            <img width={100} src={imgPreview} />
+            <input type="file" id="img" onChange={handleProfileImageChange} />
+            <img width={100} src={reviewImage} alt="리뷰 이미지 미리보기" />
           </Stack>
           <Stack flexDirection={'row'}>
             <label htmlFor="content">내용</label>
@@ -48,11 +100,12 @@ export const ReviewCardForm = () => {
               rows={4}
               variant="filled"
               placeholder="내용을 입력해주세요"
-              {...register('content')}
+              {...register('reviewContent')}
             />
           </Stack>
           <input type="submit" value="등록하기" />
         </form>
+        {errorMessage ? errorMessage : null}
       </CardWrap>
     </Box>
   )

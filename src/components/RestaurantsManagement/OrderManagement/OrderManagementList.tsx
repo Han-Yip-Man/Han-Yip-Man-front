@@ -30,13 +30,15 @@ function OrderManagementList({ title, items }: Props) {
       </TitleWrap>
       <CustomList>
         {items.map((item: any, index: number) => (
-          <Draggable key={item.id} draggableId={item.id} index={index}>
+          <Draggable key={item.orderId} draggableId={`${item.orderId}`} index={index}>
             {(provided) => (
               <OrderListItem
                 draggableProps={provided.draggableProps}
                 dragHandleProps={provided.dragHandleProps}
                 ref={provided.innerRef}
                 textColor={switchColor(title)}
+                title={title}
+                {...item}
               />
             )}
           </Draggable>

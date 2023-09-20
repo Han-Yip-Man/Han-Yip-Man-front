@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Divider, Typography, Button } from '@mui/material'
 
 export const OuterDiv = styled.div`
   max-width: 1200px;
@@ -41,84 +42,167 @@ export const TotalCountDiv = styled.div`
   margin: -3px;
 `
 
-export const ItemTable = styled.table`
-  width: 100%;
-  border-top: 1px solid rgba(68, 68, 68, 0.3);
-  border-collapse: collapse;
+export const CustomDivider = styled(Divider)`
+  border: 1px solid black;
 `
 
-export const Title = styled.tr`
-  background-color: #f5f5f5;
-  border-top: 2px solid black;
-`
-
-export const Thead = styled.tr`
-  font-weight: normal;
-  font-size: 15px;
-  border-bottom: 1.2px solid rgba(68, 68, 68, 0.3);
-  height: 50px;
+export const ListWrap = styled.div`
   display: grid;
-  grid-template-columns: 80px 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
 `
 
-export const Td1Title = styled.td`
+export const TitleWrap = styled.div`
+  display: grid;
+  grid-template-rows: 60px 60px;
+`
+
+export const ListTitleWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  height: 60px;
+  background-color: rgb(128, 128, 128, 0.4);
+`
+
+export const CustomTypo = styled.div`
+  justify-self: start;
+  padding-left: 20px;
+`
+
+export const BtnWrap = styled.div`
+  justify-self: end;
+  margin-right: 50px;
+`
+
+export const CustomBtn = styled(Button)`
+  color: black;
+`
+
+export const SubTitleWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  height: 60px;
+  /* background-color: gray; */
+`
+
+// export const SubTitleTypo = styled(Typography)``
+export const SubTitleTypo1 = styled.td`
   width: 500px;
   text-align: left;
-  padding: 16px 30px;
-  margin: 0;
-  font-size: 20px;
-  font-weight: bold;
+  padding-left: 20px;
+`
+export const SubTitleTypo2 = styled.td`
+  width: 120px;
+  text-align: center;
+`
+export const SubTitleTypo3 = styled.td`
+  width: 120px;
+  text-align: center;
+`
+export const SubTitleTypo4 = styled.td`
+  width: 120px;
+  text-align: center;
 `
 
-export const Td4Title = styled.td`
-  text-align: center;
-  font-size: 15px;
-  color: gray;
+export const ItemList = styled.ul`
+  display: grid;
+  grid-template-rows: 1fr;
+  gap: 10px;
+`
+
+export const ItemLi = styled.li`
+  height: 150px;
+  background-color: rgb(128, 128, 128, 0.2);
+  display: grid;
+  /* grid-template-columns: 400px 1fr; */
+  grid-template-columns: 500px 1fr;
+`
+
+export const ItemDescWrap = styled.div`
+  display: flex;
+  width: 500px;
+`
+
+// export const ItemImg = styled.img`
+//   object-fit: cover;
+//   width: 200px;
+// `
+
+export const ImgTitle = styled.div`
+  padding: 20px 10px 5px 20px;
+  width: 70%;
+`
+
+export const OptionContent = styled.div`
+  /* padding: 10px; */
+  padding: 20px 10px 5px;
+  width: 60%;
+`
+
+export const OptionWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+`
+
+export const CounterWrap = styled.div`
+  align-self: center;
+  justify-self: center;
+`
+
+export const CounterBtnWrap = styled.div`
+  display: flex;
+`
+export const CounterBtnMinus = styled.button`
+  width: 25px;
+  border: 1px solid black;
+  border-radius: 10px 0 0 10px;
   cursor: pointer;
 `
 
-export const Td1 = styled.td`
-  padding: 16px 2px;
-  margin: 0;
-  font-weight: bold;
+export const CounterDisplayInput = styled.input`
+  width: 40px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 0;
+  border: 1px solid black;
+  border-left: none;
+  border-right: none;
+  outline: none;
 `
 
-export const Td2 = styled.td`
-  font-weight: bold;
+export const CounterBtnPlus = styled.button`
+  width: 25px;
+  border: 1px solid black;
+  border-radius: 0 10px 10px 0;
+  cursor: pointer;
 `
 
-export const Td3 = styled.td`
-  font-weight: bold;
-  /* font-weight: bold; */
+export const TotalWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  padding-right: 20px;
+  text-align: center;
+`
 
-  & > * {
-    :not(:first-child) {
-      font-weight: bold;
-    }
+export const DelBtnWrap = styled.div`
+  justify-self: center;
+  align-self: center;
+  & > button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
   }
 `
 
-export const Td4 = styled.td`
-  font-weight: bold;
-`
-
-export const Tr = styled.tr`
-  border-bottom: 1px solid rgba(68, 68, 68, 0.3);
-  border-left: none;
-  padding: 10px;
-  height: 110px;
-  display: flex;
-  align-items: center;
-`
-
-export const ProductDiv = styled.div`
-  display: flex;
-  margin: 0;
-  padding: 15px;
-`
-
-export const Img = styled.img`
-  width: 150px;
+export const Total = styled(Typography)`
+  justify-self: center;
+  align-self: center;
 `
 
 export const ProductNameDiv = styled.div`
@@ -239,7 +323,7 @@ export const OrderDiv = styled.div`
 
 export const OrderButton = styled.button`
   border: none;
-  background-color: red;
+  background-color: #ea7600;
   color: white;
   width: 200px;
   height: 60px;

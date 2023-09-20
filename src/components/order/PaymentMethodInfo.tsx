@@ -54,12 +54,12 @@ const PaymentMethodInfo = () => {
                   src="https://cdn.dominos.co.kr/domino/pc/images/sp/ico-pay_kakaopay.png"
                 />
               </S.KakaoButton>
-              <S.TossButton>
+              {/* <S.TossButton>
                 <S.TossImg
                   alt="toss"
                   src="https://cdn.dominos.co.kr/domino/pc/images/sp/ico-pay_toss.png"
                 />
-              </S.TossButton>
+              </S.TossButton> */}
               <S.PortOneButton onClick={onClickPayment}>신용카드 결제</S.PortOneButton>
             </S.Td1InnerDiv>
           </S.Td1>

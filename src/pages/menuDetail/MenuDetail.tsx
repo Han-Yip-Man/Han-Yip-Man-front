@@ -2,19 +2,16 @@ import { useEffect, useState } from 'react'
 import * as S from './MenuDetail.Styles'
 import CounterBox from '../../components/menuDetail/CounterBox'
 import AddOptionOne from '../../components/menuDetail/AddOptionOne'
-// import AddOptionTwo from '../../components/menuDetail/AddOptionTwo'
-// import AddOptionThree from '../../components/menuDetail/AddOptionThree'
 import MenuDetailModal from './MenuDetailModal'
 import { getMenuDetail } from '../../api/menu'
 // import useRouter from '../../hooks/useRouter'
-// import { useRecoilState } from 'recoil'
-// import { jeeinAtom } from '../../atoms'
 import { isAxiosError, AxiosResponse } from 'axios'
 // import { mmdata } from './menuDetailMockData'
-// import SizeOption from '../../components/menuDetail/SizeOption'
-// import AddOptionThree from '../../components/menuDetail/AddOptionThree'
 import useAlert from '../../hooks/useAlert'
-// import { mmdata } from './menuDetailMockData'
+import { useRecoilState } from 'recoil'
+import { CartStateAtom } from '../../atoms/cartAtoms'
+import { useParams } from 'react-router-dom'
+import { addCartItems } from '../../api/cart'
 
 type optionItem = {
   optionItemId: number
@@ -41,7 +38,7 @@ interface MenuData {
 }
 
 const initialMenuData = {
-  menuId: 2,
+  menuId: 0,
   menuName: '',
   menuDescription: '',
   thumbnailUrl: '',
@@ -49,41 +46,47 @@ const initialMenuData = {
   discountPrice: 0,
   options: [],
 }
+interface CartItem {
+  amount: number
+  cartId: string
+  menuName: string
+  menuPrice: number
+  optionItems?: optionItem[]
+  totalPrice: number
+}
 
-const MenuDetail = () => {
+interface MenuDetailProps {
+  cartItem?: CartItem
+}
+const MenuDetail = ({ cartItem }: MenuDetailProps) => {
   const toast = useAlert()
+  const { amount, cartId, menuName, menuPrice, optionItems, totalPrice } = cartItem || {}
+  const [cartProduct, setCartProduct] = useRecoilState(CartStateAtom)
 
   const [isOpen, setIsOpen] = useState(false)
-
   const [data, setData] = useState<MenuData>(initialMenuData)
-
   const [quantity, setQuantity] = useState<number>(1)
-
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: { optionItemId: number; optionItemName: string; optionItemPrice: number }[]
   }>({})
 
+  const { menuId } = useParams<{ menuId: string }>()
+
+  useEffect(() => {
+    console.log('장바구니 확인', cartProduct)
+  }, [cartProduct])
+
   // useEffect(() => {
   //   const mock_data = mmdata
   //   console.log(mock_data)
-  //   // setMockData(mmdata)
-  //   setData(mock_data)
-
-  //   return () => {}
-  // }, [])
-
-  // useEffect(() => {
-  //   const mock_data = mmdata
   //   setData(mock_data)
 
   //   return () => {}
   // }, [])
 
   useEffect(() => {
-    getMenuDetail(data.menuId)
+    getMenuDetail(Number(menuId))
       .then((response: AxiosResponse) => {
-        console.log(response)
-        console.log('데이터', response.data.menuName)
         setData(response.data)
 
         const initialSelectedOptions = response.data.options.reduce(
@@ -100,7 +103,7 @@ const MenuDetail = () => {
           toast(`${error.message}`, 3000, 'error')
         }
       })
-  }, [data.menuId])
+  }, [menuId])
 
   const handleClick = () => {
     toast('장바구니에 담겼습니다.', 3000, 'success')
@@ -108,28 +111,38 @@ const MenuDetail = () => {
     setIsOpen(true)
   }
 
-  // ======================================================================================
-  // const handleOptionChange = (
-  //   name: string,
-  //   price: number,
-  //   isChecked: boolean,
-  //   optionType: string,
-  // ) => {
-  //   if (isChecked) {
-  //     setSelectedOptions((prevOptions) => ({
-  //       ...prevOptions,
-  //       [optionType]: [...(prevOptions[optionType] || []), { name, price }],
-  //     }))
-  //   } else {
-  //     setSelectedOptions((prevOptions) => ({
-  //       ...prevOptions,
-  //       [optionType]: prevOptions[optionType].filter((option) => option.name !== name),
-  //     }))
-  //   }
-  // }
+  const handleAddToCart = () => {
+    if (data && quantity) {
+      const allSelectedOptionItems = Object.values(selectedOptions).reduce(
+        (prev, curr) => prev.concat(curr),
+        [],
+      )
 
-  // ======================================================================================
+      const newCartItem = {
+        amount: quantity,
+        cartId: data.menuId.toString(),
+        menuName: data.menuName,
+        menuPrice: data.menuPrice,
+        optionItems: allSelectedOptionItems,
+        totalPrice: (data.menuPrice + totalOptionPrice) * quantity,
+      }
+
+      setCartProduct((prevItems) => [...prevItems, newCartItem])
+
+      const selOptArr = allSelectedOptionItems.map((optionItem) => optionItem.optionItemId)
+
+      const requestCartItem = {
+        shopId: 11410,
+        menuId: data.menuId,
+        options: selOptArr,
+        amount: quantity,
+      }
+      addCartItems(requestCartItem) // 임포트 부탁드립니다
+    }
+  }
+
   const handleOptionChange = (
+    id: number,
     name: string,
     price: number,
     isChecked: boolean,
@@ -141,13 +154,13 @@ const MenuDetail = () => {
 
     const { isMultiple, maxSelected } = currentOption
 
-    setSelectedOptions((prevOptions) => {
+    setSelectedOptions((prevOptions: any) => {
       if (isChecked) {
         // maxSelected가 1개인 경우
         if (maxSelected === 1) {
           return {
             ...prevOptions,
-            [optionType]: [{ optionItemName: name, optionItemPrice: price }],
+            [optionType]: [{ optionItemId: id, optionItemName: name, optionItemPrice: price }],
           }
         }
 
@@ -162,14 +175,16 @@ const MenuDetail = () => {
           ...prevOptions,
           [optionType]: [
             ...(prevOptions[optionType] || []),
-            { optionItemName: name, optionItemPrice: price },
+            { optionItemId: id, optionItemName: name, optionItemPrice: price },
           ],
         }
       } else {
         // 체크 해제 시의 로직은 그대로 유지
         return {
           ...prevOptions,
-          [optionType]: prevOptions[optionType].filter((option) => option.optionItemName !== name),
+          [optionType]: prevOptions[optionType].filter(
+            (option: any) => option.optionItemName !== name,
+          ),
         }
       }
     })
@@ -243,7 +258,14 @@ const MenuDetail = () => {
               <S.TotalPriceDiv>
                 {((data.menuPrice + totalOptionPrice) * quantity).toLocaleString('ko-KR')}원
               </S.TotalPriceDiv>
-              <S.OrderButton onClick={handleClick}>주문하기</S.OrderButton>
+              <S.OrderButton
+                onClick={() => {
+                  handleClick()
+                  handleAddToCart()
+                }}
+              >
+                장바구니 담기
+              </S.OrderButton>
               {isOpen && <MenuDetailModal isOpen={isOpen} setIsOpen={setIsOpen} />}
             </S.MainDiv>
           </S.MainOuterDiv>

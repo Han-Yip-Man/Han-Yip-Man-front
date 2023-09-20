@@ -32,20 +32,20 @@ export default function AddOptionOne({
   onOptionChange,
   selectedOptions,
 }: AddOptionOneProps & {
-  onOptionChange: (name: string, price: number, isChecked: boolean, optionType: string) => void
+  onOptionChange: (
+    id: number,
+    name: string,
+    price: number,
+    isChecked: boolean,
+    optionType: string,
+  ) => void
 }) {
-  // const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const price = parseInt(event.target.value)
-  //   const name = event.target.name
-  //   const isChecked = event.target.checked
-
-  //   onOptionChange(name, price, isChecked, option.optionName)
-  // }
-
   const handleCheckChange = (event: React.MouseEvent<HTMLInputElement>) => {
     const checkbox = event.target as HTMLInputElement
-    const price = parseInt(checkbox.value)
+    const idStr = checkbox.id.split('-')[1]
+    const id = parseInt(idStr)
     const name = checkbox.name
+    const price = parseInt(checkbox.value)
     const isChecked = checkbox.checked
 
     // 선택 가능한 최대 개수를 초과했는지 확인
@@ -55,7 +55,7 @@ export default function AddOptionOne({
       return
     }
 
-    onOptionChange(name, price, isChecked, option.optionName)
+    onOptionChange(id, name, price, isChecked, option.optionName)
   }
 
   return (

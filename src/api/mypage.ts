@@ -23,5 +23,17 @@ type MypageInfo = {
 }
 export const getMypageInfo = async (): Promise<MypageInfo> => {
   const response = await axiosClient.get(`/users/my-info`)
+  console.log(response)
+  return response.data
+}
+
+type ReviewResponse = {
+  message: string
+  result: boolean
+  status: number
+}
+
+export const postReview = async (reviewRequest: FormData): Promise<ReviewResponse> => {
+  const response = await axiosClient.post(`/reviews`, reviewRequest)
   return response.data
 }
