@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "postinstall": "husky install",
     "format": "prettier --cache --write .",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --cache ."
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --cache .",
+    "host": "vite --host"
   },
   "dependencies": {
     "@commitlint/cli": "^17.7.1",

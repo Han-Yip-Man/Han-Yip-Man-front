@@ -11,21 +11,25 @@ export const SSEProvider = ({ children }: { children: ReactNode }) => {
   const [sse, setSse] = useState<EventSource | null>(null)
   // const token = useRecoilValue(tokenState)
   const token =
-    'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJpYXQiOjE2OTUxMDk0MDksImV4cCI6MTY5NTI4MjIwOX0.OqJviWIIrxf1tl4eHTpbdU6GjMJs3YvB-CJjperNJHs'
+    'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJpYXQiOjE2OTUxOTk0MDEsImV4cCI6MTY5NTM3MjIwMX0.EVB7VQ0BkS9QJvExKB5n6IXZlbgpVWY-SoFpuJILIGs'
 
   useEffect(() => {
+    // if(!token) return
     const newSSE = new EventSource('http://39.115.156.83:8080/api/sse', {
       headers: {
         Authorization: token,
         Accept: 'text/event-stream',
-        'Content-Type': 'application/json',
+        'X-API-VERSION': '1',
       },
-      withCredentials: true,
+      heartbeatTimeout: 120000,
     })
     setSse(newSSE)
 
     newSSE.onopen = () => {
       console.log('SSE 연결')
+    }
+    return () => {
+      newSSE.close()
     }
   }, [])
 

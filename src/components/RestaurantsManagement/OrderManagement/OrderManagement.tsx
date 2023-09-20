@@ -4,7 +4,7 @@ import { Stack } from '@mui/material'
 import { DragDropContext, DropResult, Droppable, DroppableId } from 'react-beautiful-dnd'
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useSocketContext, useSSEContext } from '../../../hooks'
+import { useAlert, useSocketContext, useSSEContext } from '../../../hooks'
 import { getSellerOrderList } from '../../../api/order'
 
 interface Data {
@@ -26,7 +26,7 @@ function OrderManagement() {
   const qc = useQueryClient()
   const { socket } = useSocketContext()
   const sse = useSSEContext()
-  console.log(sse)
+  const toast = useAlert()
 
   const sortOrders = useCallback((orderArr: Data[]) => {
     return orderArr.sort((a, b) => a.orderSequence - b.orderSequence)
@@ -94,7 +94,6 @@ function OrderManagement() {
             },
           )
         }
-
         return
       }
 
@@ -114,6 +113,8 @@ function OrderManagement() {
       }
 
       // if (allowedMoves[source.droppableId] !== destination.droppableId) {
+      //   console.log(allowedMoves[source.droppableId], destination.droppableId)
+      //   toast('이전 상태로 변경이 불가능합니다.', 3000, 'warning')
       //   return
       // }
 
@@ -130,6 +131,9 @@ function OrderManagement() {
       }
       socket?.emit('send_order_status_change', movedItem, (res: any) => {
         console.log('응답', res)
+        if (res.message === '주문 상태가 정상 변경되었습니다.') {
+          toast(res.message, 3000, 'success')
+        }
         /// 이게 세번째 함수
         qc.invalidateQueries(['orderList'])
       })
@@ -179,6 +183,15 @@ function OrderManagement() {
       setDeliveryList(sortOrders(data.delivery))
     }
   }, [data])
+
+  useEffect(() => {
+    sse?.addEventListener('NoticeOrder', (e) => {
+      if (e.data) {
+        const data = JSON.parse(e.data)
+        console.log(data)
+      }
+    })
+  }, [])
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>

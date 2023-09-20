@@ -1,6 +1,7 @@
 export const timeAgo = (dateParam: string | Date): string => {
-  const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam)
-  const now = new Date()
+  const date = !dateParam ? new Date('2023-09-20T17:44:55Z') : new Date(dateParam)
+  const now = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+
   const secondsPast = (now.getTime() - date.getTime()) / 1000
 
   if (secondsPast < 60) {
