@@ -34,6 +34,7 @@ export const CustomerOrderDetail = ({
   setOrderIdParam,
 }: CustomerOrderDetailProps) => {
   const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
+  console.log(data)
   const sse = useSSEContext()
   const [endPoint, setEndPoint] = useRecoilState(endPointLocationAtom)
 

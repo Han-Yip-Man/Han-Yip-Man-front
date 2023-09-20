@@ -43,7 +43,7 @@ export const ReviewCardForm = ({ shopId }: ReviewCardFormProps) => {
     try {
       setErrorMessage('')
       const payload = {
-        reviewImag: data.reviewImage,
+        reviewImage: data.reviewImage,
         reviewContent: data.reviewContent,
         reviewScore: data.reviewScore,
         shopId,

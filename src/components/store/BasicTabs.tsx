@@ -17,9 +17,15 @@ import BasicAccordion from './BasicAccordion'
 import { ReviewCard } from './ReviewCard'
 import { KakaoMap } from '../../api/kakao.api'
 import { SyntheticEvent, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { getStoreDetail, getStoreMenus, getStoreReviews } from '../../api/storeDetail'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import {
+  getStoreDetail,
+  getStoreMenus,
+  getStoreReviews,
+  getStoreReviewsInf,
+} from '../../api/storeDetail'
 import { useParams } from 'react-router-dom'
+import { useIntersection } from '../../hooks'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -50,12 +56,38 @@ function a11yProps(index: number) {
   }
 }
 
+type StoreReview = {
+  userId: number
+  nickName: string
+  reviewContent: string
+  reviewScore: string
+  createdAt: string
+  reviewImageUrl: string
+}
+
+type StoreReviews = {
+  cursor: number
+  shopReviewsList: StoreReview[]
+}
+
 export default function BasicTabs() {
   const [tabValue, setTabValue] = useState(0)
   const { storeId } = useParams()
   const { data: menuData } = useQuery(['storeMenus', storeId], () => getStoreMenus(storeId))
   const { data: infoData } = useQuery(['stores', storeId], () => getStoreDetail(storeId))
-  const { data: reviewData } = useQuery(['reviews', storeId], () => getStoreReviews(storeId))
+
+  const {
+    data: reviewInfData,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useInfiniteQuery({
+    queryKey: ['reviewsInf', storeId],
+    queryFn: ({ pageParam = '' }) => getStoreReviewsInf(storeId, pageParam),
+    getNextPageParam: (lastPage) => lastPage.cursor,
+  })
+
+  const ref = useIntersection(fetchNextPage, hasNextPage)
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     event.preventDefault()
@@ -135,7 +167,7 @@ export default function BasicTabs() {
                   <TableBody>
                     <TableRow>
                       <StyledTableCell>CESCO</StyledTableCell>
-                      <StyledTableCell>2023.08. 최근 해충방제 점검월</StyledTableCell>
+                      <StyledTableCell>2023.09. 최근 해충방제 점검월</StyledTableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -155,11 +187,18 @@ export default function BasicTabs() {
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={2}>
         <ReviewPaper>
-          {reviewData
-            ? reviewData.shopReviewsList.map((review) => (
-                <ReviewCard key={review.createdAt} review={review} />
-              ))
-            : null}
+          {isFetching && !reviewInfData ? (
+            <div>Loading...</div>
+          ) : (
+            <div>
+              {reviewInfData?.pages.map((page) =>
+                page.shopReviewsList.map((review: any) => (
+                  <ReviewCard key={review.createdAt} review={review} />
+                )),
+              )}
+            </div>
+          )}
+          <ReviewObserver ref={ref}></ReviewObserver>
         </ReviewPaper>
       </CustomTabPanel>
     </Box>
@@ -212,4 +251,9 @@ const ReviewPaper = styled(Paper)`
   width: 100%;
   margin: 10px auto;
   padding: 20px;
+`
+
+const ReviewObserver = styled(Box)`
+  height: 400px;
+  width: 100px;
 `
