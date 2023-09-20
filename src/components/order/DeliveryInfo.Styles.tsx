@@ -70,6 +70,7 @@ export const Td1InnerDiv = styled.div`
 
 export const AdrsDiv = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
   margin-bottom: 30px;
 `
@@ -78,6 +79,17 @@ export const AdrsLeftDiv = styled.div`
   width: 120px;
 `
 export const AdrsRightDiv = styled.div``
+
+export const AdrsChangeButton = styled.button`
+  margin-left: 20px;
+  background-color: #7f9bcf;
+  color: white;
+  border: none;
+  width: 80px;
+  height: 35px;
+  border-radius: 15px;
+  cursor: pointer;
+`
 
 export const EstimatedTimeDiv = styled.div`
   display: flex;

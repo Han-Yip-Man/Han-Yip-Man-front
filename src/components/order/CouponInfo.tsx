@@ -15,8 +15,8 @@ const CouponInfo = () => {
           <S.Td1>
             <S.Td1InnerDiv>
               <CouponModal
-                title="쿠폰 번호 조회하기"
-                content="input 칸?"
+                // title="쿠폰 번호 조회하기"
+                // content="input 칸?"
                 onConfirm={() => {
                   routeTo('/order')
                 }}

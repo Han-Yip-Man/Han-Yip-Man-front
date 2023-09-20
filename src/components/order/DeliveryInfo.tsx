@@ -1,5 +1,6 @@
 import * as S from './DeliveryInfo.Styles'
 import IconClock from '../../assets/iconClock.svg'
+import { useEffect, useState } from 'react'
 
 const DeliveryInfo = () => {
   const phoneMidInput: HTMLInputElement | null = document.getElementById(
@@ -9,6 +10,21 @@ const DeliveryInfo = () => {
   if (phoneMidInput) {
     phoneMidInput.maxLength = 4
   }
+
+  const [selectedOption, setSelectedOption] = useState('')
+  const [isCustomInputVisible, setCustomInputVisible] = useState(false)
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value)
+  }
+
+  useEffect(() => {
+    if (selectedOption === '직접 입력') {
+      setCustomInputVisible(true)
+    } else {
+      setCustomInputVisible(false)
+    }
+  }, [selectedOption])
 
   return (
     <S.OuterDiv>
@@ -25,6 +41,7 @@ const DeliveryInfo = () => {
               <S.AdrsDiv>
                 <S.AdrsLeftDiv>배달주소</S.AdrsLeftDiv>
                 <S.AdrsRightDiv>서울시 당당구 댕댕동</S.AdrsRightDiv>
+                <S.AdrsChangeButton>주소 변경</S.AdrsChangeButton>
               </S.AdrsDiv>
               <S.EstimatedTimeDiv>
                 <S.ETALeftDiv>배달 예정 시간</S.ETALeftDiv>
@@ -53,17 +70,19 @@ const DeliveryInfo = () => {
               <S.OrderRequestDiv>
                 <S.ORLeftDiv>요청사항</S.ORLeftDiv>
                 <S.ORRightDiv>
-                  <S.RqSelectBox>
+                  <S.RqSelectBox onChange={handleSelectChange}>
                     <option>요청사항을 선택하세요.</option>
                     <option>문 앞에 놓아 주세요.</option>
                     <option>벨은 누르지 말아주세요.</option>
-                    <option>직접 입력</option>
+                    <option value="직접 입력">직접 입력</option>
                   </S.RqSelectBox>
                   <S.RqInput type="checkbox" />
                   <S.RqCheckBoxNextDiv> 요청사항 다음에도 사용</S.RqCheckBoxNextDiv>
                 </S.ORRightDiv>
               </S.OrderRequestDiv>
-              <S.HiddenInput placeholder="주문시 요청사항을 입력하세요. (display:none;)" />
+              {isCustomInputVisible && (
+                <S.HiddenInput placeholder="주문시 요청사항을 입력하세요." />
+              )}
             </S.Td1InnerDiv>
           </S.Td1>
         </S.Thead>

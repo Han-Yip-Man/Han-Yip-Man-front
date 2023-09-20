@@ -1,12 +1,12 @@
 import styled from '@emotion/styled'
 
 export const WrapperDiv = styled.div`
-  height: auto;
-  display: flex;
+  height: 1000px;
+  display: block;
   flex-direction: column;
   flex-wrap: wrap;
   max-width: 100vw;
-  margin: 50px auto 0;
+  margin: 50px auto 100px;
   box-sizing: border-box;
   gap: 20px;
 `
@@ -40,11 +40,13 @@ export const Img = styled.img`
 `
 
 export const OptionDiv = styled.div`
+  position: absolute;
   margin-left: 650px;
+  z-index: 1;
 `
 
 export const MenuInfoDiv = styled.div`
-  width: 80%;
+  width: 100%;
   height: auto;
   margin-top: 50px;
   padding-bottom: 20px;
@@ -77,7 +79,7 @@ export const MenuPriceDiv = styled.div`
 
 export const OptionBox = styled.div`
   box-sizing: border-box;
-  width: 80%;
+  width: 100%;
   height: auto;
   padding-bottom: 20px;
   margin-bottom: 20px;
