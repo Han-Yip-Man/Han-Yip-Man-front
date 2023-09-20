@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { endPointLocationAtom } from '../atoms/deliveryAtoms'
 
 const { kakao } = window
 
@@ -12,10 +13,12 @@ type DeliveryKakaoMapProps = {
   mapId: string
   width: string
   height: string
-  latitude: number | undefined
-  longitude: number | undefined
+  latitude: number
+  longitude: number
   curLatitude: number
   curLongitude: number
+  endingPointLatitude: number
+  endingPointLongitude: number
 }
 
 export const DeliveryKakaoMap = ({
@@ -26,21 +29,30 @@ export const DeliveryKakaoMap = ({
   longitude,
   curLatitude,
   curLongitude,
+  endingPointLatitude,
+  endingPointLongitude,
 }: DeliveryKakaoMapProps) => {
   const mapContainer = useRef(null)
 
   const mapOption = {
-    center: new kakao.maps.LatLng(latitude, longitude),
-    level: 6,
+    center: new kakao.maps.LatLng(
+      (latitude + endingPointLatitude) / 2,
+      (longitude + endingPointLongitude) / 2,
+    ),
+    level: 8,
   }
 
   const startingPoint = {
-    latitude: 37.492569,
-    longitude: 127.026444,
+    latitude,
+    longitude,
+    // latitude: 37.492569,
+    // longitude: 127.026444,
   }
   const endingPoint = {
-    latitude: 37.488569,
-    longitude: 127.037444,
+    latitude: endingPointLatitude,
+    longitude: endingPointLongitude,
+    // latitude: 37.488569,
+    // longitude: 127.037444,
   }
 
   useEffect(() => {
@@ -66,12 +78,12 @@ export const DeliveryKakaoMap = ({
      */
     const positions = [
       {
-        title: '근린공원',
+        title: '출발지',
         latlng: new kakao.maps.LatLng(startingPoint.latitude, startingPoint.longitude),
         imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png',
       },
       {
-        title: '생태연못',
+        title: '도착지',
         latlng: new kakao.maps.LatLng(endingPoint.latitude, endingPoint.longitude),
         imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png',
       },
