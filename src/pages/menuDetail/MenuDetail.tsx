@@ -254,6 +254,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
 
             <S.MainDiv>
               <S.TotalPriceDiv>
+                총 금액&nbsp;&nbsp;
                 {((data.menuPrice + totalOptionPrice) * quantity).toLocaleString('ko-KR')}원
               </S.TotalPriceDiv>
               <S.OrderButton
