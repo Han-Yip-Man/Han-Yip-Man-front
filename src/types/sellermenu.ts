@@ -28,6 +28,7 @@ export interface OptionType {
 export interface MenuType {
   menuId: number
   menuName: string
+  categorygroups?: string
   menuPrice: number
   menuDescription: string
   menuThumbnailUrl: string
