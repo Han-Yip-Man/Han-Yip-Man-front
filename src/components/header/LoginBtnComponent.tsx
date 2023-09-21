@@ -7,7 +7,7 @@ import { css } from '@emotion/css'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { userInfo } from '../../atoms/userInfoAtoms'
+import { userInfo, tokenState } from '../../atoms/userInfoAtoms'
 import { currentAddr, userAddr } from '../../atoms/addressAtoms'
 import { useRouter } from '../../hooks'
 import { UserInfoType } from '../../types/user'
@@ -30,6 +30,7 @@ function LoginBtnComponent() {
   const { pathname } = useLocation()
   const { routeTo } = useRouter()
   const isLoggedIn = useRecoilValue(userInfo) as UserInfoType | null // 사용자 이름
+  const resetToken = useResetRecoilState(tokenState)
   const currentPath = pathname === '/'
   const open = !!anchorEl
 
@@ -49,14 +50,13 @@ function LoginBtnComponent() {
     resetNonLoginAddrs()
     sessionStorage.clear()
     handleClose()
+    resetToken()
   }
 
   useEffect(() => {
     const message = messages[Math.floor(Math.random() * messages.length)]
     setMsg(message)
   }, [])
-
-  console.log(isLoggedIn)
 
   return (
     <UserInfo>

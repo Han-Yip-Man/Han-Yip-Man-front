@@ -1,13 +1,14 @@
 import * as S from './MenumanagementHeader.style'
 import { MenuItem } from '@mui/material'
 import { useEffect } from 'react'
-import { getMenuGroups } from '../../../api/restaurant'
+import { getMenuGroups, getsellerMenu } from '../../../api/restaurant'
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil'
 import {
   selectedShopIdState,
   shopMenuGroups,
   shopGroupid,
   shopmenupage,
+  shopMenu,
 } from '../../../recoil/restaurants'
 import { SelectChangeEvent } from '@mui/material'
 
@@ -16,15 +17,14 @@ const MenumanagementHeader = () => {
   const [menugroup, setMenugroup] = useRecoilState(shopMenuGroups)
   const [groupid, setGroupid] = useRecoilState(shopGroupid)
   const [menupage, menupageset] = useRecoilState(shopmenupage)
+  const setMenu = useSetRecoilState(shopMenu)
 
   useEffect(() => {
     const getCate = () => {
       getMenuGroups(currentId)
         .then((response) => {
           setMenugroup(response)
-          console.log(response, '어흥요')
           setGroupid(response[0]?.menuGroupId)
-          console.log(response[0]?.menuGroupId, '욜로')
         })
         .catch((error) => {
           console.log(error)
@@ -33,7 +33,19 @@ const MenumanagementHeader = () => {
     getCate()
   }, [currentId])
 
-  console.log(currentId)
+  useEffect(() => {
+    if (groupid !== undefined) {
+      getsellerMenu(groupid)
+        .then((response) => {
+          setMenu(response)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else {
+      setMenu([])
+    }
+  }, [groupid])
 
   const handleSelectMenuCategory = (e: SelectChangeEvent<string | unknown>) => {
     setGroupid(e.target.value as number)

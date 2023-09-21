@@ -47,6 +47,8 @@ function Header() {
   const [open, setOpen] = useState(false)
   const currentPath = pathname === '/'
 
+  console.log(isLoggedIn)
+
   return (
     <AppBar
       position="fixed"

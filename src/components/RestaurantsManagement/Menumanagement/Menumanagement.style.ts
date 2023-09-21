@@ -29,6 +29,7 @@ export const OptionItem = styled.li`
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
+  height: 30px;
   margin-bottom: 3px;
 `
 
@@ -108,3 +109,22 @@ export const Btnbox = styled.div`
 `
 export const EditBtn = styled(Button)``
 export const DeleteBtn = styled(Button)``
+
+// export const OptionName = styled.div`
+//   display: flex;
+//   gap: 50px;
+// `
+// export const OptionItemAction = styled.div`
+//   display: flex;
+//   gap: 10px;
+//   width: 25px;
+//   height: 25px;
+//   cursor: pointer;
+//   img {
+//     &:hover {
+//       transition: all 0.3s;
+//       filter: invert(42%) sepia(49%) saturate(5188%) hue-rotate(21deg) brightness(114%)
+//         contrast(101%);
+//     }
+//   }
+// `
