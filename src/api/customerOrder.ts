@@ -3,8 +3,16 @@ import { getStoreDetail } from './storeDetail'
 
 export const getOrder = async (orderId: number) => {
   console.log('getOrder>>>', orderId)
-  // axiosClient.get(`orders/${orderId}`)
-  const data = await getStoreDetail('10')
+  // const response = await axiosClient.get(`orders/${orderId}`)
+  // const orderData = response.data
+
+  // const storeData = await getStoreDetail(orderData.shopId)
+  // const latitude = storeData.storeDetail.info.shopAddressResponse.latitude,
+  //   longitude = storeData.storeDetail.info.shopAddressResponse.longitude
+
+  // return Object.assign(orderData, { lat: latitude, lng: longitude })
+
+  const data = await getStoreDetail(10)
   const latitude = data.storeDetail.info.shopAddressResponse.latitude,
     longitude = data.storeDetail.info.shopAddressResponse.longitude,
     mockOrder = {
@@ -74,7 +82,8 @@ export const getOrders = async () => {
     data: {
       content: [
         {
-          orderUid: 1,
+          orderId: 1,
+          orderUid: '202309110117777bdd7b',
           shopName: 'BBQ-교대본점',
           shopId: 11410, // 가게ID
           bannerImg:
@@ -90,7 +99,8 @@ export const getOrders = async () => {
           orderStatus: 'WAIT',
         },
         {
-          orderUid: 2,
+          orderId: 2,
+          orderUid: '202309120158dba7d066',
           shopName: 'BBQ-교대본점',
           shopId: 11410, // 가게ID
           bannerImg:
@@ -107,4 +117,10 @@ export const getOrders = async () => {
     },
   }
   return mockData.data
+}
+
+export const getOrdersInf = async (cursor: number) => {
+  const size = 2
+  const reviewInfResponse = await axiosClient.get(`orders?cursor=${cursor}&size=${size}`)
+  return reviewInfResponse.data
 }

@@ -1,13 +1,16 @@
 import kakaoApi from '../api/kakao.api'
 
+const TOTAL = 11
+const DIVIDER = TOTAL - 1
+
 /**
  * 두 점 사이에 좌표값을 생성하는 유틸함수
  *
  */
 const getTempPointArray = (start: number, end: number) => {
   const curArr = []
-  for (let index = 0; index < 11; index++) {
-    const current = start + (end - start) * (index / 10)
+  for (let index = 0; index < TOTAL; index++) {
+    const current = start + (end - start) * (index / DIVIDER)
     curArr.push(current)
   }
   return curArr
@@ -19,7 +22,7 @@ const getTempPointArray = (start: number, end: number) => {
  */
 const getLatLngArray = (latArray: number[], lngArray: number[]) => {
   const result = []
-  for (let index = 0; index < 11; index++) {
+  for (let index = 0; index < TOTAL; index++) {
     result.push({ lat: latArray[index], lng: lngArray[index] })
   }
   return result
