@@ -87,6 +87,11 @@ export const DeliveryKakaoMap = ({
         latlng: new kakao.maps.LatLng(endingPoint.latitude, endingPoint.longitude),
         imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png',
       },
+      {
+        title: '드론',
+        latlng: new kakao.maps.LatLng(curLatitude, curLongitude),
+        imageSrc: '/svg/drone.svg',
+      },
     ]
 
     for (let i = 0; i < positions.length; i++) {
@@ -135,8 +140,16 @@ export const DeliveryKakaoMap = ({
      * info window
      */
     if (latitude !== undefined && longitude !== undefined) {
-      const iwContent = '<div style="padding:5px;">배달 중...</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(curLatitude + 0.003, curLongitude), //인포윈도우 표시 위치입니다
+      const isDelivered =
+        curLatitude === endingPoint.latitude && curLongitude === endingPoint.longitude
+
+      let iwContent
+      if (isDelivered) {
+        iwContent = '<div style="padding:5px;">배달 완료!!</div>'
+      } else {
+        iwContent = '<div style="padding:5px;">배달 중...</div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      }
+      const iwPosition = new kakao.maps.LatLng(curLatitude + 0.012, curLongitude), //인포윈도우 표시 위치입니다
         iwRemoveable = false // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
       // 인포윈도우를 생성하고 지도에 표시합니다
@@ -147,11 +160,8 @@ export const DeliveryKakaoMap = ({
         removable: iwRemoveable,
       })
 
-      const isDelivered =
-        curLatitude === endingPoint.latitude && curLongitude === endingPoint.longitude
-
       if (isDelivered) {
-        infowindow.close()
+        // infowindow.close()
       }
     }
   }, [curLatitude, curLongitude])

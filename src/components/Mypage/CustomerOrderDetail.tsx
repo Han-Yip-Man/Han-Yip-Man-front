@@ -35,10 +35,31 @@ export const CustomerOrderDetail = ({
   const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
   const [endPoint, setEndPoint] = useRecoilState(endPointLocationAtom)
   const mapCoods = useRecoilValue(MapCoordsState)
+  type Place = {
+    lat: number
+    lng: number
+  }
+  const [currentPlace, setCurrentPlace] = useState<Place>({} as Place)
 
   useEffect(() => {
     getAddressToLatLng(data?.address, setEndPoint)
     console.log(endPoint)
+
+    /**
+     * 임시
+     */
+    const start = { lat: 37.492569, lng: 127.026444 }
+    const end = { lat: 37.539397, lng: 126.849724 }
+    const res = getTempCurrentLatLng(start, end)
+    console.log(res)
+
+    const timer = setInterval(() => {
+      if (res.length === 1) clearInterval(timer)
+      setCurrentPlace(() => res[0])
+      res.shift()
+    }, 1000)
+
+    return () => clearInterval(timer)
   }, [])
 
   const clickHandler = () => {
@@ -80,8 +101,8 @@ export const CustomerOrderDetail = ({
               height="350px"
               latitude={data?.latitude}
               longitude={data?.longitude}
-              curLatitude={mapCoods.latitude}
-              curLongitude={mapCoods.longitude}
+              curLatitude={currentPlace.lat}
+              curLongitude={currentPlace.lng}
               endingPointLatitude={endPoint.lat}
               endingPointLongitude={endPoint.lng}
             />
