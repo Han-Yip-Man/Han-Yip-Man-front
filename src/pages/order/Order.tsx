@@ -16,6 +16,7 @@ import {
   proveBeforePayment,
   cancelPayment,
 } from '../../api/menuOrder'
+import { useRouter } from '../../hooks'
 
 type Address = {
   addressNumber: number
@@ -40,6 +41,8 @@ type MypageInfo = {
 }
 
 const Order = () => {
+  const { routeTo } = useRouter()
+
   const [cartProduct, setCartProduct] = useRecoilState(CartStateAtom)
   const [orderUserInfo, setOrderUserInfo] = useRecoilState(UserStateAtom)
   const couponDiscount = useRecoilValue(CouponDiscountAtom)
@@ -88,7 +91,6 @@ const Order = () => {
       })
     /* 4. 결제 창 호출하기 */
     await console.log('콜백으로 던진 페이로드', data)
-
     await IMP.request_pay(data, callback)
   }
 
@@ -108,6 +110,7 @@ const Order = () => {
           console.error(error)
         })
       alert('결제 성공')
+      routeTo('/') // 메인페이지로 이동
     } else {
       alert(`결제 실패: ${error_msg}`)
       // if (orderId) cancelPayment(orderId)
