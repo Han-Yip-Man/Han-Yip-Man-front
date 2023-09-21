@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import axiosClient from '../../api/axiosInstance'
 import { useAlert } from '../../hooks'
 import { useNavigate } from 'react-router-dom'
+import { useSetRecoilState } from 'recoil'
+import { tokenState } from '../../atoms/userInfoAtoms'
 
 const KaKao = () => {
   const href = window.location.href
@@ -9,6 +11,7 @@ const KaKao = () => {
   const code = params.get('code')
   const toast = useAlert()
   const navigator = useNavigate()
+  const setToken = useSetRecoilState(tokenState)
 
   useEffect(() => {
     axiosClient
@@ -17,7 +20,7 @@ const KaKao = () => {
         sessionStorage.setItem('accessToken', response.data.accessToken)
         sessionStorage.setItem('role', response.data.role)
         sessionStorage.setItem('profileUrl', response.data.profileUrl)
-        sessionStorage.setItem('nickname', response.data.nickname)
+        setToken(response.data.accessToken)
         toast('로그인에 성공했습니다.', 2000, 'success')
         navigator('/main')
       })

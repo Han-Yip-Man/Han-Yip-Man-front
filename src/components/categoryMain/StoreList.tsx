@@ -5,6 +5,7 @@ import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useIntersection } from '../../hooks'
 import StoreCardSkeleton from './StoreCardSkeleton'
+import { useNavigate } from 'react-router'
 
 interface Props {
   currentCategory: ICategory
@@ -31,6 +32,7 @@ const StoreList = ({ currentCategory, debouncedKeyword, currentFilter, fetchData
   )
 
   const ref = useIntersection(fetchNextPage, hasNextPage)
+  const navigate = useNavigate()
 
   return (
     <>
@@ -42,7 +44,9 @@ const StoreList = ({ currentCategory, debouncedKeyword, currentFilter, fetchData
         <Box sx={{ width: 1, mb: '70px' }}>
           <S.Wrap>
             {data?.pages.map((page) =>
-              page.shopLists.map((shop: StoreDetail) => <StoreCard key={shop.shopId} {...shop} />),
+              page.shopLists.map((shop: StoreDetail) => (
+                <StoreCard key={shop.shopId} {...shop} shopId={shop.shopId} />
+              )),
             )}
             {isFetchingNextPage &&
               Array.from({ length: 10 }, (_, i) => i + 1).map((i) => <StoreCardSkeleton key={i} />)}

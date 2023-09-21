@@ -64,3 +64,13 @@ export interface FormDataType {
   detailaddress?: string
   [key: string]: any
 }
+
+export interface UserInfoType {
+  email: string
+  exp: number
+  iat: number
+  nickname: string
+  role: string
+  sub: string
+  userIdx: number
+}

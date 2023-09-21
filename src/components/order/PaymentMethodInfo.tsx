@@ -2,12 +2,12 @@ import * as S from './PaymentMethodInfo.Styles'
 
 import { RequestPayParams, RequestPayResponse } from '../../types/pay'
 // import { Ordercomplete } from '../../api/order'
-import { prepareatom, OrderIdatom } from '../../atoms/orderManageAtoms'
+// import { prepareatom, OrderIdatom } from '../../atoms/orderManageAtoms'
 import { useRecoilValue } from 'recoil'
 
 const PaymentMethodInfo = () => {
-  const orderid = useRecoilValue(OrderIdatom)
-  const prepare = useRecoilValue(prepareatom)
+  // const orderid = useRecoilValue(OrderIdatom)
+  // const prepare = useRecoilValue(prepareatom)
 
   const onClickPayment = () => {
     if (!window.IMP) return

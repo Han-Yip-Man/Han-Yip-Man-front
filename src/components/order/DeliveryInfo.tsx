@@ -3,10 +3,8 @@ import IconClock from '../../assets/iconClock.svg'
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getMypageInfo } from '../../api/mypage'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { userAddr } from '../../atoms/addressAtoms'
-import { OrderEntry, Orderprepare } from '../../api/order'
-import { OrderIdatom } from '../../atoms/orderManageAtoms'
 
 const DeliveryInfo = () => {
   const phoneMidInput: HTMLInputElement | null = document.getElementById(
@@ -24,7 +22,6 @@ const DeliveryInfo = () => {
     setSelectedOption(event.target.value)
   }
   const address = useRecoilValue(userAddr)
-  const [orderid, setorderid] = useRecoilState(OrderIdatom)
 
   useEffect(() => {
     if (selectedOption === '직접 입력') {
@@ -35,32 +32,6 @@ const DeliveryInfo = () => {
   }, [selectedOption])
 
   const { data } = useQuery(['mypage'], () => getMypageInfo())
-
-  console.log(address)
-
-  const TestOrder = () => {
-    Orderprepare(orderid)
-      .then((response) => {
-        console.log(response.response.amount)
-        console.log(response.response.merchant_uid)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  console.log(orderid)
-
-  const TestOrdertwo = () => {
-    OrderEntry(null)
-      .then((response) => {
-        console.log(response.orderId)
-        setorderid(response.orderId)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
 
   return (
     <>
@@ -77,9 +48,9 @@ const DeliveryInfo = () => {
               <S.Td1>
                 <S.Td1InnerDiv>
                   <S.AdrsDiv>
-                    <S.AdrsLeftDiv onClick={TestOrdertwo}>배달주소</S.AdrsLeftDiv>
+                    <S.AdrsLeftDiv>배달주소</S.AdrsLeftDiv>
                     <S.AdrsRightDiv>어흥</S.AdrsRightDiv>
-                    <S.AdrsChangeButton onClick={TestOrder}>주소 변경</S.AdrsChangeButton>
+                    <S.AdrsChangeButton>주소 변경</S.AdrsChangeButton>
                   </S.AdrsDiv>
                   <S.EstimatedTimeDiv>
                     <S.ETALeftDiv>배달 예정 시간</S.ETALeftDiv>
