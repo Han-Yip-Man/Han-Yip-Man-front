@@ -33,7 +33,6 @@ export default function CounterBox({ quantity, setQuantity }: CounterBoxProps) {
                 readOnly
                 style={{ width: '30px', textAlign: 'center', fontSize: '25px' }}
                 min="1"
-                readOnly
               />
             </S.CountNum>
             <S.PlusBox onClick={increaseQuantity}>+</S.PlusBox>
