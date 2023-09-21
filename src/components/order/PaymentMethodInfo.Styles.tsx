@@ -1,5 +1,9 @@
 import styled from '@emotion/styled'
 
+interface PortOneButtonProps {
+  clicked: boolean
+}
+
 export const OuterDiv = styled.div`
   max-width: 1200px;
   width: 100%;
@@ -80,11 +84,11 @@ export const TossImg = styled.img`
   margin-top: 3px;
 `
 
-export const PortOneButton = styled.button`
+export const PortOneButton = styled.button<PortOneButtonProps>`
   width: 150px;
   height: 50px;
   border-radius: 0;
-  border: 1px solid #c2bcbf; /* #e5e5e5; */
+  border: 1px solid ${(props) => (props.clicked ? 'blue' : '#c2bcbf')};
   background-color: white;
   cursor: pointer;
   font-size: 15px;

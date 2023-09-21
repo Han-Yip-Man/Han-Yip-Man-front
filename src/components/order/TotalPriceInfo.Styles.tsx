@@ -66,7 +66,7 @@ export const FirstTextDiv = styled.div`
 `
 
 export const FirstPriceDiv = styled.div`
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
 `
 
@@ -74,7 +74,7 @@ export const MinusDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
 `
 
@@ -90,7 +90,7 @@ export const SecondTextDiv = styled.div`
 `
 
 export const SecondPriceDiv = styled.div`
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
   color: red;
 `
@@ -115,7 +115,7 @@ export const ThirdTextDiv = styled.div`
 `
 
 export const ThirdPriceDiv = styled.div`
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
 `
 
@@ -139,7 +139,7 @@ export const FourthTextDiv = styled.div`
 `
 
 export const FourthPriceDiv = styled.div`
-  font-size: 40px;
+  font-size: 35px;
   font-weight: bold;
 `
 

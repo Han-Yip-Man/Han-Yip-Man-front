@@ -25,12 +25,10 @@ const Menumanagement = () => {
           setMenu(response)
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
         })
     }
   }, [groupid])
-
-  console.log(menu)
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false)
@@ -52,7 +50,7 @@ const Menumanagement = () => {
           .catch(() => {})
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         toast('삭제에 실패했습니다.', 2000, 'error')
       })
   }

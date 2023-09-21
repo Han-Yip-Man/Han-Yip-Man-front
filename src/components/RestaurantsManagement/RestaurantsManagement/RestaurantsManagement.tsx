@@ -15,7 +15,7 @@ const RestaurantsManagement = () => {
         const response = await getShop()
         setShopList(response)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
     getmyRestaurants()

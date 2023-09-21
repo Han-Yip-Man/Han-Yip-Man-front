@@ -28,3 +28,11 @@ export const cartSelectors = selector<CartItem[]>({
   get: ({ get }) => get(CartStateAtom),
   set: ({ set }, newValue) => set(CartStateAtom, newValue),
 })
+
+export const totalCartPriceSelector = selector({
+  key: 'totalCartPrice',
+  get: ({ get }) => {
+    const cartProduct = get(CartStateAtom)
+    return cartProduct?.reduce((total, item) => total + item.totalPrice, 0)
+  },
+})

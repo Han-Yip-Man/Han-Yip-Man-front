@@ -253,7 +253,4 @@ const ReviewPaper = styled(Paper)`
   padding: 20px;
 `
 
-const ReviewObserver = styled(Box)`
-  height: 400px;
-  width: 100px;
-`
+const ReviewObserver = styled(Box)``

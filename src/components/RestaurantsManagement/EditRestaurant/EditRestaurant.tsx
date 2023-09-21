@@ -120,7 +120,7 @@ const EditRestaurant = () => {
             })
           })
           .catch((error) => {
-            console.log(error)
+            console.error(error)
             toast('이미지 수정에 실패하였습니다', 2000, 'error')
           })
       }
@@ -128,8 +128,6 @@ const EditRestaurant = () => {
       handleAPIRequest()
     }
   }, [compressedFile])
-
-  console.log(compressedFile)
 
   const handleImageDelete = (type: 'thumbnail' | 'banner') => {
     const apiMethod = type === 'thumbnail' ? patchShopthumbnail : patchShopbanner

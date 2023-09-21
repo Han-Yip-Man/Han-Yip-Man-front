@@ -33,6 +33,8 @@ export const ItemTable = styled.table`
   border-collapse: collapse;
 `
 
+export const Thead = styled.thead``
+
 export const Title = styled.tr`
   background-color: #f5f5f5;
   border-top: 2px solid black;
@@ -47,7 +49,9 @@ export const Td1Title = styled.td`
   font-weight: bold;
 `
 
-export const Thead = styled.tr`
+export const Tbody = styled.tbody``
+
+export const TableRow = styled.tr`
   font-weight: normal;
   font-size: 15px;
   border-bottom: 1.2px solid rgba(68, 68, 68, 0.3);
@@ -133,6 +137,7 @@ export const PNSelectBox = styled.select`
   height: 35px;
   border-radius: 0;
   border: 1px solid #c2bcbf; /* #e5e5e5; */
+  padding-left: 20px;
 `
 
 export const PNMiddleInput = styled.input`
@@ -141,6 +146,7 @@ export const PNMiddleInput = styled.input`
   outline: none;
   border-radius: 0;
   border: 1px solid #c2bcbf; /* #e5e5e5; */
+  padding-left: 25px;
 `
 
 export const PNLastInput = styled.input`
@@ -149,6 +155,7 @@ export const PNLastInput = styled.input`
   outline: none;
   border-radius: 0;
   border: 1px solid #c2bcbf; /* #e5e5e5; */
+  padding-left: 25px;
 `
 
 export const OrderRequestDiv = styled.div`

@@ -5,34 +5,44 @@ import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import { Box, CardActionArea, Stack, styled } from '@mui/material'
 import * as S from './OrderDashboard.style'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getOrders, getOrdersInf } from '../../../api/customerOrder'
 import { Dispatch, SetStateAction } from 'react'
-import { useIntersection } from '../../../hooks'
+import { useIntersection, useSocketContext } from '../../../hooks'
 
 type OrderDashboardProps = {
   setmenupage: Dispatch<SetStateAction<number>>
   setOrderIdParam: Dispatch<SetStateAction<number>>
 }
-type OrderContent = {
+
+type Order = {
+  orderId: number
+  orderUid: string
+  shopName: string
+  shopId: number // 가게ID
   bannerImg: string
   menus: string[]
   options: string[]
   orderDateTime: string
-  orderId: number
   orderStatus: string
-  orderUid: string
-  shopName: string
-  totalPrice: number
 }
 
-type ContentArray = {
-  content: OrderContent[]
+type Orders = {
+  content: Order[]
+  cursor: number
+  size: number
+  end: boolean
 }
 
 const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) => {
-  const { data } = useQuery<ContentArray>(['orders'], () => getOrders())
+  const qc = useQueryClient()
+  const { data } = useQuery<Orders>(['orders'], () => getOrders())
 
+  const { socket } = useSocketContext()
+  socket?.on('NoticeOrderBuyer', (message) => {
+    console.log(message)
+    qc.invalidateQueries(['orders'])
+  })
   // const {
   //   data: ordersInfData,
   //   fetchNextPage,
@@ -91,7 +101,7 @@ const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) =
         )}
         <OrdersObserver ref={ref}></OrdersObserver> */}
 
-        {data?.content.map((order) => (
+        {data?.content.map((order: any) => (
           <Card key={order.orderUid}>
             <CardActionArea onClick={() => getOrderDetail(order.orderId)}>
               <Stack flexDirection={'row'} alignItems={'center'}>
@@ -104,7 +114,7 @@ const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) =
                   <Typography gutterBottom variant="h5" component="div">
                     {order.shopName}
                   </Typography>
-                  {order.menus.map((menu, i) => (
+                  {order.menus.map((menu: any, i: any) => (
                     <Typography key={i} variant="body1" color="text.secondary">
                       {menu} <span>옵션:{order.options[i]}</span>
                     </Typography>

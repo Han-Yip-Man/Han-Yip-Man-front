@@ -2,14 +2,12 @@ import axiosClient from './axiosInstance'
 
 // 메뉴 상세 페이지에서 담은 데이터 -> 장바구니로 이동
 export const getCartItems = async () => {
-  const cursor = 11410,
-    size = 10
-  const response = await axiosClient.get(`carts?cursor=${cursor}&size=${size}`)
+  const response = await axiosClient.get(`/carts`)
   return response
 }
 
 type addCartItemProps = {
-  shopId: number //가게 ID
+  shopId: number | unknown //가게 ID
   menuId: number //선택 메뉴 ID
   options: number[] //선택된 옵션 IDS
   amount: number //선택한메뉴갯수

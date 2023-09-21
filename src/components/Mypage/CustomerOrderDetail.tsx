@@ -1,4 +1,14 @@
-import { Box, Button, Card, CardContent, Chip, Stack, Typography, styled } from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Paper,
+  Stack,
+  Typography,
+  styled,
+} from '@mui/material'
 import { DeliveryKakaoMap } from '../../api/kakao.api'
 import { ReviewCardForm } from './ReviewCardForm'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
@@ -8,7 +18,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { getAddressToLatLng, getTempCurrentLatLng } from '../../utils/map.util'
 import { endPointLocationAtom } from '../../atoms/deliveryAtoms'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { MapCoordsState } from '../../atoms/orderManageAtoms'
+// import { MapCoordsState } from '../../atoms/orderManageAtoms'
+import { useSocketContext } from '../../hooks'
 
 type CustomerOrderDetailProps = {
   setmenupage: Dispatch<SetStateAction<number>>
@@ -24,11 +35,47 @@ export const CustomerOrderDetail = ({
 }: CustomerOrderDetailProps) => {
   const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
   const [endPoint, setEndPoint] = useRecoilState(endPointLocationAtom)
-  const mapCoods = useRecoilValue(MapCoordsState)
+  const [delivered, IsDelivered] = useState(false)
+  // SSE에서 WS으로 변경
+  // const mapCoods = useRecoilValue(MapCoordsState)
+  const { socket } = useSocketContext()
+  socket?.on('NoticeDroneLocation', (message) => {
+    setCurrentPlace(message)
+    console.log(currentPlace)
+  })
+  socket?.on('NoticeDroneLocationComplete', (message) => {
+    // 지도로 완료상태 보내어 처리
+    // chip 배달 중.. >> 배달완료로 변경
+    setCurrentPlace(message)
+    IsDelivered(true)
+    console.log(currentPlace)
+  })
+
+  type Place = {
+    lat: number
+    lng: number
+  }
+  const [currentPlace, setCurrentPlace] = useState<Place>({} as Place)
 
   useEffect(() => {
     getAddressToLatLng(data?.address, setEndPoint)
     console.log(endPoint)
+
+    /**
+     * 임시
+     */
+    const start = { lat: 37.492569, lng: 127.026444 }
+    const end = { lat: 37.539397, lng: 126.849724 }
+    const res = getTempCurrentLatLng(start, end)
+    console.log(res)
+
+    const timer = setInterval(() => {
+      if (res.length === 1) clearInterval(timer)
+      setCurrentPlace(() => res[0])
+      res.shift()
+    }, 400)
+
+    return () => clearInterval(timer)
   }, [])
 
   const clickHandler = () => {
@@ -48,19 +95,24 @@ export const CustomerOrderDetail = ({
         <Typography variant="h5" component={Box}>
           주문 정보
         </Typography>
-        <Typography variant="h6">주문번호: {data?.orderUid}</Typography>
-        <Typography variant="h6">주문시간: {data?.createdAt}</Typography>
-        <Typography variant="h6">주소지: {data?.address}</Typography>
-        <Typography variant="h6">구매자 전화번호: {data?.phoneNum}</Typography>
-        <Typography variant="h6">상호명: {data?.shopName}</Typography>
-        <Typography variant="h6">가게 전화번호: {data?.shopTelphoneNum}</Typography>
+        <OrderInfoPaper>
+          <Typography variant="h6">주문번호: {data?.orderUid}</Typography>
+          <Typography variant="h6">주문시간: {data?.createdAt}</Typography>
+          <Typography variant="h6">주소지: {data?.address}</Typography>
+          <Typography variant="h6">구매자 전화번호: {data?.phoneNum}</Typography>
+          <Typography variant="h6">상호명: {data?.shopName}</Typography>
+          <Typography variant="h6">가게 전화번호: {data?.shopTelphoneNum}</Typography>
+        </OrderInfoPaper>
       </OrderInfoStack>
 
       <DeliveryMapStack>
         <Typography variant="h5" component={Box}>
           실시간 배달
-          <Chip className="order_state" label="배달완료" color="primary" />
-          <img width={'39px'} src="/svg/drone.svg" alt="drone" />
+          <Chip
+            className="order_state"
+            label={delivered ? '배달 완료' : '배달 중..'}
+            color={delivered ? 'primary' : 'warning'}
+          />
           {data?.latitude !== undefined && data.longitude !== undefined ? (
             <DeliveryKakaoMap
               mapId="delivery"
@@ -68,8 +120,8 @@ export const CustomerOrderDetail = ({
               height="350px"
               latitude={data?.latitude}
               longitude={data?.longitude}
-              curLatitude={mapCoods.latitude}
-              curLongitude={mapCoods.longitude}
+              curLatitude={currentPlace.lat}
+              curLongitude={currentPlace.lng}
               endingPointLatitude={endPoint.lat}
               endingPointLongitude={endPoint.lng}
             />
@@ -81,7 +133,7 @@ export const CustomerOrderDetail = ({
         <Typography variant="h5" component={Box}>
           주문 내역
           {data?.orderMenus.map((menu: any) => (
-            <Card key={menu.name}>
+            <OrderListCard key={menu.name}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {data?.shopName}
@@ -93,7 +145,7 @@ export const CustomerOrderDetail = ({
                 ))}
                 <Typography>주문가격 : {menu.price}원</Typography>
               </CardContent>
-            </Card>
+            </OrderListCard>
           ))}
         </Typography>
       </OrderListInfoStack>
@@ -101,24 +153,26 @@ export const CustomerOrderDetail = ({
       <PaymentsStack>
         <Typography variant="h5" component={Box}>
           결제 정보
-          <Typography variant="h6">주문상태: {data?.orderStatus}</Typography>
-          <Typography variant="h6">결제방법: {data?.payMethod}</Typography>
-          {data?.canceledAt ? (
-            <Typography variant="h6">취소시간: {data?.canceledAt}</Typography>
-          ) : null}
-          <Typography variant="h6" component={Box}>
-            결제비용컴포넌트
-            <Typography variant="h6">총 금액: {data?.totalPrice}</Typography>
-            <Typography variant="h6">배달비: {data?.defaultDeliveryPrice}</Typography>
-            <Typography variant="h6">쿠폰할인: {data?.buyerCouponDiscount}</Typography>
-            <hr />
-            <Typography variant="h6">
-              총 결제금액:{' '}
-              {data
-                ? data?.totalPrice + data?.defaultDeliveryPrice - data?.buyerCouponDiscount
-                : null}
+          <PaymentInfoPaper>
+            <Typography variant="h6">주문상태: {data?.orderStatus}</Typography>
+            <Typography variant="h6">결제방법: {data?.payMethod}</Typography>
+            {data?.canceledAt ? (
+              <Typography variant="h6">취소시간: {data?.canceledAt}</Typography>
+            ) : null}
+            <Typography variant="h6" component={Box}>
+              결제비용컴포넌트
+              <Typography variant="h6">총 금액: {data?.totalPrice}</Typography>
+              <Typography variant="h6">배달비: {data?.defaultDeliveryPrice}</Typography>
+              <Typography variant="h6">쿠폰할인: {data?.buyerCouponDiscount}</Typography>
+              <hr />
+              <Typography variant="h6">
+                총 결제금액:{' '}
+                {data
+                  ? data?.totalPrice + data?.defaultDeliveryPrice - data?.buyerCouponDiscount
+                  : null}
+              </Typography>
             </Typography>
-          </Typography>
+          </PaymentInfoPaper>
         </Typography>
       </PaymentsStack>
 
@@ -138,18 +192,40 @@ const OrderDetailWrap = styled(Stack)`
 
 const OrderInfoStack = styled(Stack)`
   margin: 16px 0;
+  > div.MuiTypography-root {
+    margin-top: 30px;
+  }
+`
+
+const OrderInfoPaper = styled(Paper)`
+  padding: 16px;
 `
 
 const DeliveryMapStack = styled(Stack)`
   margin: 16px 0;
+  > div > div {
+    margin-left: 10px;
+  }
 `
+
+// const StyledChip = styled(Chip)((props)=>({
+//   backgroundColor: #ffcd05;
+// }))
 
 const PaymentsStack = styled(Stack)`
   margin: 16px 0;
 `
 
+const PaymentInfoPaper = styled(Paper)`
+  padding: 16px;
+`
+
 const OrderListInfoStack = styled(Stack)`
   margin: 16px 0;
+`
+
+const OrderListCard = styled(Card)`
+  margin-top: 20px;
 `
 
 const ReviwFormStack = styled(Stack)`

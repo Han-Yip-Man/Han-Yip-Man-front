@@ -16,30 +16,30 @@ export const ReviewCard = ({ review }: ReviewCardProps) => {
     <Box margin={1}>
       <CardWrap>
         <BuyerInfo>
-          <Typography gutterBottom variant="h5" component="div">
-            {review.nickName}
+          <Typography variant="h5" component="div">
+            {review.nickName}님
           </Typography>
-          <Typography gutterBottom variant="h5" component="div">
+          <RatingBox>
             <Rating
               name="rating"
               defaultValue={Number(review.reviewScore)}
               precision={0.1}
               readOnly
             />
-          </Typography>
-          <Typography gutterBottom variant="h5" component="div">
+            <Typography variant="body1" component="div">
+              {review.reviewScore}점
+            </Typography>
+          </RatingBox>
+          <Typography variant="h6" component="div">
             {review.createdAt.slice(0, 10)}
           </Typography>
         </BuyerInfo>
         <ReviewContentWrap>
-          <CardMedia
-            component="img"
-            alt="green iguana"
-            height="150"
-            image={review.reviewImageUrl}
-          />
+          <CardMediaBox>
+            <CardMedia component="img" alt="review image" image={review.reviewImageUrl} />
+          </CardMediaBox>
           <ReviewContent>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="h5" color="text.secondary">
               {review.reviewContent}
             </Typography>
           </ReviewContent>
@@ -50,22 +50,45 @@ export const ReviewCard = ({ review }: ReviewCardProps) => {
 }
 
 const CardWrap = styled(Card)`
-  height: 210;
+  height: auto;
   display: 'flex';
   flex-direction: 'column';
-  padding: 8px;
+  padding: 16px;
 `
 
 const BuyerInfo = styled(Stack)`
   flex-direction: row;
   justify-content: baseline;
+  > div {
+  }
+`
+
+const RatingBox = styled(Box)`
+  display: flex;
+  justify-content: space-evenly;
+  width: 160px;
+  padding-top: 4px;
+  > div {
+    display: flex;
+    align-items: center;
+  }
 `
 
 const ReviewContentWrap = styled(Stack)`
-  height: 150;
+  height: auto;
   flex-direction: row;
+  margin: 0;
+`
+
+const CardMediaBox = styled(Box)`
+  > img {
+    border-radius: 16px;
+    padding: 8px;
+  }
+  width: 30%;
+  height: auto;
 `
 
 const ReviewContent = styled(CardContent)`
-  width: 200%;
+  margin: 8px 0;
 `

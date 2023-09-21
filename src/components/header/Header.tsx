@@ -99,7 +99,7 @@ function Header() {
             />
           </CustomLink>
           {!currentPath && (
-            <AddressBtn
+            <StyledAddressBtn
               startIcon={<LocationOnIcon />}
               sx={{
                 color: `${currentPath ? 'white' : 'black'}`,
@@ -110,7 +110,7 @@ function Header() {
               onClick={() => setOpen(true)}
             >
               {currentAddr.place_name}
-            </AddressBtn>
+            </StyledAddressBtn>
           )}
           <Dialog open={open} TransitionComponent={Transition} onClose={() => setOpen(false)}>
             <AddressModal />
@@ -161,6 +161,7 @@ const CustomToolbar = styled(Toolbar)`
   max-height: 70px;
   margin-top: 30px;
   padding-left: 20px;
+  overflow: hidden;
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -173,4 +174,8 @@ const CustomLink = styled(Link)`
 
 const LogoImg = styled.img`
   width: 100%;
+`
+const StyledAddressBtn = styled(AddressBtn)`
+  max-height: 70px;
+  min-width: 200px;
 `
