@@ -83,7 +83,7 @@ export const CustomerOrderDetail = ({
   }
   return (
     <OrderDetailWrap>
-      <Stack>
+      <OrderInfoStack>
         <Button
           onClick={clickHandler}
           variant="outlined"
@@ -100,8 +100,9 @@ export const CustomerOrderDetail = ({
         <Typography variant="h6">구매자 전화번호: {data?.phoneNum}</Typography>
         <Typography variant="h6">상호명: {data?.shopName}</Typography>
         <Typography variant="h6">가게 전화번호: {data?.shopTelphoneNum}</Typography>
-      </Stack>
-      <Stack>
+      </OrderInfoStack>
+
+      <DeliveryMapStack>
         <Typography variant="h5" component={Box}>
           실시간 배달
           <Chip className="order_state" label="배달완료" color="primary" />
@@ -120,8 +121,9 @@ export const CustomerOrderDetail = ({
             />
           ) : null}
         </Typography>
-      </Stack>
-      <Stack>
+      </DeliveryMapStack>
+
+      <OrderListInfoStack>
         <Typography variant="h5" component={Box}>
           주문 내역
           {data?.orderMenus.map((menu, i) => (
@@ -140,8 +142,9 @@ export const CustomerOrderDetail = ({
             </Card>
           ))}
         </Typography>
-      </Stack>
-      <Stack>
+      </OrderListInfoStack>
+
+      <PaymentsStack>
         <Typography variant="h5" component={Box}>
           결제 정보
           <Typography variant="h6">주문상태: {data?.orderStatus}</Typography>
@@ -163,18 +166,38 @@ export const CustomerOrderDetail = ({
             </Typography>
           </Typography>
         </Typography>
-      </Stack>
+      </PaymentsStack>
 
-      <Stack>
+      <ReviwFormStack>
         <Typography variant="h5" component={Box}>
           리뷰 작성
           <ReviewCardForm shopId={data?.shopId} />
         </Typography>
-      </Stack>
+      </ReviwFormStack>
     </OrderDetailWrap>
   )
 }
 
 const OrderDetailWrap = styled(Stack)`
   margin: 16px;
+`
+
+const OrderInfoStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const DeliveryMapStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const PaymentsStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const OrderListInfoStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const ReviwFormStack = styled(Stack)`
+  margin: 16px 0;
 `
