@@ -161,7 +161,11 @@ export const DeliveryKakaoMap = ({
       })
 
       if (isDelivered) {
-        // infowindow.close()
+        setTimeout(() => {
+          infowindow.close()
+          polyline1.setMap(null)
+          polyline2.setMap(null)
+        }, 1000)
       }
     }
   }, [curLatitude, curLongitude])

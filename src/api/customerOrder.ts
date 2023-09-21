@@ -69,7 +69,26 @@ export const getOrder = async (orderId: number) => {
   return mockOrder.data
 }
 
-export const getOrders = async () => {
+type Order = {
+  orderId: number
+  orderUid: string
+  shopName: string
+  shopId: number // 가게ID
+  bannerImg: string
+  menus: string[]
+  options: string[]
+  orderDateTime: string
+  orderStatus: string
+}
+
+type Orders = {
+  content: Order[]
+  cursor: number
+  size: number
+  end: boolean
+}
+
+export const getOrders = async (): Promise<Orders> => {
   // const cursor = 10,
   //   size = 10
   // const response = await axiosClient.get(`orders?cursor=${cursor}&size=${size}`)

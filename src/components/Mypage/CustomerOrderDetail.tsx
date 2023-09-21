@@ -18,7 +18,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { getAddressToLatLng, getTempCurrentLatLng } from '../../utils/map.util'
 import { endPointLocationAtom } from '../../atoms/deliveryAtoms'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { MapCoordsState } from '../../atoms/orderManageAtoms'
+// import { MapCoordsState } from '../../atoms/orderManageAtoms'
+import { useSocketContext } from '../../hooks'
 
 type CustomerOrderDetailProps = {
   setmenupage: Dispatch<SetStateAction<number>>
@@ -34,7 +35,22 @@ export const CustomerOrderDetail = ({
 }: CustomerOrderDetailProps) => {
   const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
   const [endPoint, setEndPoint] = useRecoilState(endPointLocationAtom)
-  const mapCoods = useRecoilValue(MapCoordsState)
+  const [delivered, IsDelivered] = useState(false)
+  // SSE에서 WS으로 변경
+  // const mapCoods = useRecoilValue(MapCoordsState)
+  const { socket } = useSocketContext()
+  socket?.on('NoticeDroneLocation', (message) => {
+    setCurrentPlace(message)
+    console.log(currentPlace)
+  })
+  socket?.on('NoticeDroneLocationComplete', (message) => {
+    // 지도로 완료상태 보내어 처리
+    // chip 배달 중.. >> 배달완료로 변경
+    setCurrentPlace(message)
+    IsDelivered(true)
+    console.log(currentPlace)
+  })
+
   type Place = {
     lat: number
     lng: number
@@ -57,7 +73,7 @@ export const CustomerOrderDetail = ({
       if (res.length === 1) clearInterval(timer)
       setCurrentPlace(() => res[0])
       res.shift()
-    }, 1000)
+    }, 400)
 
     return () => clearInterval(timer)
   }, [])
@@ -92,8 +108,11 @@ export const CustomerOrderDetail = ({
       <DeliveryMapStack>
         <Typography variant="h5" component={Box}>
           실시간 배달
-          <Chip className="order_state" label="배달완료" color="primary" />
-          <img width={'39px'} src="/svg/drone.svg" alt="drone" />
+          <Chip
+            className="order_state"
+            label={delivered ? '배달 완료' : '배달 중..'}
+            color={delivered ? 'primary' : 'warning'}
+          />
           {data?.latitude !== undefined && data.longitude !== undefined ? (
             <DeliveryKakaoMap
               mapId="delivery"
@@ -184,7 +203,14 @@ const OrderInfoPaper = styled(Paper)`
 
 const DeliveryMapStack = styled(Stack)`
   margin: 16px 0;
+  > div > div {
+    margin-left: 10px;
+  }
 `
+
+// const StyledChip = styled(Chip)((props)=>({
+//   backgroundColor: #ffcd05;
+// }))
 
 const PaymentsStack = styled(Stack)`
   margin: 16px 0;
