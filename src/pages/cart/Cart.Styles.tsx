@@ -65,7 +65,10 @@ export const ListTitleWrap = styled.div`
   background-color: rgb(128, 128, 128, 0.4);
 `
 
-export const CustomTypo = styled(Typography)``
+export const CustomTypo = styled.div`
+  justify-self: start;
+  padding-left: 20px;
+`
 
 export const BtnWrap = styled.div`
   justify-self: end;
@@ -78,14 +81,31 @@ export const CustomBtn = styled(Button)`
 
 export const SubTitleWrap = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   justify-items: center;
+  align-items: center;
   height: 60px;
-  padding-top: 10px;
   /* background-color: gray; */
 `
 
-export const SubTitleTypo = styled(Typography)``
+// export const SubTitleTypo = styled(Typography)``
+export const SubTitleTypo1 = styled.div`
+  width: 500px;
+  text-align: left;
+  padding-left: 20px;
+`
+export const SubTitleTypo2 = styled.div`
+  width: 120px;
+  text-align: center;
+`
+export const SubTitleTypo3 = styled.div`
+  width: 120px;
+  text-align: center;
+`
+export const SubTitleTypo4 = styled.div`
+  width: 120px;
+  text-align: center;
+`
 
 export const ItemList = styled.ul`
   display: grid;
@@ -97,26 +117,34 @@ export const ItemLi = styled.li`
   height: 150px;
   background-color: rgb(128, 128, 128, 0.2);
   display: grid;
-  grid-template-columns: 400px 1fr;
+  /* grid-template-columns: 400px 1fr; */
+  grid-template-columns: 500px 1fr;
 `
 
 export const ItemDescWrap = styled.div`
   display: flex;
+  width: 500px;
 `
 
-export const ItemImg = styled.img`
-  object-fit: cover;
-  width: 200px;
+// export const ItemImg = styled.img`
+//   object-fit: cover;
+//   width: 200px;
+// `
+
+export const ImgTitle = styled.div`
+  padding: 20px 10px 5px 20px;
+  width: 70%;
 `
 
-export const ImgTitle = styled(Typography)`
-  padding: 10px;
-  width: 100%;
+export const OptionContent = styled.div`
+  /* padding: 10px; */
+  padding: 20px 10px 5px;
+  width: 60%;
 `
 
 export const OptionWrap = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 `
 
 export const CounterWrap = styled.div`
@@ -127,25 +155,54 @@ export const CounterWrap = styled.div`
 export const CounterBtnWrap = styled.div`
   display: flex;
 `
-export const CounterBtnMinus = styled.button``
+export const CounterBtnMinus = styled.button`
+  width: 25px;
+  border: 1px solid black;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+`
 
-export const CounterDisplay = styled.div``
+export const CounterDisplayInput = styled.input`
+  width: 40px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 0;
+  border: 1px solid black;
+  border-left: none;
+  border-right: none;
+  outline: none;
+`
 
-export const CounterBtnPlus = styled.button``
+export const CounterBtnPlus = styled.button`
+  width: 25px;
+  border: 1px solid black;
+  border-radius: 0 10px 10px 0;
+  cursor: pointer;
+`
 
 export const TotalWrap = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
   padding-right: 20px;
+  text-align: center;
 `
 
 export const DelBtnWrap = styled.div`
-  justify-self: end;
+  justify-self: center;
+  align-self: center;
+  & > button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
 `
 
 export const Total = styled(Typography)`
-  justify-self: end;
-  align-self: end;
+  justify-self: center;
+  align-self: center;
 `
 
 export const ProductNameDiv = styled.div`
@@ -266,7 +323,7 @@ export const OrderDiv = styled.div`
 
 export const OrderButton = styled.button`
   border: none;
-  background-color: red;
+  background-color: #ea7600;
   color: white;
   width: 200px;
   height: 60px;

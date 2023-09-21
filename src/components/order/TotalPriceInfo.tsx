@@ -1,11 +1,6 @@
 import * as S from './TotalPriceInfo.Styles'
-import { useTheme } from '@mui/material/styles'
 
 const TotalPriceInfo = () => {
-  const theme = useTheme()
-
-  console.log(theme.palette.jeein.main)
-
   return (
     <S.OuterDiv>
       <S.ItemTable>

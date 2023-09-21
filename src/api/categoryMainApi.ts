@@ -9,7 +9,5 @@ export const fetchStoreData = async (queryString: string): Promise<StoreListResp
     throw new Error('API response does not contain data')
   }
 
-  console.log(response.data)
-
   return response.data
 }

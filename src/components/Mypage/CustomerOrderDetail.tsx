@@ -14,21 +14,76 @@ import { DeliveryKakaoMap } from '../../api/kakao.api'
 import { ReviewCardForm } from './ReviewCardForm'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import { useQuery } from '@tanstack/react-query'
-import { getOrder } from '../../api/orderDetail'
+import { getOrder } from '../../api/customerOrder'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { getAddressToLatLng, getTempCurrentLatLng } from '../../utils/map.util'
+import { useSSEContext } from '../../hooks'
+import { endPointLocationAtom } from '../../atoms/deliveryAtoms'
+import { useRecoilState } from 'recoil'
 
 type CustomerOrderDetailProps = {
-  setmenupage: React.Dispatch<React.SetStateAction<number>>
+  setmenupage: Dispatch<SetStateAction<number>>
+
+  orderIdParam: number
+  setOrderIdParam: Dispatch<SetStateAction<number>>
 }
 
-export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) => {
-  const { data } = useQuery(['order'], () => getOrder())
+export const CustomerOrderDetail = ({
+  setmenupage,
+  orderIdParam,
+  setOrderIdParam,
+}: CustomerOrderDetailProps) => {
+  const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
   console.log(data)
+  const sse = useSSEContext()
+  const [endPoint, setEndPoint] = useRecoilState(endPointLocationAtom)
+
+  type Place = {
+    lat: number
+    lng: number
+  }
+  const [currentPlace, setCurrentPlace] = useState<Place>({} as Place)
+  // console.log(currentPlace)
+
+  useEffect(() => {
+    getAddressToLatLng(data?.address, setEndPoint)
+    console.log(endPoint)
+
+    /**
+     * sse로 전환
+     */
+    // sse?.addEventListener('DronLocation', (e) => {
+    //   if (e.data) {
+    //     const data = JSON.parse(e.data)
+    //     console.log(data)
+    //     setCurrentPlace({ lat: data.latitude, lng: data.longitude })
+    //   }
+    // })
+
+    /**
+     * 임시
+     */
+    // const start = { lat: 37.492569, lng: 127.026444 }
+    // const end = { lat: 37.539397, lng: 126.849724 }
+    // const res = getTempCurrentLatLng(start, end)
+    // console.log(res)
+
+    // const timer = setInterval(() => {
+    //   if (res.length === 1) clearInterval(timer)
+    //   setCurrentPlace(() => res[0])
+    //   res.shift()
+    // }, 1000)
+
+    // return () => clearInterval(timer)
+  }, [])
+
   const clickHandler = () => {
+    setOrderIdParam(0)
     setmenupage(2)
   }
   return (
     <OrderDetailWrap>
-      <Stack>
+      <OrderInfoStack>
         <Button
           onClick={clickHandler}
           variant="outlined"
@@ -45,40 +100,40 @@ export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) =
         <Typography variant="h6">구매자 전화번호: {data?.phoneNum}</Typography>
         <Typography variant="h6">상호명: {data?.shopName}</Typography>
         <Typography variant="h6">가게 전화번호: {data?.shopTelphoneNum}</Typography>
-      </Stack>
-      <Stack>
+      </OrderInfoStack>
+
+      <DeliveryMapStack>
         <Typography variant="h5" component={Box}>
           실시간 배달
           <Chip className="order_state" label="배달완료" color="primary" />
-          <img width={'39px'} src="/public/svg/drone.svg" alt="drone" />
-          {/**
-           * TODO:
-           * 두 지점
-           * 선분
-           * 이동하는 점
-           * 남은 거리 시간 표시
-           * 등등
-           */}
-          <DeliveryKakaoMap
-            mapId="delivery"
-            width="1050px"
-            height="350px"
-            latitude={data?.latitude}
-            longitude={data?.longitude}
-          />
+          <img width={'39px'} src="/svg/drone.svg" alt="drone" />
+          {data?.latitude !== undefined && data.longitude !== undefined ? (
+            <DeliveryKakaoMap
+              mapId="delivery"
+              width="1050px"
+              height="350px"
+              latitude={data?.latitude}
+              longitude={data?.longitude}
+              curLatitude={currentPlace.lat}
+              curLongitude={currentPlace.lng}
+              endingPointLatitude={endPoint.lat}
+              endingPointLongitude={endPoint.lng}
+            />
+          ) : null}
         </Typography>
-      </Stack>
-      <Stack>
+      </DeliveryMapStack>
+
+      <OrderListInfoStack>
         <Typography variant="h5" component={Box}>
           주문 내역
-          {data?.orderMenus.map((menu) => (
-            <Card>
+          {data?.orderMenus.map((menu, i) => (
+            <Card key={menu.name}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {data?.shopName}
                 </Typography>
-                {menu.options.map((option) => (
-                  <Typography variant="body1" color="text.secondary">
+                {menu.options.map((option, i) => (
+                  <Typography key={option.optionName} variant="body1" color="text.secondary">
                     {menu.name} <span>옵션:{option.optionName}</span>
                   </Typography>
                 ))}
@@ -87,8 +142,9 @@ export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) =
             </Card>
           ))}
         </Typography>
-      </Stack>
-      <Stack>
+      </OrderListInfoStack>
+
+      <PaymentsStack>
         <Typography variant="h5" component={Box}>
           결제 정보
           <Typography variant="h6">주문상태: {data?.orderStatus}</Typography>
@@ -110,14 +166,14 @@ export const CustomerOrderDetail = ({ setmenupage }: CustomerOrderDetailProps) =
             </Typography>
           </Typography>
         </Typography>
-      </Stack>
+      </PaymentsStack>
 
-      <Stack>
+      <ReviwFormStack>
         <Typography variant="h5" component={Box}>
           리뷰 작성
-          <ReviewCardForm />
+          <ReviewCardForm shopId={data?.shopId} />
         </Typography>
-      </Stack>
+      </ReviwFormStack>
     </OrderDetailWrap>
   )
 }
@@ -126,7 +182,22 @@ const OrderDetailWrap = styled(Stack)`
   margin: 16px;
 `
 
-// const OrderDetailTitle = styled(Stack)`
-//   margin: 16px;
-//   flex-direction: row;
-// `
+const OrderInfoStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const DeliveryMapStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const PaymentsStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const OrderListInfoStack = styled(Stack)`
+  margin: 16px 0;
+`
+
+const ReviwFormStack = styled(Stack)`
+  margin: 16px 0;
+`

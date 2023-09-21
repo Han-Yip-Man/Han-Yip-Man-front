@@ -5,3 +5,8 @@ export const myMenuState = atom({
   key: 'myMenuState',
   default: [],
 })
+
+export const TestUser = atom({
+  key: 'TestUser',
+  default: {},
+})

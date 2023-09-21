@@ -1,6 +1,6 @@
 import * as S from './Main.styles'
 import { useEffect, useRef } from 'react'
-import { AxiosError, isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import searchAddressByKeyword from '../../api/addressSearch'
 import { checkExistAddress, getAddressData, registerUserAddress } from '../../api/main'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -119,10 +119,17 @@ function Main() {
           }
         })
     } else {
-      setNonLoginAddrs((prev) => [
-        ...prev.map((addr) => (addr.isDefault ? { ...addr, isDefault: false } : addr)),
-        currentAddr,
-      ])
+      setNonLoginAddrs((prev) => {
+        const isDuplicate = prev.map((a) => a.id).includes(id)
+
+        if (isDuplicate) {
+          return prev
+        }
+
+        const prevAddr = prev.map((addr) => (addr.isDefault ? { ...addr, isDefault: false } : addr))
+
+        return [...prevAddr, currentAddr]
+      })
     }
     successSubmit(currentAddr)
   }

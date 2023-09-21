@@ -72,3 +72,11 @@ export const getStoreReviews = async (shopId: string | undefined): Promise<Store
   const reviewResponse = await axiosClient.get(`/buyer-shops/${shopId}/reviews?size=${defaultSize}`)
   return reviewResponse.data
 }
+
+export const getStoreReviewsInf = async (shopId: string | undefined, cursor: string) => {
+  const size = 2
+  const reviewInfResponse = await axiosClient.get(
+    `/buyer-shops/${shopId}/reviews?cursor=${cursor}&size=${size}`,
+  )
+  return reviewInfResponse.data
+}

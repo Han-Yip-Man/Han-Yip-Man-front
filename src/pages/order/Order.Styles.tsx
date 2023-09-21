@@ -9,7 +9,7 @@ export const OrderButtonWrapperDiv = styled.div`
 
 export const OrderButton = styled.button`
   border: none;
-  background-color: red;
+  background-color: #ea7600;
   color: white;
   width: 250px;
   height: 60px;

@@ -1,8 +1,14 @@
 import * as S from './PaymentMethodInfo.Styles'
 
 import { RequestPayParams, RequestPayResponse } from '../../types/pay'
+// import { Ordercomplete } from '../../api/order'
+import { prepareatom, OrderIdatom } from '../../atoms/orderManageAtoms'
+import { useRecoilValue } from 'recoil'
 
 const PaymentMethodInfo = () => {
+  const orderid = useRecoilValue(OrderIdatom)
+  const prepare = useRecoilValue(prepareatom)
+
   const onClickPayment = () => {
     if (!window.IMP) return
     /* 1. 가맹점 식별하기 */
@@ -13,8 +19,8 @@ const PaymentMethodInfo = () => {
     const data: RequestPayParams = {
       pg: 'kcp.T0000', // PG사 : https://developers.portone.io/docs/ko/tip/pg-2 참고
       pay_method: 'card', // 결제수단
-      merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
-      amount: 100, // 결제금액
+      merchant_uid: `0177c1f5-8435-446d-8fac-a9ef9c233290`, // 주문번호
+      amount: 2400, // 결제금액
       name: '한입만 테스트 결제', // 주문명
       buyer_name: '홍길동', // 구매자 이름
       buyer_tel: '010-1234-1234', // 구매자 전화번호
@@ -30,10 +36,15 @@ const PaymentMethodInfo = () => {
   /* 3. 콜백 함수 정의하기 */
   function callback(response: RequestPayResponse) {
     const { success, error_msg } = response
-    console.log(response)
+
+    console.log(response.imp_uid)
 
     if (success) {
-      alert('결제 성공')
+      // Ordercomplete({ imp_uid: response.imp_uid, orderId: orderid }).then((response) => {
+      //   console.log('성공')
+      //   console.log(response)
+      // })
+      // alert(response)
     } else {
       alert(`결제 실패: ${error_msg}`)
     }
@@ -54,12 +65,12 @@ const PaymentMethodInfo = () => {
                   src="https://cdn.dominos.co.kr/domino/pc/images/sp/ico-pay_kakaopay.png"
                 />
               </S.KakaoButton>
-              <S.TossButton>
+              {/* <S.TossButton>
                 <S.TossImg
                   alt="toss"
                   src="https://cdn.dominos.co.kr/domino/pc/images/sp/ico-pay_toss.png"
                 />
-              </S.TossButton>
+              </S.TossButton> */}
               <S.PortOneButton onClick={onClickPayment}>신용카드 결제</S.PortOneButton>
             </S.Td1InnerDiv>
           </S.Td1>

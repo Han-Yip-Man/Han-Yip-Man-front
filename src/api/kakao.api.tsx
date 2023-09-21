@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { endPointLocationAtom } from '../atoms/deliveryAtoms'
 
 const { kakao } = window
 
@@ -12,8 +13,12 @@ type DeliveryKakaoMapProps = {
   mapId: string
   width: string
   height: string
-  latitude: number | undefined
-  longitude: number | undefined
+  latitude: number
+  longitude: number
+  curLatitude: number
+  curLongitude: number
+  endingPointLatitude: number
+  endingPointLongitude: number
 }
 
 export const DeliveryKakaoMap = ({
@@ -22,19 +27,45 @@ export const DeliveryKakaoMap = ({
   height,
   latitude,
   longitude,
+  curLatitude,
+  curLongitude,
+  endingPointLatitude,
+  endingPointLongitude,
 }: DeliveryKakaoMapProps) => {
+  const mapContainer = useRef(null)
+
+  const mapOption = {
+    center: new kakao.maps.LatLng(
+      (latitude + endingPointLatitude) / 2,
+      (longitude + endingPointLongitude) / 2,
+    ),
+    level: 8,
+  }
+
+  const startingPoint = {
+    latitude,
+    longitude,
+    // latitude: 37.492569,
+    // longitude: 127.026444,
+  }
+  const endingPoint = {
+    latitude: endingPointLatitude,
+    longitude: endingPointLongitude,
+    // latitude: 37.488569,
+    // longitude: 127.037444,
+  }
+
   useEffect(() => {
-    const mapContainer = document.getElementById(mapId)
+    /**
+     * map
+     */
+    const map = new kakao.maps.Map(mapContainer.current, mapOption)
+    // console.log(map)
 
-    const mapOption = {
-      center: new kakao.maps.LatLng(latitude, longitude),
-      level: 4,
-    }
-
-    const map = new kakao.maps.Map(mapContainer, mapOption)
-    console.log(map)
-
-    const markerPosition = new kakao.maps.LatLng(latitude, longitude)
+    /**
+     * marker
+     */
+    const markerPosition = new kakao.maps.LatLng(curLatitude, curLongitude)
 
     const marker = new kakao.maps.Marker({
       position: markerPosition,
@@ -42,15 +73,18 @@ export const DeliveryKakaoMap = ({
 
     marker.setMap(map)
 
+    /**
+     * 출발지, 도착지
+     */
     const positions = [
       {
-        title: '근린공원',
-        latlng: new kakao.maps.LatLng(37.492569, 127.026444),
+        title: '출발지',
+        latlng: new kakao.maps.LatLng(startingPoint.latitude, startingPoint.longitude),
         imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png',
       },
       {
-        title: '생태연못',
-        latlng: new kakao.maps.LatLng(37.488569, 127.037444),
+        title: '도착지',
+        latlng: new kakao.maps.LatLng(endingPoint.latitude, endingPoint.longitude),
         imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png',
       },
     ]
@@ -67,11 +101,14 @@ export const DeliveryKakaoMap = ({
       marker.setMap(map)
     }
 
+    /**
+     * line
+     */
     // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
     const linePath = [
-      new kakao.maps.LatLng(37.492569, 127.026444),
-      new kakao.maps.LatLng(latitude, longitude),
-      new kakao.maps.LatLng(37.488569, 127.037444),
+      new kakao.maps.LatLng(startingPoint.latitude, startingPoint.longitude),
+      new kakao.maps.LatLng(curLatitude, curLongitude),
+      new kakao.maps.LatLng(endingPoint.latitude, endingPoint.longitude),
     ]
 
     // 지도에 표시할 선을 생성합니다
@@ -94,9 +131,12 @@ export const DeliveryKakaoMap = ({
     polyline1.setMap(map)
     polyline2.setMap(map)
 
+    /**
+     * info window
+     */
     if (latitude !== undefined && longitude !== undefined) {
-      const iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(latitude + 0.001, longitude + 0.001), //인포윈도우 표시 위치입니다
+      const iwContent = '<div style="padding:5px;">배달 중...</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        iwPosition = new kakao.maps.LatLng(curLatitude + 0.003, curLongitude), //인포윈도우 표시 위치입니다
         iwRemoveable = false // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
       // 인포윈도우를 생성하고 지도에 표시합니다
@@ -107,17 +147,18 @@ export const DeliveryKakaoMap = ({
         removable: iwRemoveable,
       })
 
-      const isDelivered = false
+      const isDelivered =
+        curLatitude === endingPoint.latitude && curLongitude === endingPoint.longitude
 
       if (isDelivered) {
         infowindow.close()
       }
     }
-  }, [])
+  }, [curLatitude, curLongitude])
 
   return (
     <>
-      <div id={mapId} style={{ margin: 10, width: width, height: height }}></div>
+      <div id={mapId} ref={mapContainer} style={{ margin: 10, width: width, height: height }}></div>
     </>
   )
 }

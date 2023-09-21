@@ -1,11 +1,17 @@
 import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
+import { SocketProvider } from '../context/SocketProvider'
+import { SSEProvider } from '../context/SSEProvider'
 
 const MypageLayout = () => {
   return (
-    <Layout>
-      <Outlet />
-    </Layout>
+    <SocketProvider>
+      <SSEProvider>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </SSEProvider>
+    </SocketProvider>
   )
 }
 

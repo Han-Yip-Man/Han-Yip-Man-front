@@ -43,7 +43,7 @@ export const OptionMaxSeleted = styled.div`
   margin-left: 20px;
   margin-bottom: 10px;
   padding: 5px 0;
-  background-color: #7fd2ff;
+  background-color: rgb(248, 193, 43);
   color: white;
   text-align: center;
   border-radius: 20px;
@@ -52,6 +52,7 @@ export const OptionMaxSeleted = styled.div`
 export const CheckboxWrapper = styled.div`
   display: flex;
   margin: 8px 0;
+  padding: 0;
 `
 
 export const Input = styled.input`
@@ -99,14 +100,16 @@ export const OptionOneInput = styled.input`
 export const OptionOneLabel = styled.label`
   display: flex;
   font-size: 18px;
-  & > div:first-of-type {
-    margin-right: 140px;
-  }
+  width: 100%;
+  padding: 0 5px;
 `
-// export const LargeLabel = styled.label`
-//   display: flex;
-//   font-size: 18px;
-//   & > div:first-of-type {
-//     margin-right: 210px;
-//   }
-// `
+
+export const OptNameAndPriceWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`
+
+export const OptionItemNameDiv = styled.div``
+
+export const OptionItemPrice = styled.div``

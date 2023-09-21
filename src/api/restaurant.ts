@@ -5,7 +5,6 @@ import {
   PatchMenuGroupsType,
   PatchindexMenuGroupsType,
   addsellerMenuType,
-  patchShopNameType,
 } from '../types/restaurantsAtom'
 
 // 가게등록

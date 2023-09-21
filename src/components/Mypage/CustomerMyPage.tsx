@@ -64,7 +64,7 @@ export const CustomerMyPage = () => {
                   .map((addresss) => (
                     <TableRow key={addresss.detailAddress}>
                       <StyledTableCell>
-                        <Typography>ADDRESS :</Typography>
+                        <Typography>DETAIL ADDRESS :</Typography>
                       </StyledTableCell>
                       <StyledTableCell>
                         <Typography> {addresss.detailAddress}</Typography>

@@ -8,11 +8,15 @@ type ReviewRequest = {
   reviewContent?: string
   reviewImage?: File
   reviewScore?: number
-  shopId?: string
+  shopId?: number
   [key: string]: any
 }
 
-export const ReviewCardForm = () => {
+type ReviewCardFormProps = {
+  shopId?: number
+}
+
+export const ReviewCardForm = ({ shopId }: ReviewCardFormProps) => {
   const [errorMessage, setErrorMessage] = useState('')
   const { register, handleSubmit, watch, control, setValue } = useForm() //<ReviewRequest>
 
@@ -39,10 +43,10 @@ export const ReviewCardForm = () => {
     try {
       setErrorMessage('')
       const payload = {
-        reviewImag: data.reviewImage,
+        reviewImage: data.reviewImage,
         reviewContent: data.reviewContent,
         reviewScore: data.reviewScore,
-        shopId: 11410, // order
+        shopId,
       }
 
       const formData = new FormData()

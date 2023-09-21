@@ -18,18 +18,22 @@ const MenumanagementHeader = () => {
   const [menupage, menupageset] = useRecoilState(shopmenupage)
 
   useEffect(() => {
-    const getCate = async () => {
-      try {
-        const response = await getMenuGroups(currentId)
-        setMenugroup(response)
-        console.log(response)
-        setGroupid(response[0]?.menuGroupId)
-      } catch (error) {
-        console.log(error)
-      }
+    const getCate = () => {
+      getMenuGroups(currentId)
+        .then((response) => {
+          setMenugroup(response)
+          console.log(response, '어흥요')
+          setGroupid(response[0]?.menuGroupId)
+          console.log(response[0]?.menuGroupId, '욜로')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
     getCate()
   }, [currentId])
+
+  console.log(currentId)
 
   const handleSelectMenuCategory = (e: SelectChangeEvent<string | unknown>) => {
     setGroupid(e.target.value as number)
