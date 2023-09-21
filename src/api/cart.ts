@@ -2,7 +2,7 @@ import axiosClient from './axiosInstance'
 
 // 메뉴 상세 페이지에서 담은 데이터 -> 장바구니로 이동
 export const getCartItems = async () => {
-  const cursor = 99,
+  const cursor = 11410,
     size = 10
   const response = await axiosClient.get(`carts?cursor=${cursor}&size=${size}`)
   return response
@@ -21,7 +21,12 @@ export const addCartItems = async (payload: addCartItemProps) => {
   return response
 }
 
-export const deleteCartItems = async (cartId: number) => {
+export const deleteAllCartItems = async () => {
+  const response = await axiosClient.delete(`/carts`)
+  return response
+}
+
+export const selecteddeleteCartItems = async (cartId: number) => {
   const response = await axiosClient.delete(`/carts/${cartId}`)
   return response
 }

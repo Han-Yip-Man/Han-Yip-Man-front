@@ -4,16 +4,23 @@ import IconPlus from '../../assets/iconPlus.svg'
 import IconX from '../../assets/iconX.svg'
 import { useNavigate } from 'react-router-dom'
 import { Divider, Typography } from '@mui/material'
-import { getCartItems, updateCountCartItems, deleteCartItems } from '../../api/cart'
+import {
+  getCartItems,
+  updateCountCartItems,
+  selecteddeleteCartItems,
+  deleteAllCartItems,
+} from '../../api/cart'
 import { useEffect, useState } from 'react'
 import { AxiosResponse, isAxiosError } from 'axios'
 import { useAlert, useRouter } from '../../hooks'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { CartStateAtom } from '../../atoms/cartAtoms'
 import Ximg from '../../assets/iconX.svg'
 import Plusimg from '../../assets/iconPlus.svg'
 import Minusimg from '../../assets/iconMinus.svg'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { getMypageInfo } from '../../api/mypage'
+import { TestUser } from '../../recoil/sellermenu'
 
 /**
 
@@ -42,48 +49,54 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
  */
 
 const Cart: React.FC = () => {
-  const queryClient = useQueryClient()
+  const toast = useAlert()
+  // const queryClient = useQueryClient()
 
-  const { data: cartData } = useQuery(['carts'], () => getCartItems())
-  const updateCart = useMutation(updateCountCartItems, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['carts'])
-    },
-  })
-  const deleteCart = useMutation(deleteCartItems, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['carts'])
-    },
-  })
+  // const { data: cartData } = useQuery(['carts'], () => getCartItems())
+  // const updateCart = useMutation(updateCountCartItems, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(['carts'])
+  //   },
+  // })
+  // const deleteCart = useMutation(deleteCartItems, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries(['carts'])
+  //   },
+  // })
 
   const { routeTo } = useRouter()
   const [cartProduct, setCartProduct] = useRecoilState(CartStateAtom)
 
   const handleQuantityChange = (index: number, newQuantity: number, cartId: number) => {
-    if (newQuantity === 0) return deleteCart.mutate(cartId)
+    // if (newQuantity === 0) return deleteCart.mutate(cartId)
 
-    const payload = {
-      amount: newQuantity,
-      cartId,
-    }
-    updateCart.mutate(payload)
+    // const payload = {
+    //   amount: newQuantity,
+    //   cartId,
+    // }
+    // updateCart.mutate(payload)
 
-    //   setCartProduct((prevItems) =>
-    //     prevItems.map((item, i) => {
-    //       if (i === index) {
-    //         const unitPrice =
-    //           item.menuPrice +
-    //           (item.optionItems?.reduce((total, option) => total + option.optionItemPrice, 0) || 0)
-    //         return {
-    //           ...item,
-    //           amount: Math.max(1, newQuantity),
-    //           totalPrice: unitPrice * Math.max(1, newQuantity),
-    //         }
-    //       } else {
-    //         return item
-    //       }
-    //     }),
-    //   )
+    setCartProduct((prevItems) =>
+      prevItems.map((item, i) => {
+        if (i === index) {
+          const unitPrice =
+            item.menuPrice +
+            (item.optionItems?.reduce((total, option) => total + option.optionItemPrice, 0) || 0)
+          return {
+            ...item,
+            amount: Math.max(1, newQuantity),
+            totalPrice: unitPrice * Math.max(1, newQuantity),
+          }
+        } else {
+          return item
+        }
+      }),
+    )
+    updateCountCartItems({ amount: newQuantity, cartId: cartId }).then(
+      (response: AxiosResponse) => {
+        console.log('확인', response)
+      },
+    )
   }
 
   const totalCartPrice = cartProduct.reduce((total, item) => total + item.totalPrice, 0)
@@ -94,8 +107,47 @@ const Cart: React.FC = () => {
 
   const handleRemoveAllItems = () => {
     alert('정말 전체 삭제하시겠습니까?')
-    setCartProduct([])
+    deleteAllCartItems().then((response: AxiosResponse) => {
+      setCartProduct([])
+    })
   }
+
+  useEffect(() => {
+    getCartItems()
+      .then((response: AxiosResponse) => {
+        // console.log('Cart 데이터', response)
+        // console.log('Cart 데이터2', response.data)
+        // console.log('Cart 데이터3', response.data.content)
+        console.log(response)
+        setCartProduct(response.data.content)
+      })
+      .catch((error) => {
+        if (isAxiosError(error)) {
+          toast(`${error.message}`, 3000, 'error')
+        }
+      })
+  }, [])
+
+  const handleselecteddelete = (id: number) => {
+    selecteddeleteCartItems(id)
+      .then(() => {
+        toast('삭제에 성공하였습니다.', 2000, 'success')
+        getCartItems().then((response) => {
+          setCartProduct(response.data.content)
+        })
+      })
+      .catch(() => {
+        toast('삭제에 실패했습니다.', 2000, 'error')
+      })
+  }
+
+  const setUser = useSetRecoilState(TestUser)
+
+  useEffect(() => {
+    getMypageInfo().then((response) => {
+      setUser(response)
+    })
+  }, [])
 
   return (
     <S.OuterDiv>
@@ -119,23 +171,21 @@ const Cart: React.FC = () => {
           </S.SubTitleWrap>
         </S.TitleWrap>
         <S.ItemList>
-          {cartData?.data.content.map((item: any, index: number) => (
+          {cartProduct.map((item, index) => (
             <S.ItemLi key={index}>
               <S.ItemDescWrap>
                 {/* <S.ItemImg
-                  alt="이미지"
-                  src={cartProduct.thumbnailUrl} // thumbnailUrl 등 사진이 api 명세서에 없다?
-                /> */}
+        alt="이미지"
+        src={cartProduct.thumbnailUrl} // thumbnailUrl 등 사진이 api 명세서에 없다?
+      /> */}
                 <S.ImgTitle>
-                  {item.menuName}/{item.menuPrice.toLocaleString('ko-KR')}원x
-                  {item.amount}
+                  {item.menuName}/{item.menuPrice}원x{item.amount}
                 </S.ImgTitle>
                 <S.OptionContent>
                   추가 선택:
-                  {item.optionItems?.map((optionItem: any, index: number) => (
+                  {item.optionItems?.map((optionItem, index) => (
                     <div key={index}>
-                      {optionItem.optionItemName}/{optionItem.optionPrice.toLocaleString('ko-KR')}
-                      원x{item.amount}
+                      {optionItem.optionItemName}/{optionItem.optionItemPrice}원x{item.amount}
                     </div>
                   ))}
                 </S.OptionContent>
@@ -148,7 +198,7 @@ const Cart: React.FC = () => {
                     >
                       <img src={Minusimg} />
                     </S.CounterBtnMinus>
-                    <S.CounterDisplayInput type="text" value={item.amount} min="1" />
+                    <S.CounterDisplayInput type="text" value={item.amount} min="1" readOnly />
                     <S.CounterBtnPlus
                       onClick={() => handleQuantityChange(index, item.amount + 1, item.cartId)}
                     >
@@ -157,10 +207,10 @@ const Cart: React.FC = () => {
                   </S.CounterBtnWrap>
                 </S.CounterOuterDiv>
                 <S.TotalWrap>
-                  <S.Total>{item.totalPrice.toLocaleString('ko-KR')}원</S.Total>
+                  <S.Total>{item.totalPrice}원</S.Total>
                 </S.TotalWrap>
                 <S.DelBtnWrap onClick={() => handleRemoveItem(index)}>
-                  <button>
+                  <button onClick={() => handleselecteddelete(item.cartId)}>
                     <img src={Ximg} />
                   </button>
                 </S.DelBtnWrap>
@@ -170,7 +220,7 @@ const Cart: React.FC = () => {
         </S.ItemList>
       </S.ListWrap>
       <S.TotalPriceDiv>
-        총 금액&nbsp;&nbsp;&nbsp;<S.Span>{totalCartPrice.toLocaleString('ko-KR')}</S.Span>원
+        총 금액&nbsp;&nbsp;&nbsp;<S.Span>{totalCartPrice}</S.Span>원
       </S.TotalPriceDiv>
       <S.BottomDiv>
         <S.ShopGoDiv>
@@ -199,7 +249,9 @@ export default Cart
 
 // 구현해야 할 것: 동일main+Option이면 신규 추가가 아닌 수량 증가
 
-// {cartProduct.map((item, index) => (
+// react-query
+
+// {cartData?.data.content.map((item: any, index: number) => (
 //   <S.ItemLi key={index}>
 //     <S.ItemDescWrap>
 //       {/* <S.ItemImg
@@ -207,14 +259,15 @@ export default Cart
 //         src={cartProduct.thumbnailUrl} // thumbnailUrl 등 사진이 api 명세서에 없다?
 //       /> */}
 //       <S.ImgTitle>
-//         {item.menuName}/{item.menuPrice.toLocaleString('ko-KR')}원x{item.amount}
+//         {item.menuName}/{item.menuPrice.toLocaleString('ko-KR')}원x
+//         {item.amount}
 //       </S.ImgTitle>
 //       <S.OptionContent>
 //         추가 선택:
-//         {item.optionItems?.map((optionItem, index) => (
+//         {item.optionItems?.map((optionItem: any, index: number) => (
 //           <div key={index}>
-//             {optionItem.optionItemName}/
-//             {optionItem.optionItemPrice.toLocaleString('ko-KR')}원x{item.amount}
+//             {optionItem.optionItemName}/{optionItem.optionPrice.toLocaleString('ko-KR')}
+//             원x{item.amount}
 //           </div>
 //         ))}
 //       </S.OptionContent>
@@ -222,11 +275,15 @@ export default Cart
 //     <S.OptionWrap>
 //       <S.CounterOuterDiv>
 //         <S.CounterBtnWrap>
-//           <S.CounterBtnMinus onClick={() => handleQuantityChange(index, item.amount - 1)}>
+//           <S.CounterBtnMinus
+//             onClick={() => handleQuantityChange(index, item.amount - 1, item.cartId)}
+//           >
 //             <img src={Minusimg} />
 //           </S.CounterBtnMinus>
 //           <S.CounterDisplayInput type="text" value={item.amount} min="1" />
-//           <S.CounterBtnPlus onClick={() => handleQuantityChange(index, item.amount + 1)}>
+//           <S.CounterBtnPlus
+//             onClick={() => handleQuantityChange(index, item.amount + 1, item.cartId)}
+//           >
 //             <img src={Plusimg} />
 //           </S.CounterBtnPlus>
 //         </S.CounterBtnWrap>
