@@ -18,12 +18,27 @@ declare interface ResponseData<T> {
   data?: T
 }
 
-declare type StoreListResponse = {
+declare interface CursorParams {
+  nextCursorId: number | null
+  nextCursorValue: string | null
+}
+
+declare interface StoreListResponse extends CursorParams {
   shopLists: StoreDetail[]
-  nextCursor: number | undefined
 }
 
 declare interface ICategory {
   categoryName: CategoryType
   categoryId: number
+}
+
+declare interface AlarmData {
+  address: string
+  menuNames: string
+  orderId: number
+  orderUId: string
+  orderStatus: string
+  orderedTime: string
+  paymentProvider: string
+  totalAmount: number
 }

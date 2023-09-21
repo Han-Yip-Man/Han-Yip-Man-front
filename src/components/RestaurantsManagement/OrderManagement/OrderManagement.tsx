@@ -184,15 +184,6 @@ function OrderManagement() {
     }
   }, [data])
 
-  useEffect(() => {
-    sse?.addEventListener('NoticeOrder', (e) => {
-      if (e.data) {
-        const data = JSON.parse(e.data)
-        console.log(data)
-      }
-    })
-  }, [])
-
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Wrap>
