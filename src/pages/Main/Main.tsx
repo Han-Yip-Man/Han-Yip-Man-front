@@ -140,6 +140,7 @@ function Main() {
         const { longitude, latitude } = addressData.data.filter(
           (addr: CurrentAddr) => addr.isDefault === true,
         )[0]
+
         searchAddressByCoords(longitude, latitude)
       }
     } else {

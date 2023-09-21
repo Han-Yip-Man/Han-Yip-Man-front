@@ -120,7 +120,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
 
       const newCartItem = {
         amount: quantity,
-        cartId: data.menuId.toString(),
+        cartId: data.menuId,
         menuName: data.menuName,
         menuPrice: data.menuPrice,
         optionItems: allSelectedOptionItems,

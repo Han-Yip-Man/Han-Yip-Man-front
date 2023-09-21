@@ -52,6 +52,8 @@ const AddRestaurants = () => {
             zonecode: result.zonecode,
             coordinates: result.coordinates,
           }))
+          setValue('address', result.address)
+          setValue('zonecode', result.zonecode)
         }
       })
       .catch((err: Error) => {
@@ -132,9 +134,7 @@ const AddRestaurants = () => {
 
       await addShop(formData)
       toast('가게가 성공적으로 등록되었습니다', 2000, 'success')
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
+      window.location.reload()
     } catch (error) {
       toast('가게등록에 실패하였습니다.', 2000, 'error')
     }

@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Icon,
-  Stack,
-  SvgIcon,
-  Typography,
-  styled,
-} from '@mui/material'
+import { Box, Button, Card, CardContent, Chip, Stack, Typography, styled } from '@mui/material'
 import { DeliveryKakaoMap } from '../../api/kakao.api'
 import { ReviewCardForm } from './ReviewCardForm'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
@@ -17,9 +6,9 @@ import { useQuery } from '@tanstack/react-query'
 import { getOrder } from '../../api/customerOrder'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { getAddressToLatLng, getTempCurrentLatLng } from '../../utils/map.util'
-import { useSSEContext } from '../../hooks'
 import { endPointLocationAtom } from '../../atoms/deliveryAtoms'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { MapCoordsState } from '../../atoms/orderManageAtoms'
 
 type CustomerOrderDetailProps = {
   setmenupage: Dispatch<SetStateAction<number>>
@@ -34,47 +23,12 @@ export const CustomerOrderDetail = ({
   setOrderIdParam,
 }: CustomerOrderDetailProps) => {
   const { data } = useQuery(['order', orderIdParam], () => getOrder(orderIdParam))
-  console.log(data)
-  const sse = useSSEContext()
   const [endPoint, setEndPoint] = useRecoilState(endPointLocationAtom)
-
-  type Place = {
-    lat: number
-    lng: number
-  }
-  const [currentPlace, setCurrentPlace] = useState<Place>({} as Place)
-  // console.log(currentPlace)
+  const mapCoods = useRecoilValue(MapCoordsState)
 
   useEffect(() => {
     getAddressToLatLng(data?.address, setEndPoint)
     console.log(endPoint)
-
-    /**
-     * sse로 전환
-     */
-    // sse?.addEventListener('DronLocation', (e) => {
-    //   if (e.data) {
-    //     const data = JSON.parse(e.data)
-    //     console.log(data)
-    //     setCurrentPlace({ lat: data.latitude, lng: data.longitude })
-    //   }
-    // })
-
-    /**
-     * 임시
-     */
-    // const start = { lat: 37.492569, lng: 127.026444 }
-    // const end = { lat: 37.539397, lng: 126.849724 }
-    // const res = getTempCurrentLatLng(start, end)
-    // console.log(res)
-
-    // const timer = setInterval(() => {
-    //   if (res.length === 1) clearInterval(timer)
-    //   setCurrentPlace(() => res[0])
-    //   res.shift()
-    // }, 1000)
-
-    // return () => clearInterval(timer)
   }, [])
 
   const clickHandler = () => {
@@ -114,8 +68,8 @@ export const CustomerOrderDetail = ({
               height="350px"
               latitude={data?.latitude}
               longitude={data?.longitude}
-              curLatitude={currentPlace.lat}
-              curLongitude={currentPlace.lng}
+              curLatitude={mapCoods.latitude}
+              curLongitude={mapCoods.longitude}
               endingPointLatitude={endPoint.lat}
               endingPointLongitude={endPoint.lng}
             />
@@ -126,13 +80,13 @@ export const CustomerOrderDetail = ({
       <OrderListInfoStack>
         <Typography variant="h5" component={Box}>
           주문 내역
-          {data?.orderMenus.map((menu, i) => (
+          {data?.orderMenus.map((menu: any) => (
             <Card key={menu.name}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                   {data?.shopName}
                 </Typography>
-                {menu.options.map((option, i) => (
+                {menu.options.map((option: any) => (
                   <Typography key={option.optionName} variant="body1" color="text.secondary">
                     {menu.name} <span>옵션:{option.optionName}</span>
                   </Typography>

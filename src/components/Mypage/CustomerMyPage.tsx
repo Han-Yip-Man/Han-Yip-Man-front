@@ -18,76 +18,80 @@ export const CustomerMyPage = () => {
   const { data } = useQuery(['mypage'], () => getMypageInfo())
 
   return (
-    <MypageWrap>
-      <CustomerInfoTitle variant="h5">내 정보</CustomerInfoTitle>
-      <CustomerInfo>
-        <CustomerInfoInner>
-          <AvatarWarp>
-            <AvatarPaper>
-              <StyledAvatar alt={'' + data?.buyNumber} src={data?.profileImageUrl} />
-              <Nickname variant="h5">{data?.nickName}</Nickname>
-            </AvatarPaper>
-          </AvatarWarp>
-          <Stack bgcolor={'white'} flexDirection={'column'} justifyContent={'center'}>
-            <Table>
-              <TableBody>
-                <TableRow key={data?.email}>
-                  <StyledTableCell>
-                    <Typography>EMAIL :</Typography>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Typography> {data?.email}</Typography>
-                  </StyledTableCell>
-                </TableRow>
-                <TableRow key={data?.phoneNumber}>
-                  <StyledTableCell>
-                    <Typography>PHONE :</Typography>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Typography> {data?.phoneNumber}</Typography>
-                  </StyledTableCell>
-                </TableRow>
-                {data?.addressList
-                  .filter((addressInfo) => addressInfo.isDefault)
-                  .map((addresss) => (
-                    <TableRow key={addresss.address}>
+    <>
+      {data && (
+        <MypageWrap>
+          <CustomerInfoTitle variant="h5">내 정보</CustomerInfoTitle>
+          <CustomerInfo>
+            <CustomerInfoInner>
+              <AvatarWarp>
+                <AvatarPaper>
+                  <StyledAvatar alt={'' + data?.buyNumber} src={data?.profileImageUrl} />
+                  <Nickname variant="h5">{data?.nickName}</Nickname>
+                </AvatarPaper>
+              </AvatarWarp>
+              <Stack bgcolor={'white'} flexDirection={'column'} justifyContent={'center'}>
+                <Table>
+                  <TableBody>
+                    <TableRow key={data?.email}>
                       <StyledTableCell>
-                        <Typography>ADDRESS :</Typography>
+                        <Typography>EMAIL :</Typography>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography> {addresss.address}</Typography>
+                        <Typography> {data?.email}</Typography>
                       </StyledTableCell>
                     </TableRow>
-                  ))}
-                {data?.addressList
-                  .filter((addressInfo) => addressInfo.isDefault)
-                  .map((addresss) => (
-                    <TableRow key={addresss.detailAddress}>
+                    <TableRow key={data?.phoneNumber}>
                       <StyledTableCell>
-                        <Typography>DETAIL ADDRESS :</Typography>
+                        <Typography>PHONE :</Typography>
                       </StyledTableCell>
                       <StyledTableCell>
-                        <Typography> {addresss.detailAddress}</Typography>
+                        <Typography> {data?.phoneNumber}</Typography>
                       </StyledTableCell>
                     </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+                    {data?.addressList
+                      ?.filter((addressInfo) => addressInfo.isDefault)
+                      .map((addresss) => (
+                        <TableRow key={addresss.address}>
+                          <StyledTableCell>
+                            <Typography>ADDRESS :</Typography>
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            <Typography> {addresss.address}</Typography>
+                          </StyledTableCell>
+                        </TableRow>
+                      ))}
+                    {data?.addressList
+                      ?.filter((addressInfo) => addressInfo.isDefault)
+                      .map((addresss) => (
+                        <TableRow key={addresss.detailAddress}>
+                          <StyledTableCell>
+                            <Typography>DETAIL ADDRESS :</Typography>
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            <Typography> {addresss.detailAddress}</Typography>
+                          </StyledTableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </Stack>
+            </CustomerInfoInner>
+          </CustomerInfo>
+          <CustomerInfoTitle variant="h5">주소관리</CustomerInfoTitle>
+          <Stack>
+            <AddressTabs addressList={data?.addressList} />
           </Stack>
-        </CustomerInfoInner>
-      </CustomerInfo>
-      <CustomerInfoTitle variant="h5">주소관리</CustomerInfoTitle>
-      <Stack>
-        <AddressTabs addressList={data?.addressList} />
-      </Stack>
-      <CustomerInfoTitle variant="h5">리뷰관리</CustomerInfoTitle>
-      <ReviewPaper>
-        {/* <ReviewCard />
+          <CustomerInfoTitle variant="h5">리뷰관리</CustomerInfoTitle>
+          <ReviewPaper>
+            {/* <ReviewCard />
         <ReviewCard />
         <ReviewCard />
         <ReviewCard /> */}
-      </ReviewPaper>
-    </MypageWrap>
+          </ReviewPaper>
+        </MypageWrap>
+      )}
+    </>
   )
 }
 

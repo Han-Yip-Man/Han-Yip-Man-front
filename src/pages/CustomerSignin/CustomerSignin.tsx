@@ -8,12 +8,14 @@ import { signIn } from '../../api/user'
 import useAlert from '../../hooks/useAlert'
 import { KAKAO_AUTH_URL } from '../../components/KaKaoLogin/AuthKaKao'
 import { useNavigate } from 'react-router-dom'
+import { useSetRecoilState } from 'recoil'
+import { tokenState } from '../../atoms/userInfoAtoms'
 
 const CustomerSignin = () => {
   const theme = useTheme()
   const toast = useAlert()
   const navigate = useNavigate()
-
+  const setToken = useSetRecoilState(tokenState)
   const { register, handleSubmit, watch } = useForm<FormDataType>()
   const password = useRef<string | undefined>()
   password.current = watch('password')
@@ -24,21 +26,16 @@ const CustomerSignin = () => {
       password: data.password,
     }
 
-    // 비회원이 회원가입하고 나서 기존에 등록한 주소가 있으면
-    // 전역상태 userAddr 에 주소가 있으면
-    // 주소를 등록하고 default 주소로 등록요청
-
     signIn(payload)
       .then((response) => {
         sessionStorage.setItem('accessToken', response.accessToken)
         sessionStorage.setItem('role', response.role)
         sessionStorage.setItem('profileUrl', response.profileUrl)
+        setToken(response.accessToken)
         toast('로그인에 성공했습니다.', 2000, 'success')
-        setTimeout(() => {
-          navigate('/main')
-        }, 2000)
+        navigate('/main')
       })
-      .catch(() => {
+      .catch((error) => {
         toast('로그인 정보가 올바르지 않습니다.', 2000, 'error')
       })
   }

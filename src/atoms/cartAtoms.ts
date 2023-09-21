@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil'
 
 interface CartItem {
   amount: number
-  cartId: string
+  cartId: number
   menuName: string
   menuPrice: number
   optionItems?: optionItem[]

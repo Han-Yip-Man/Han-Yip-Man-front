@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 
 const token =
-  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJpYXQiOjE2OTUxMDk0MDksImV4cCI6MTY5NTI4MjIwOX0.OqJviWIIrxf1tl4eHTpbdU6GjMJs3YvB-CJjperNJHs'
+  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QzLmNvbSIsInVzZXJJZHgiOjE5LCJlbWFpbCI6InRlc3RAdGVzdDMuY29tIiwicm9sZSI6IkJVWUVSIiwiaWF0IjoxNjk1MjIzNTQyLCJleHAiOjE2OTUzOTYzNDJ9.ObTCccoJB3QlOdaXo2ckCuvwL8usmvHBi1ZBQH4SOIE'
 
 const useSocket = (socketUrl: string) => {
   const [connected, setConnected] = useState(false)
@@ -22,6 +22,10 @@ const useSocket = (socketUrl: string) => {
     newSocket.on('disconnect', () => {
       setConnected(false)
       console.log('소켓연결끊김')
+    })
+
+    newSocket.on('get_error', (res) => {
+      console.log('get_error 이벤트발생 : ', res)
     })
 
     return () => {

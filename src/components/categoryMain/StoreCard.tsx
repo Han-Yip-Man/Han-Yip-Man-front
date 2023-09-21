@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import { Divider } from '@mui/material'
 import * as S from './StoreCard.style'
+import { useNavigate } from 'react-router'
 
 interface Props extends StoreDetail {}
 
@@ -25,9 +26,15 @@ const StoreCard = memo(
     shopDescription,
     deliveryTime,
     deliveryPrice,
+    shopId,
   }: Props) => {
+    const navigate = useNavigate()
+    const handleTest = () => {
+      navigate(`/store/${shopId}`)
+    }
+
     return (
-      <S.CustomCard>
+      <S.CustomCard onClick={handleTest}>
         <S.CustomCardAction>
           <S.MediaWrap>
             <S.Media image="/img/jjajang.jpg" />
