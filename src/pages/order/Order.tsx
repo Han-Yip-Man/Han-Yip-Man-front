@@ -44,20 +44,24 @@ const Order = () => {
   const [orderUserInfo, setOrderUserInfo] = useRecoilState(UserStateAtom)
   const couponDiscount = useRecoilValue(CouponDiscountAtom)
   const finalChargePrice = useRecoilValue(FinalChargePriceAtom)
-  const [orderId, setOrderId] = useState<number | null>(null)
+  // const [orderId, setOrderId] = useState<number | null>(null)
   const [orderItemsReq, setOrderItemsReq] = useState<number | null>(null)
 
-  const onClickPayment = () => {
+  let orderId: number | null = 0
+
+  const couponId = couponDiscount.buyerCouponId === 0 ? null : couponDiscount.buyerCouponId
+
+  const onClickPayment = async () => {
     if (!window.IMP) return
     /* 1. 가맹점 식별하기 */
     const { IMP } = window
-    IMP.init('imp37512165') // 가맹점 식별코드
+    IMP.init('imp01250285') // 가맹점 식별코드
 
     /* 2. 결제 데이터 정의하기 */
     const data: RequestPayParams = {
-      pg: 'kcp.T0000', // PG사 : https://developers.portone.io/docs/ko/tip/pg-2 참고
+      pg: 'html5_inicis.INIpayTest', // PG사 : https://developers.portone.io/docs/ko/tip/pg-2 참고
       pay_method: 'card', // 결제수단
-      merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+      merchant_uid: ``, // 주문번호
       amount: finalChargePrice, // 결제금액
       name: `${cartProduct[0]?.menuName} 외 ${
         cartProduct.length > 1 ? cartProduct.length - 1 : 0
@@ -69,27 +73,23 @@ const Order = () => {
       buyer_postcode: String(orderUserInfo?.addressList?.[0]?.addressNumber), // 구매자 우편번호
     }
 
-    // 주문 등록
-    if (couponDiscount.buyerCouponId !== 0) {
-      setOrderItemsReq(couponDiscount.buyerCouponId)
-    } //잘 되려나 모르겠네요 방금 혼이나감넵
-    // 화면 해보겠습니다!
-    orderItems({ buyerCouponId: orderItemsReq })
-      .then((response) => {
+    await orderItems({ buyerCouponId: couponId })
+      .then(async (response) => {
         console.log('주문등록', response.data.orderId)
-        setOrderId(response.data.orderId)
-
+        // setOrderId(response.data.orderId)
+        orderId = response.data.orderId
         // 사전 검증
-        return proveBeforePayment({ orderId: response.data.orderId }).then((response) => {
-          console.log('사전검증', response)
-        })
-
-        /* 4. 결제 창 호출하기 */
-        IMP.request_pay(data, callback)
+        const resp = await proveBeforePayment({ orderId: response.data.orderId })
+        console.log('사전검증', resp.data.response.merchant_uid)
+        data.merchant_uid = resp.data.response.merchant_uid
       })
       .catch((error) => {
         console.error(error)
       })
+    /* 4. 결제 창 호출하기 */
+    await console.log('콜백으로 던진 페이로드', data)
+
+    await IMP.request_pay(data, callback)
   }
 
   /* 3. 콜백 함수 정의하기 */
@@ -102,7 +102,7 @@ const Order = () => {
       proveAfterPayment({ imp_uid: response.imp_uid, orderId })
         .then((response) => {
           console.log('사후검증', response)
-          setOrderId(null)
+          // setOrderId(null)
         })
         .catch((error) => {
           console.error(error)

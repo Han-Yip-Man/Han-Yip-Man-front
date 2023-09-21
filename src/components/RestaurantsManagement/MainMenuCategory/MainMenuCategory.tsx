@@ -20,7 +20,6 @@ import { shopMenuGroups } from '../../../recoil/restaurants'
 const MainMenuCategory: React.FC = () => {
   const currentId = useRecoilValue(selectedShopIdState)
   const [menugroup, setMenugroup] = useRecoilState(shopMenuGroups)
-  console.log(menugroup)
 
   // 카드 데이터 및 드래그/드롭 관련 상태
   const [placeholderIndex, setPlaceholderIndex] = React.useState<number | null>(null) // placeholder의 위치를 결정
@@ -35,7 +34,7 @@ const MainMenuCategory: React.FC = () => {
         const response = await getMenuGroups(currentId)
         setMenugroup(response)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
     getCate()
@@ -70,8 +69,6 @@ const MainMenuCategory: React.FC = () => {
     newMenugroups.splice(dropIndex, 0, draggedItem)
     setMenugroup(newMenugroups)
     setPlaceholderIndex(null)
-    console.log(dropIndex)
-    console.log(draggedItem.menuGroupId)
     patchindexMenuGroups({
       shop_id: currentId,
       menuGroupSequence: dropIndex + 1,
