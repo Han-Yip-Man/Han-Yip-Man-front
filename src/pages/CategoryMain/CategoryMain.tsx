@@ -35,7 +35,7 @@ type CategoryType =
   | 'jokbal'
   | 'night'
 
-type FilterType = 'distance' | 'review' | 'rating' | 'deliveryFee'
+type FilterType = 'DISTANCE' | 'AVG_RATING' | 'COUNT_REVIEW' | 'CREATED_AT'
 
 interface IBtn {
   id: number
@@ -123,23 +123,23 @@ const categoryBtns: IBtn[] = [
 const filterBtns: IFilter[] = [
   {
     id: 1,
-    title: '거리 순',
-    filterName: 'distance',
+    title: '최신 순',
+    filterName: 'CREATED_AT',
   },
   {
     id: 2,
     title: '리뷰 순',
-    filterName: 'review',
+    filterName: 'COUNT_REVIEW',
   },
   {
     id: 3,
     title: '평점 순',
-    filterName: 'rating',
+    filterName: 'AVG_RATING',
   },
   {
     id: 4,
-    title: '배달비 순',
-    filterName: 'deliveryFee',
+    title: '거리 순',
+    filterName: 'DISTANCE',
   },
 ]
 
@@ -150,7 +150,7 @@ const CategoryMain = () => {
     categoryId: 0,
     categoryName: 'all',
   })
-  const [currentFilter, setCurrentFilter] = useState<FilterType>('distance')
+  const [currentFilter, setCurrentFilter] = useState<FilterType>('CREATED_AT')
   const currentAddr = useRecoilValue(userAddr)
   const { routeTo } = useRouter()
   const toast = useAlert()
@@ -158,12 +158,15 @@ const CategoryMain = () => {
   const qc = useQueryClient()
 
   const fetchData = useCallback(
-    async ({ pageParam = null }) => {
-      const cursorParam = pageParam ? `&cursor=${pageParam}` : ''
+    async ({ nextCursorId, nextCursorValue }: CursorParams) => {
+      const nextCursorIdParam = nextCursorId ? `&cursorId=${nextCursorId}` : ''
+      const nextCursorValueParam = nextCursorValue ? `&cursorValue=${nextCursorValue}` : ''
       const keyword = debouncedKeyword.trim()
       const searchParam = keyword ? `&searchKeyword=${keyword}` : ''
-      // const sortParam = `&sortType=${currentFilter}`
-      const url = `categoryId=${currentCategory.categoryId}&size=${15}${searchParam}${cursorParam}`
+      const sortParam = `&sortType=${currentFilter}`
+      const url = `categoryId=${
+        currentCategory.categoryId
+      }&size=${15}${searchParam}${nextCursorIdParam}${nextCursorValueParam}${sortParam}`
       const prefix = isLoggedIn
         ? '?'
         : `/guest?latitude=${currentAddr.lat}&longitude=${currentAddr.lng}&`

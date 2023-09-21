@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { SSEContext } from '../context/SSEProvider'
+import { SSEContext } from '../Provider/SSEProvider'
 
 const useSSEContext = () => {
   return useContext(SSEContext)

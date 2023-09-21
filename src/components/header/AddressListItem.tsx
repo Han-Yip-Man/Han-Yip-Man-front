@@ -96,7 +96,7 @@ function AddressListItem({
 
   useEffect(() => {
     qc.removeQueries(['category'])
-    qc.refetchQueries(['category'])
+    // qc.refetchQueries(['category'])
   }, [currentUser])
 
   return (

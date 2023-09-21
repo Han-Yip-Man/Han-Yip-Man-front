@@ -10,16 +10,19 @@ interface Props {
   currentCategory: ICategory
   debouncedKeyword: string
   currentFilter: string
-  fetchData: ({ pageParam }: { pageParam?: null | undefined }) => Promise<StoreListResponse>
+  fetchData: (pageParam: CursorParams) => Promise<StoreListResponse>
 }
 
 const StoreList = ({ currentCategory, debouncedKeyword, currentFilter, fetchData }: Props) => {
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching } = useInfiniteQuery(
     ['category', currentCategory.categoryName, debouncedKeyword, currentFilter],
-    fetchData,
+    (pageParam: any) => fetchData(pageParam),
     {
       getNextPageParam: (lastPage: StoreListResponse) => {
-        return lastPage.nextCursor
+        if (!lastPage.nextCursorId) {
+          return false
+        }
+        return { nextCursorId: lastPage.nextCursorId, nextCursorValue: lastPage.nextCursorValue }
       },
       useErrorBoundary: true,
       staleTime: 50000,
