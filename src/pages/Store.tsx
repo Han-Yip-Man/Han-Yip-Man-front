@@ -14,7 +14,7 @@ export const Store = () => {
   const setShopid = useSetRecoilState(orderShopid)
 
   useEffect(() => {
-    setShopid(storeId)
+    setShopid(Number(storeId))
   }, [])
 
   return (
