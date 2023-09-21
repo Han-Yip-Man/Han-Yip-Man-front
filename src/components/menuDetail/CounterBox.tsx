@@ -30,7 +30,6 @@ export default function CounterBox({ quantity, setQuantity }: CounterBoxProps) {
               <input
                 type="number"
                 value={quantity}
-                readOnly
                 style={{ width: '30px', textAlign: 'center', fontSize: '25px' }}
                 min="1"
                 readOnly
