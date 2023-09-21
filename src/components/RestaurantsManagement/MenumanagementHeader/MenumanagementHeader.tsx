@@ -33,6 +33,8 @@ const MenumanagementHeader = () => {
     getCate()
   }, [currentId])
 
+  console.log(currentId)
+
   const handleSelectMenuCategory = (e: SelectChangeEvent<string | unknown>) => {
     setGroupid(e.target.value as number)
   }

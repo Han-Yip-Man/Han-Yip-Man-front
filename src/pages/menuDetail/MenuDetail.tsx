@@ -26,7 +26,6 @@ type option = {
   maxSelected: number
   optionItems: optionItem[]
 }
-
 interface MenuData {
   menuId: number
   menuPrice: number
@@ -88,6 +87,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
     getMenuDetail(Number(menuId))
       .then((response: AxiosResponse) => {
         setData(response.data)
+        console.log(response, '메디')
 
         const initialSelectedOptions = response.data.options.reduce(
           (acc: any, option: any) => ({
@@ -132,12 +132,19 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
       const selOptArr = allSelectedOptionItems.map((optionItem) => optionItem.optionItemId)
 
       const requestCartItem = {
-        shopId: 11410,
+        shopId: 11412,
         menuId: data.menuId,
         options: selOptArr,
         amount: quantity,
       }
-      addCartItems(requestCartItem) // 임포트 부탁드립니다
+
+      addCartItems(requestCartItem)
+        .then((response) => {
+          console.log(response, '확인')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
 
@@ -199,6 +206,8 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
 
   const mainMenuPrice = data.menuPrice.toLocaleString('ko-KR')
 
+  console.log(cartProduct)
+
   return (
     <>
       <S.WrapperDiv>
@@ -216,8 +225,9 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
 
             <S.OptionBox>
               {data.options &&
-                data.options.map((option) => (
+                data.options.map((option, i) => (
                   <AddOptionOne
+                    key={i}
                     option={option}
                     onOptionChange={handleOptionChange}
                     selectedOptions={selectedOptions}

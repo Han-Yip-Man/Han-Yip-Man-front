@@ -89,20 +89,20 @@ export const SubTitleWrap = styled.div`
 `
 
 // export const SubTitleTypo = styled(Typography)``
-export const SubTitleTypo1 = styled.td`
+export const SubTitleTypo1 = styled.div`
   width: 500px;
   text-align: left;
   padding-left: 20px;
 `
-export const SubTitleTypo2 = styled.td`
+export const SubTitleTypo2 = styled.div`
   width: 120px;
   text-align: center;
 `
-export const SubTitleTypo3 = styled.td`
+export const SubTitleTypo3 = styled.div`
   width: 120px;
   text-align: center;
 `
-export const SubTitleTypo4 = styled.td`
+export const SubTitleTypo4 = styled.div`
   width: 120px;
   text-align: center;
 `

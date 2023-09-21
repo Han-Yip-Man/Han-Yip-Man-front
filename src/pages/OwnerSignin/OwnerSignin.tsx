@@ -6,30 +6,36 @@ import { useTheme } from '@mui/material/styles'
 import { FormDataType } from '../../types/user'
 import { signIn } from '../../api/user'
 import useAlert from '../../hooks/useAlert'
+import { useNavigate } from 'react-router-dom'
 
 const OwnerSignin = () => {
   const theme = useTheme()
   const toast = useAlert()
+  const navigate = useNavigate()
 
   const { register, handleSubmit, watch } = useForm<FormDataType>()
   const password = useRef<string | undefined>()
   password.current = watch('password')
 
   const onSubmit = async (data: FormDataType) => {
-    try {
-      const payload = {
-        email: data.email,
-        password: data.password,
-      }
-
-      const response = await signIn(payload)
-      console.log('로그인 성공:', response)
-      sessionStorage.setItem('accessToken', response.accessToken)
-      sessionStorage.setItem('role', response.role)
-      sessionStorage.setItem('profileUrl', response.profileUrl)
-    } catch (error) {
-      toast('로그인 정보가 올바르지 않습니다.', 3000, 'error')
+    const payload = {
+      email: data.email,
+      password: data.password,
     }
+
+    signIn(payload)
+      .then((response) => {
+        sessionStorage.setItem('accessToken', response.accessToken)
+        sessionStorage.setItem('role', response.role)
+        sessionStorage.setItem('profileUrl', response.profileUrl)
+        toast('로그인에 성공했습니다.', 2000, 'success')
+        setTimeout(() => {
+          navigate('/main')
+        }, 2000)
+      })
+      .catch(() => {
+        toast('로그인 정보가 올바르지 않습니다.', 2000, 'error')
+      })
   }
 
   return (

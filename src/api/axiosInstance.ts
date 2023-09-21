@@ -23,9 +23,9 @@ axiosClient.interceptors.request.use((config) => {
   }
   config.headers['X-API-VERSION'] = '1'
 
-  // const token = sessionStorage.getItem('accessToken')
-  const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJpYXQiOjE2OTUxOTk0MDEsImV4cCI6MTY5NTM3MjIwMX0.EVB7VQ0BkS9QJvExKB5n6IXZlbgpVWY-SoFpuJILIGs'
+  const token = sessionStorage.getItem('accessToken')
+  // const token =
+  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJpYXQiOjE2OTUxOTk0MDEsImV4cCI6MTY5NTM3MjIwMX0.EVB7VQ0BkS9QJvExKB5n6IXZlbgpVWY-SoFpuJILIGs'
 
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`

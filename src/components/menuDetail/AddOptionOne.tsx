@@ -72,6 +72,7 @@ export default function AddOptionOne({
           <S.CheckboxWrapper key={item.optionItemId}>
             <S.OptionOneInput
               type="checkbox"
+              readOnly
               id={`option-${item.optionItemId}`}
               name={item.optionItemName}
               value={item.optionItemPrice}
