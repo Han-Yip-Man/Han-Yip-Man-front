@@ -8,8 +8,10 @@ import { useForm, Controller } from 'react-hook-form'
 import useAlert from '../../../hooks/useAlert'
 import useImageCompression from '../../../hooks/useImageCompression'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { shopGroupid, shopmenupage } from '../../../recoil/restaurants'
+import { shopGroupid, shopmenupage, LoadingModal } from '../../../recoil/restaurants'
 import { addsellerMenu } from '../../../api/restaurant'
+import ImageModalLoading from '../../common/ImageModalLoading'
+
 interface MenuOptionItem {
   itemName: string
   itemPrice: number
@@ -42,11 +44,14 @@ const AddMenu = () => {
   const toast = useAlert()
   const groupid = useRecoilValue(shopGroupid)
   const setmenupage = useSetRecoilState(shopmenupage)
+  const setLoading = useSetRecoilState(LoadingModal)
 
   const handleMenuImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setLoading(true)
       await compressProfileImage(file)
+      setLoading(false)
     }
   }
 
@@ -66,6 +71,10 @@ const AddMenu = () => {
     const regex = /^[a-zA-Z가-힣\s]+$/
     if (!regex.test(data.optionName.trim())) {
       toast('정확한 이름을 입력해주세요.', 2000, 'error')
+      return
+    }
+    if (options.some((option) => option.optionName === data.optionName.trim())) {
+      toast('이미 존재하는 옵션 이름입니다.', 2000, 'error')
       return
     }
 
@@ -112,9 +121,17 @@ const AddMenu = () => {
       return
     }
 
+    if (
+      options[selectedOptionIndex]?.optionItems.some(
+        (item) => item.itemName === data.itemName.trim(),
+      )
+    ) {
+      toast('이미 존재하는 옵션 아이템 이름입니다.', 2000, 'error')
+      return
+    }
+
     setOptions((prevOptions) => {
       const newOptions = [...prevOptions]
-      console.log('Selected Option: ', newOptions[selectedOptionIndex])
 
       if (newOptions[selectedOptionIndex]) {
         newOptions[selectedOptionIndex].optionItems.push(data)
@@ -174,9 +191,7 @@ const AddMenu = () => {
           optionItem: { itemName: '', itemPrice: 0 },
         })
         setOptions([])
-        setTimeout(() => {
-          setmenupage(1)
-        }, 2000)
+        setmenupage(1)
       })
       .catch(() => {
         toast('메뉴 등록에 실패했습니다.', 2000, 'error')
@@ -358,6 +373,7 @@ const AddMenu = () => {
           메뉴 등록
         </Button>
       </S.AddMenuBtnbox>
+      <ImageModalLoading />
     </S.Wrapper>
   )
 }

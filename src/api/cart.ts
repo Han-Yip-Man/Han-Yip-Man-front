@@ -7,7 +7,7 @@ export const getCartItems = async () => {
 }
 
 type addCartItemProps = {
-  shopId: number //가게 ID
+  shopId: number | unknown //가게 ID
   menuId: number //선택 메뉴 ID
   options: number[] //선택된 옵션 IDS
   amount: number //선택한메뉴갯수

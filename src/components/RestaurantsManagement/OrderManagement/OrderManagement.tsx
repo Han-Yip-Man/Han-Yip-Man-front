@@ -3,82 +3,67 @@ import OrderManagementList from './OrderManagementList'
 import { Stack } from '@mui/material'
 import { DragDropContext, DropResult, Droppable, DroppableId } from 'react-beautiful-dnd'
 import { useCallback, useEffect, useState } from 'react'
-import { useSocket } from '../../../hooks'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAlert, useSocketContext, useSSEContext } from '../../../hooks'
 import { getSellerOrderList } from '../../../api/order'
 
-interface Item {
-  id: string
-  content: string
+interface Data {
+  address: string
+  menuResponses: []
+  orderId: number
+  orderStatus: string
+  orderedTime: string
+  totalAmount: number
+  orderSequence: number
 }
 
-const waitItems: Item[] = Array.from({ length: 10 }, (_, i) => ({
-  id: `wait-item-${i + 1}`,
-  content: `Wait Item ${i + 1}`,
-}))
-
-const acceptItems: Item[] = Array.from({ length: 10 }, (_, i) => ({
-  id: `accept-item-${i + 1}`,
-  content: `Accept Item ${i + 1}`,
-}))
-
-const cookingItems: Item[] = Array.from({ length: 10 }, (_, i) => ({
-  id: `cooking-item-${i + 1}`,
-  content: `cooking Item ${i + 1}`,
-}))
-
-const deliveryItems: Item[] = Array.from({ length: 10 }, (_, i) => ({
-  id: `delivery-item-${i + 1}`,
-  content: `delivery Item ${i + 1}`,
-}))
-
 function OrderManagement() {
-  const [waitList, setWaitList] = useState(waitItems)
-  const [acceptList, setAcceptList] = useState(acceptItems)
-  const [cookingList, setCookingList] = useState(cookingItems)
-  const [deliveryList, setDeliveryList] = useState(deliveryItems)
-  const socket = useSocket('ws://58.123.150.14:8088')
+  const { data } = useQuery(['orderList'], () => getSellerOrderList(998))
+  const [paidList, setPaidList] = useState<Data[]>([])
+  const [takeOverList, setTakeOverList] = useState<Data[]>([])
+  const [cookingList, setCookingList] = useState<Data[]>([])
+  const [deliveryList, setDeliveryList] = useState<Data[]>([])
+  const qc = useQueryClient()
+  const { socket } = useSocketContext()
+  const sse = useSSEContext()
+  const toast = useAlert()
 
-  console.log(socket)
-
-  // 리액트 쿼리를 쓰던지해서 데이터 불러오기
-  // 리액트 쿼리로 불러온 데이터로 목록 그려준다음
-  // 드래그앤 드랍으로 아이템 이동하면 소켓 이벤트로 주문상태 변경및순서변경아이디 넘겨줄것
-  // const { data } = useQuery(['orderStatus'], () =>
-  //   getSellerOrderList('전역상태로 상점아이디 넣어줄것'),
-  // )
+  const sortOrders = useCallback((orderArr: Data[]) => {
+    return orderArr.sort((a, b) => a.orderSequence - b.orderSequence)
+  }, [])
 
   const getItemArray = useCallback(
-    (droppableId: string): Item[] => {
+    (droppableId: string) => {
       switch (droppableId) {
-        case '주문대기':
-          return waitList
-        case '주문승인':
-          return acceptList
-        case '조리시작':
+        case 'PAID':
+          return paidList
+        case 'TAKEOVER':
+          return takeOverList
+        case 'COOKING':
           return cookingList
-        case '배달출발':
+        case 'DELIVERY':
           return deliveryList
         default:
           throw new Error(`Unknown droppableId: ${droppableId}`)
       }
     },
-    [waitList, acceptList, cookingList, deliveryList],
+    [paidList, takeOverList, cookingList, deliveryList],
   )
 
-  const updateState = useCallback((droppableId: string, newArray: Item[]) => {
+  const updateState = useCallback((droppableId: string, newArray: Data[]) => {
+    const sorted = newArray
     switch (droppableId) {
-      case '주문대기':
-        setWaitList(newArray)
+      case 'PAID':
+        setPaidList(sorted)
         break
-      case '주문승인':
-        setAcceptList(newArray)
+      case 'TAKEOVER':
+        setTakeOverList(sorted)
         break
-      case '조리시작':
-        setCookingList(newArray)
+      case 'COOKING':
+        setCookingList(sorted)
         break
-      case '배달출발':
-        setDeliveryList(newArray)
+      case 'DELIVERY':
+        setDeliveryList(sorted)
         break
       default:
         throw new Error(`Unknown droppableId: ${droppableId}`)
@@ -87,22 +72,35 @@ function OrderManagement() {
 
   const handleOnDragEnd = useCallback(
     (result: DropResult): void => {
-      const { source, destination } = result
+      const { source, destination, draggableId } = result
+
+      const movedItem = {
+        orderId: draggableId,
+        orderStatus: destination?.droppableId,
+        orderSequence: destination?.index,
+      }
 
       if (!destination) {
-        if (source.droppableId === '주문대기') {
+        if (source.droppableId === 'PAID') {
           const sourceArray = [...getItemArray(source.droppableId)]
           sourceArray.splice(source.index, 1)
           updateState(source.droppableId, sourceArray)
+          socket?.emit(
+            'send_order_status_change',
+            { ...movedItem, orderStatus: 'CANCELED' },
+            (res: any) => {
+              console.log('취소응답', res)
+              qc.invalidateQueries(['orderList'])
+            },
+          )
         }
-
         return
       }
 
       const allowedMoves: Record<DroppableId, DroppableId> = {
-        주문대기: '주문승인',
-        주문승인: '조리시작',
-        조리시작: '배달출발',
+        PAID: 'TAKEOVER',
+        TAKEOVER: 'COOKING',
+        COOKING: 'DELIVERY',
       }
 
       if (source.droppableId === destination.droppableId) {
@@ -114,9 +112,11 @@ function OrderManagement() {
         updateState(source.droppableId, itemsArray)
       }
 
-      if (allowedMoves[source.droppableId] !== destination.droppableId) {
-        return
-      }
+      // if (allowedMoves[source.droppableId] !== destination.droppableId) {
+      //   console.log(allowedMoves[source.droppableId], destination.droppableId)
+      //   toast('이전 상태로 변경이 불가능합니다.', 3000, 'warning')
+      //   return
+      // }
 
       if (source.droppableId !== destination.droppableId) {
         // 리스트 사이에 아이템 옮길때
@@ -129,49 +129,101 @@ function OrderManagement() {
         updateState(source.droppableId, sourceArray)
         updateState(destination.droppableId, destArray)
       }
+      socket?.emit('send_order_status_change', movedItem, (res: any) => {
+        console.log('응답', res)
+        if (res.message === '주문 상태가 정상 변경되었습니다.') {
+          toast(res.message, 3000, 'success')
+        }
+        /// 이게 세번째 함수
+        qc.invalidateQueries(['orderList'])
+      })
     },
     [updateState, getItemArray],
   )
 
-  // useEffect(() => {
-  // }, [])
+  // const handleOnDragEnd = (result: DropResult) => {
+  //   const movedItem = {
+  //     orderId: result.draggableId,
+  //     orderStatus: result.destination?.droppableId,
+  //     orderSequence: result.destination?.index,
+  //   }
+  //   const allowedMoves: Record<DroppableId, DroppableId> = {
+  //     PAID: 'TAKEOVER',
+  //     TAKEOVER: 'COOKING',
+  //     COOKING: 'DELIVERY',
+  //   }
+  //   if (allowedMoves[result.source.droppableId] !== result.destination?.droppableId) {
+  //     return
+  //   }
+  //   if (!result.destination) {
+  //     if (result.source.droppableId === 'PAID') {
+  //       socket?.emit(
+  //         'send_order_status_change',
+  //         { ...movedItem, orderStatus: 'CANCELED' },
+  //         (res: any) => {
+  //           console.log('취소응답', res)
+  //           qc.invalidateQueries(['orderList'])
+  //         },
+  //       )
+  //     }
+  //   }
+  //   console.log('옮겨진아이템', movedItem)
+  //   socket?.emit('send_order_status_change', movedItem, (res: any) => {
+  //     console.log('응답', res)
+  //     /// 이게 세번째 함수
+  //     qc.invalidateQueries(['orderList'])
+  //   })
+  // }
+
+  useEffect(() => {
+    if (data) {
+      setPaidList(sortOrders(data.paid))
+      setTakeOverList(sortOrders(data.takeover))
+      setCookingList(sortOrders(data.cooking))
+      setDeliveryList(sortOrders(data.delivery))
+    }
+  }, [data])
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Wrap>
         <CustomStack direction={{ xs: 'column', sm: 'row' }}>
-          <Droppable droppableId={'주문대기'}>
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <OrderManagementList title={'주문대기'} items={waitList} />
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Droppable droppableId={'주문승인'}>
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <OrderManagementList title={'주문승인'} items={acceptList} />
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Droppable droppableId={'조리시작'}>
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <OrderManagementList title={'조리시작'} items={cookingList} />
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Droppable droppableId={'배달출발'}>
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <OrderManagementList title={'배달출발'} items={deliveryList} />
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          {data && (
+            <>
+              <Droppable droppableId={'PAID'}>
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    <OrderManagementList title={'주문대기'} items={paidList} />
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+              <Droppable droppableId={'TAKEOVER'}>
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    <OrderManagementList title={'주문승인'} items={takeOverList} />
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+              <Droppable droppableId={'COOKING'}>
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    <OrderManagementList title={'조리시작'} items={cookingList} />
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+              <Droppable droppableId={'DELIVERY'}>
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    <OrderManagementList title={'배달출발'} items={deliveryList} />
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </>
+          )}
         </CustomStack>
       </Wrap>
     </DragDropContext>

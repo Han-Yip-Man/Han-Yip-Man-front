@@ -18,6 +18,7 @@ const InputField = React.forwardRef<
     showErrorMessage?: boolean
     multiline?: boolean
     rows?: number
+    name?: string
     style?: React.CSSProperties
   }
 >(

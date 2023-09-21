@@ -7,9 +7,11 @@ import { FormDataType } from '../../types/user'
 import { ownerSignUp } from '../../api/user'
 import useAlert from '../../hooks/useAlert'
 import { emailCheck } from '../../api/user'
+import { useNavigate } from 'react-router-dom'
 
 const OwnerSignup = () => {
   const theme = useTheme()
+  const navigate = useNavigate()
 
   const {
     register,
@@ -22,22 +24,24 @@ const OwnerSignup = () => {
   const email = watch('email')
   const toast = useAlert()
 
-  const onSubmit = async (data: FormDataType) => {
-    try {
-      const payload = {
-        businessNumber: data.BusinessNumber,
-        email: data.email,
-        nickName: data.nickname,
-        password: data.password,
-        passwordCheck: data.password_confirm,
-        phoneNumber: data.phoneNumber,
-      }
-
-      const response = await ownerSignUp(payload)
-      console.log('회원가입 성공:', response)
-    } catch (error) {
-      console.error('회원가입 실패:', error)
+  const onSubmit = (data: FormDataType) => {
+    const payload = {
+      businessNumber: data.BusinessNumber,
+      email: data.email,
+      nickName: data.nickname,
+      password: data.password,
+      passwordCheck: data.password_confirm,
+      phoneNumber: data.phoneNumber,
     }
+
+    ownerSignUp(payload)
+      .then((response) => {
+        toast('회원가입에 성공했습니다.', 2000, 'success')
+        navigate('/auth/sellersignin')
+      })
+      .catch((error) => {
+        toast('회원가입에 실패했습니다.', 2000, 'error')
+      })
   }
 
   //중복체크 검사할떄 쓸 함수~~

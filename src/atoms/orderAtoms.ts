@@ -49,3 +49,8 @@ export const FinalChargePriceAtom = atom({
   key: 'finalChargePrice',
   default: 0,
 })
+
+export const orderShopid = atom({
+  key: 'orderShopid',
+  default: null,
+})

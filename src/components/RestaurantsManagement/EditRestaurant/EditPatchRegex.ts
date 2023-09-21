@@ -1,4 +1,4 @@
-import { FieldNames } from '../../../types/restaurantsAtom'
+import { ShopField } from '../../../types/restaurantsAtom'
 
 const regexPatterns: { [key: string]: RegExp } = {
   shopName: /^[A-Za-z가-힣\s]+$/,
@@ -9,7 +9,7 @@ const regexPatterns: { [key: string]: RegExp } = {
   categoryName: /^[0-9]+$/,
 }
 
-export const validateField = (field: FieldNames, value: string | number) => {
+export const validateField = (field: ShopField, value: string | number) => {
   const pattern = regexPatterns[field]
   if (pattern) {
     return pattern.test(String(value))

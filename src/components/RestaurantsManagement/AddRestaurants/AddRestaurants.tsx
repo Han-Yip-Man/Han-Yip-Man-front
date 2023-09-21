@@ -12,7 +12,8 @@ import useAddressSearch from '../../../hooks/useAddressSearch.js'
 import { DaumPostcodeData } from '../../../types/Address.js'
 import useAlert from '../../../hooks/useAlert.js'
 import { useSetRecoilState } from 'recoil'
-import { sellerDashboardNum } from '../../../recoil/restaurants.js'
+import { sellerDashboardNum, LoadingModal } from '../../../recoil/restaurants.js'
+import ImageModalLoading from '../../common/ImageModalLoading.js'
 
 const AddRestaurants = () => {
   const pageset = useSetRecoilState(sellerDashboardNum)
@@ -35,8 +36,7 @@ const AddRestaurants = () => {
     zonecode: '',
     coordinates: null,
   })
-
-  console.log(address)
+  const setLoading = useSetRecoilState(LoadingModal)
 
   useEffect(() => {
     setIsDuplicateChecked(false)
@@ -52,6 +52,8 @@ const AddRestaurants = () => {
             zonecode: result.zonecode,
             coordinates: result.coordinates,
           }))
+          setValue('address', result.address)
+          setValue('zonecode', result.zonecode)
         }
       })
       .catch((err: Error) => {
@@ -62,14 +64,18 @@ const AddRestaurants = () => {
   const handleMainImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setLoading(true)
       await compressMainImage(file)
+      setLoading(false)
     }
   }
 
   const handleBannerImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setLoading(true)
       await compressBannerImage(file)
+      setLoading(false)
     }
   }
 
@@ -128,9 +134,7 @@ const AddRestaurants = () => {
 
       await addShop(formData)
       toast('가게가 성공적으로 등록되었습니다', 2000, 'success')
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
+      window.location.reload()
     } catch (error) {
       toast('가게등록에 실패하였습니다.', 2000, 'error')
     }
@@ -307,6 +311,7 @@ const AddRestaurants = () => {
           </S.SubmitButton>
         </S.FormFrame>
       </S.Form>
+      <ImageModalLoading />
     </S.Wrapper>
   )
 }

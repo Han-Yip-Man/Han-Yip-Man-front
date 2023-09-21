@@ -7,9 +7,10 @@ import { css } from '@emotion/css'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { userInfo } from '../../atoms/userInfoAtoms'
+import { userInfo, tokenState } from '../../atoms/userInfoAtoms'
 import { currentAddr, userAddr } from '../../atoms/addressAtoms'
 import { useRouter } from '../../hooks'
+import { UserInfoType } from '../../types/user'
 
 const messages = [
   '떡볶이 한사발 하시죠?',
@@ -28,7 +29,8 @@ function LoginBtnComponent() {
   const [msg, setMsg] = useState('')
   const { pathname } = useLocation()
   const { routeTo } = useRouter()
-  const isLoggedIn = useRecoilValue(userInfo) // 사용자 이름
+  const isLoggedIn = useRecoilValue(userInfo) as UserInfoType | null // 사용자 이름
+  const resetToken = useResetRecoilState(tokenState)
   const currentPath = pathname === '/'
   const open = !!anchorEl
 
@@ -48,6 +50,7 @@ function LoginBtnComponent() {
     resetNonLoginAddrs()
     sessionStorage.clear()
     handleClose()
+    resetToken()
   }
 
   useEffect(() => {
@@ -88,8 +91,7 @@ function LoginBtnComponent() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          {/* {`${isLoggedIn?.sub}님 ${msg}`} */}
-          {`차지환님 ${msg}`}
+          {`${isLoggedIn?.nickname}님 ${msg}`}
         </CustomBtn>
       </CustomizedTooltip>
       <Menu

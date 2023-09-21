@@ -10,6 +10,7 @@ import { userSignUp } from '../../api/user'
 import { emailCheck } from '../../api/user'
 import useAlert from '../../hooks/useAlert'
 import useImageCompression from '../../hooks/useImageCompression'
+import { useNavigate } from 'react-router-dom'
 
 const CustomerSignup = () => {
   const {
@@ -26,6 +27,7 @@ const CustomerSignup = () => {
   const scriptUrl = 'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js'
   const openPostcodePopup = useAddressSearch(scriptUrl)
   const toast = useAlert()
+  const navigate = useNavigate()
 
   const [address, setAddress] = useState<DaumPostcodeData | null>({
     address: '',
@@ -43,6 +45,8 @@ const CustomerSignup = () => {
             zonecode: result.zonecode,
             coordinates: result.coordinates,
           }))
+          setValue('address', result.address)
+          setValue('zonecode', result.zonecode)
         }
       })
       .catch((err: Error) => {
@@ -74,37 +78,37 @@ const CustomerSignup = () => {
   }, [profileCompressedFile])
 
   const onSubmit = async (data: FormDataType) => {
-    try {
-      const { coordinates } = address || {}
+    const { coordinates } = address || {}
 
-      const payload = {
-        address: data.address,
-        addressDetail: data.detailaddress,
-        email: data.email,
-        latitude: Number(parseFloat(coordinates?.latitude || '0').toFixed(6)),
-        longitude: Number(parseFloat(coordinates?.longitude || '0').toFixed(6)),
-        nickName: data.nickname,
-        password: data.password,
-        passwordCheck: data.password_confirm,
-        phoneNumber: data.phoneNumber,
-        profileImageFile: data.profileImage,
-      }
-
-      console.log(payload)
-
-      const formData = new FormData()
-
-      Object.entries(payload).forEach(([key, value]) => {
-        if (value !== undefined) {
-          formData.append(key, value)
-        }
-      })
-
-      const response = await userSignUp(formData)
-      console.log('회원가입 성공:', response)
-    } catch (error) {
-      console.error('회원가입 실패:', error)
+    const payload = {
+      address: data.address,
+      addressDetail: data.detailaddress,
+      email: data.email,
+      latitude: Number(parseFloat(coordinates?.latitude || '0').toFixed(6)),
+      longitude: Number(parseFloat(coordinates?.longitude || '0').toFixed(6)),
+      nickName: data.nickname,
+      password: data.password,
+      passwordCheck: data.password_confirm,
+      phoneNumber: data.phoneNumber,
+      profileImageFile: data.profileImage,
     }
+
+    const formData = new FormData()
+
+    Object.entries(payload).forEach(([key, value]) => {
+      if (value !== undefined) {
+        formData.append(key, value)
+      }
+    })
+
+    await userSignUp(formData)
+      .then((response) => {
+        toast('회원가입에 성공했습니다', 2000, 'success')
+        navigate('/auth/usersignin')
+      })
+      .catch((error) => {
+        toast('회원가입에 실패했습니다', 2000, 'error')
+      })
   }
 
   //중복체크 검사할떄 쓸 함수~~

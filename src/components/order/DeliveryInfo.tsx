@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMypageInfo } from '../../api/mypage'
 import { AxiosResponse } from 'axios'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { UserStateAtom } from '../../atoms/orderAtoms'
+import { userAddr } from '../../atoms/addressAtoms'
 
 type MypageInfo = {
   userNumber: number
@@ -50,6 +51,7 @@ const DeliveryInfo = () => {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value)
   }
+  const address = useRecoilValue(userAddr)
 
   useEffect(() => {
     if (selectedOption === '직접 입력') {

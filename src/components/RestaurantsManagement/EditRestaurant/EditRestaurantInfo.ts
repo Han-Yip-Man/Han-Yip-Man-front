@@ -1,6 +1,6 @@
-import { FieldNames } from '../../../types/restaurantsAtom'
+import { ShopField } from '../../../types/restaurantsAtom'
 
-export const sections: { label: string; field: FieldNames }[] = [
+export const sections: { label: string; field: ShopField }[] = [
   { label: '상호명', field: 'shopName' },
   { label: '가게 설명', field: 'shopDescription' },
   { label: '최소주문금액', field: 'minOrderPrice' },

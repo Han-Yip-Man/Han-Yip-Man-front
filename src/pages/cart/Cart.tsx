@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from 'react'
 import { AxiosResponse, isAxiosError } from 'axios'
 import { useAlert, useRouter } from '../../hooks'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { CartStateAtom, totalCartPriceSelector } from '../../atoms/cartAtoms'
 import Ximg from '../../assets/iconX.svg'
 import Plusimg from '../../assets/iconPlus.svg'
@@ -21,6 +21,7 @@ import Minusimg from '../../assets/iconMinus.svg'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMypageInfo } from '../../api/mypage'
 import { UserStateAtom } from '../../atoms/orderAtoms'
+import { TestUser } from '../../recoil/sellermenu'
 
 const Cart: React.FC = () => {
   const toast = useAlert()
@@ -105,8 +106,8 @@ const Cart: React.FC = () => {
           toast(`${error.message}`, 3000, 'error')
         }
       })
-  }, []) // 아 네네 그러면 쿠폰을 선택했을 때 업데이트를 서버에 시켜야겠네요
-  //저 여기서 amount 안 맞는 거 다시 콘솔창 띄워보겠습니다 할인 전 금액 네 아하 네
+  }, [])
+
   useEffect(() => {
     getMypageInfo().then((response) => {
       setOrderUserInfo(response)
@@ -118,13 +119,21 @@ const Cart: React.FC = () => {
       .then(() => {
         toast('삭제에 성공하였습니다.', 2000, 'success')
         getCartItems().then((response) => {
-          setCartProduct(response.data)
+          setCartProduct(response.data.content)
         })
       })
       .catch(() => {
         toast('삭제에 실패했습니다.', 2000, 'error')
       })
   }
+
+  const setUser = useSetRecoilState(TestUser)
+
+  useEffect(() => {
+    getMypageInfo().then((response) => {
+      setUser(response)
+    })
+  }, [])
 
   return (
     <S.OuterDiv>
@@ -186,7 +195,7 @@ const Cart: React.FC = () => {
                   </S.CounterBtnWrap>
                 </S.CounterOuterDiv>
                 <S.TotalWrap>
-                  <S.Total>{item.totalPrice.toLocaleString('ko-KR')}원</S.Total>
+                  <S.Total>{item.totalPrice}원</S.Total>
                 </S.TotalWrap>
                 <S.DelBtnWrap onClick={() => handleRemoveItem(index)}>
                   <button onClick={() => handleselecteddelete(item.cartId)}>

@@ -3,16 +3,17 @@ import * as S from './EditRestaurant.style'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
 import { getShopDetail } from '../../../api/restaurant'
 import { useSetRecoilState } from 'recoil'
-import { shopDetailState, sellerDashboardNum } from '../../../recoil/restaurants'
+import { shopDetailState, sellerDashboardNum, LoadingModal } from '../../../recoil/restaurants'
 import { EditGridSection } from './EditPatchInfo'
 import { sections, categories } from './EditRestaurantInfo'
 import { Select, MenuItem, Grid } from '@mui/material'
-import useShopinfoPatch from '../../../hooks/useShopinfoPatch'
+import useEditPatch from '../../../hooks/useEditPatch'
 import useAlert from '../../../hooks/useAlert'
-import { FieldNames, ShopInfo } from '../../../types/restaurantsAtom'
+import { ShopField, ShopInfo } from '../../../types/restaurantsAtom'
 import { patchShopbanner, patchShopthumbnail } from '../../../api/restaurant'
 import useImageCompression from '../../../hooks/useImageCompression'
 import { validateField } from './EditPatchRegex'
+import ImageModalLoading from '../../common/ImageModalLoading'
 
 const EditRestaurant = () => {
   const { shop, currentId } = useGetshopDeatil()
@@ -20,7 +21,7 @@ const EditRestaurant = () => {
   const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({})
   const setdetail = useSetRecoilState(shopDetailState)
   const setpage = useSetRecoilState(sellerDashboardNum)
-  const { save } = useShopinfoPatch()
+  const { save } = useEditPatch()
   const toast = useAlert()
   const thumbnailInputRef = useRef<HTMLInputElement>(null)
   const bannerInputRef = useRef<HTMLInputElement>(null)
@@ -28,8 +29,9 @@ const EditRestaurant = () => {
   const [imageType, setImageType] = useState<'thumbnail' | 'banner' | null>(null)
   const thumbnailUrlImg = shop.thumbnailUrl ? shop.thumbnailUrl : '/img/shopdefault.jpg'
   const bannerUrlImg = shop.bannerUrl ? shop.bannerUrl : '/img/shopdefault.jpg'
+  const setLoading = useSetRecoilState(LoadingModal)
 
-  const handleEdit = (field: FieldNames) => {
+  const handleEdit = (field: ShopField) => {
     setEditMode((prev) => ({ ...prev, [field]: true }))
 
     if (field === 'categoryName') {
@@ -45,12 +47,12 @@ const EditRestaurant = () => {
     }
   }
 
-  const handleCancel = (field: FieldNames) => {
+  const handleCancel = (field: ShopField) => {
     setEditMode((prev) => ({ ...prev, [field]: false }))
     setTempData((prev) => ({ ...prev, [field]: shop[field] }))
   }
 
-  const handleSave = (field: FieldNames) => {
+  const handleSave = (field: ShopField) => {
     const value = tempData[field] as string | number
 
     if (!validateField(field, value)) {
@@ -74,7 +76,7 @@ const EditRestaurant = () => {
     }
   }
 
-  const handleChange = (field: FieldNames, value: string | number) => {
+  const handleChange = (field: ShopField, value: string | number) => {
     setTempData((prev) => ({ ...prev, [field]: value }))
   }
 
@@ -86,6 +88,7 @@ const EditRestaurant = () => {
       const file = event.target.files[0]
       if (file) {
         try {
+          setLoading(true)
           await compressImage(file)
           setImageType(type)
         } catch (error) {
@@ -97,6 +100,7 @@ const EditRestaurant = () => {
 
   useEffect(() => {
     if (compressedFile && imageType && currentId !== null) {
+      setLoading(false)
       const handleAPIRequest = async () => {
         const formData = new FormData()
         if (imageType === 'thumbnail') {
@@ -267,6 +271,7 @@ const EditRestaurant = () => {
       </S.GridContainer>
 
       <S.BackButton src="/img/back.svg" alt="" onClick={() => setpage(1)} />
+      <ImageModalLoading />
     </S.Wrapper>
   )
 }

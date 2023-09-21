@@ -8,10 +8,11 @@ import { getMenuDetail } from '../../api/menu'
 import { isAxiosError, AxiosResponse } from 'axios'
 // import { mmdata } from './menuDetailMockData'
 import useAlert from '../../hooks/useAlert'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { CartStateAtom } from '../../atoms/cartAtoms'
 import { useParams } from 'react-router-dom'
 import { addCartItems } from '../../api/cart'
+import { orderShopid } from '../../atoms/orderAtoms'
 
 type optionItem = {
   optionItemId: number
@@ -26,7 +27,6 @@ type option = {
   maxSelected: number
   optionItems: optionItem[]
 }
-
 interface MenuData {
   menuId: number
   menuPrice: number
@@ -71,6 +71,9 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
   }>({})
 
   const { menuId } = useParams<{ menuId: string }>()
+  const currentshopid = useRecoilValue(orderShopid)
+
+  console.log(currentshopid)
 
   useEffect(() => {
     console.log('장바구니 확인', cartProduct)
@@ -88,6 +91,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
     getMenuDetail(Number(menuId))
       .then((response: AxiosResponse) => {
         setData(response.data)
+        console.log(response, '메디')
 
         const initialSelectedOptions = response.data.options.reduce(
           (acc: any, option: any) => ({
@@ -132,7 +136,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
       const selOptArr = allSelectedOptionItems.map((optionItem) => optionItem.optionItemId)
 
       const requestCartItem = {
-        shopId: 11410,
+        shopId: currentshopid,
         menuId: data.menuId,
         options: selOptArr,
         amount: quantity,
@@ -154,7 +158,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
 
     const { isMultiple, maxSelected } = currentOption
 
-    setSelectedOptions((prevOptions) => {
+    setSelectedOptions((prevOptions: any) => {
       if (isChecked) {
         // maxSelected가 1개인 경우
         if (maxSelected === 1) {
@@ -182,7 +186,9 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
         // 체크 해제 시의 로직은 그대로 유지
         return {
           ...prevOptions,
-          [optionType]: prevOptions[optionType].filter((option) => option.optionItemName !== name),
+          [optionType]: prevOptions[optionType].filter(
+            (option: any) => option.optionItemName !== name,
+          ),
         }
       }
     })
@@ -196,6 +202,8 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
   )
 
   const mainMenuPrice = data.menuPrice.toLocaleString('ko-KR')
+
+  console.log(cartProduct)
 
   return (
     <>

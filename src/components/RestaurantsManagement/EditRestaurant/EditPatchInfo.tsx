@@ -1,16 +1,16 @@
 import * as S from './EditRestaurant.style'
 import { Grid, TextField } from '@mui/material'
-import { FieldNames } from '../../../types/restaurantsAtom'
+import { ShopField } from '../../../types/restaurantsAtom'
 import { placeholders } from './EditRestaurantInfo'
 
 interface EditGridSectionProps {
   label: string
-  field: FieldNames
+  field: ShopField
   editMode: { [key: string]: boolean }
-  handleEdit: (field: FieldNames) => void
-  handleCancel: (field: FieldNames) => void
-  handleSave: (field: FieldNames) => void
-  handleChange: (field: FieldNames, value: string) => void
+  handleEdit: (field: ShopField) => void
+  handleCancel: (field: ShopField) => void
+  handleSave: (field: ShopField) => void
+  handleChange: (field: ShopField, value: string) => void
   tempData: { [key: string]: any }
   shop: { [key: string]: any }
 }

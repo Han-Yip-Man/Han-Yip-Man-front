@@ -1,33 +1,46 @@
 import { Box, Card, CardContent, CardMedia, Rating, Stack, Typography, styled } from '@mui/material'
 
-export const ReviewCard = () => {
+type ReviewCardProps = {
+  review: {
+    userId: number
+    nickName: string
+    reviewContent: string
+    reviewScore: string
+    createdAt: string
+    reviewImageUrl: string
+  }
+}
+
+export const ReviewCard = ({ review }: ReviewCardProps) => {
   return (
     <Box margin={1}>
       <CardWrap>
         <BuyerInfo>
-          <Typography gutterBottom variant="h5" component="div">
-            ID
+          <Typography variant="h5" component="div">
+            {review.nickName}님
           </Typography>
-          <Typography gutterBottom variant="h5" component="div">
-            <Rating name="half-rating-read" defaultValue={5} precision={5} readOnly />
-          </Typography>
-          <Typography gutterBottom variant="h5" component="div">
-            Few Days Ago
+          <RatingBox>
+            <Rating
+              name="rating"
+              defaultValue={Number(review.reviewScore)}
+              precision={0.1}
+              readOnly
+            />
+            <Typography variant="body1" component="div">
+              {review.reviewScore}점
+            </Typography>
+          </RatingBox>
+          <Typography variant="h6" component="div">
+            {review.createdAt.slice(0, 10)}
           </Typography>
         </BuyerInfo>
         <ReviewContentWrap>
-          <CardMedia
-            component="img"
-            alt="green iguana"
-            height="150"
-            image="/src/assets/pizzahut.png"
-          />
+          <CardMediaBox>
+            <CardMedia component="img" alt="review image" image={review.reviewImageUrl} />
+          </CardMediaBox>
           <ReviewContent>
-            <Typography gutterBottom variant="h5" component="div">
-              너무 맛있어요
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              사장님이 친절하고 피자가 맛있어오 정말 쵝오의 피자
+            <Typography variant="h5" color="text.secondary">
+              {review.reviewContent}
             </Typography>
           </ReviewContent>
         </ReviewContentWrap>
@@ -37,22 +50,45 @@ export const ReviewCard = () => {
 }
 
 const CardWrap = styled(Card)`
-  height: 210;
+  height: auto;
   display: 'flex';
   flex-direction: 'column';
-  padding: 8px;
+  padding: 16px;
 `
 
 const BuyerInfo = styled(Stack)`
   flex-direction: row;
   justify-content: baseline;
+  > div {
+  }
+`
+
+const RatingBox = styled(Box)`
+  display: flex;
+  justify-content: space-evenly;
+  width: 160px;
+  padding-top: 4px;
+  > div {
+    display: flex;
+    align-items: center;
+  }
 `
 
 const ReviewContentWrap = styled(Stack)`
-  height: 150;
+  height: auto;
   flex-direction: row;
+  margin: 0;
+`
+
+const CardMediaBox = styled(Box)`
+  > img {
+    border-radius: 16px;
+    padding: 8px;
+  }
+  width: 30%;
+  height: auto;
 `
 
 const ReviewContent = styled(CardContent)`
-  width: 200%;
+  margin: 8px 0;
 `
