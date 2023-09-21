@@ -177,9 +177,6 @@ function Main() {
     }
   }, [isSuccess, addressData])
 
-  console.log(addressData)
-  console.log(isLoggedIn)
-
   return (
     <S.MainWrap>
       <S.CustomWrap>
