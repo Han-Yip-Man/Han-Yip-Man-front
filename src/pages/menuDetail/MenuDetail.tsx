@@ -8,10 +8,11 @@ import { getMenuDetail } from '../../api/menu'
 import { isAxiosError, AxiosResponse } from 'axios'
 // import { mmdata } from './menuDetailMockData'
 import useAlert from '../../hooks/useAlert'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { CartStateAtom } from '../../atoms/cartAtoms'
 import { useParams } from 'react-router-dom'
 import { addCartItems } from '../../api/cart'
+import { orderShopid } from '../../atoms/orderAtoms'
 
 type optionItem = {
   optionItemId: number
@@ -70,6 +71,9 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
   }>({})
 
   const { menuId } = useParams<{ menuId: string }>()
+  const currentshopid = useRecoilValue(orderShopid)
+
+  console.log(currentshopid)
 
   useEffect(() => {
     console.log('장바구니 확인', cartProduct)
@@ -132,19 +136,12 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
       const selOptArr = allSelectedOptionItems.map((optionItem) => optionItem.optionItemId)
 
       const requestCartItem = {
-        shopId: 11412,
+        shopId: currentshopid,
         menuId: data.menuId,
         options: selOptArr,
         amount: quantity,
       }
-
       addCartItems(requestCartItem)
-        .then((response) => {
-          console.log(response, '확인')
-        })
-        .catch((error) => {
-          console.log(error)
-        })
     }
   }
 
@@ -222,12 +219,11 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
               <S.MenuExpDiv>{data.menuDescription}</S.MenuExpDiv>
               <S.MenuPriceDiv> {mainMenuPrice}원</S.MenuPriceDiv>
             </S.MenuInfoDiv>
-
             <S.OptionBox>
               {data.options &&
-                data.options.map((option, i) => (
+                data.options.map((option, idx) => (
                   <AddOptionOne
-                    key={i}
+                    key={idx}
                     option={option}
                     onOptionChange={handleOptionChange}
                     selectedOptions={selectedOptions}

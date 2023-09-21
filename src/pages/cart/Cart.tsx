@@ -13,40 +13,15 @@ import {
 import { useEffect, useState } from 'react'
 import { AxiosResponse, isAxiosError } from 'axios'
 import { useAlert, useRouter } from '../../hooks'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import { CartStateAtom } from '../../atoms/cartAtoms'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { CartStateAtom, totalCartPriceSelector } from '../../atoms/cartAtoms'
 import Ximg from '../../assets/iconX.svg'
 import Plusimg from '../../assets/iconPlus.svg'
 import Minusimg from '../../assets/iconMinus.svg'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMypageInfo } from '../../api/mypage'
+import { UserStateAtom } from '../../atoms/orderAtoms'
 import { TestUser } from '../../recoil/sellermenu'
-
-/**
-
-
-  // 주문내역>> 장바구니 값 가져오기
-
-  getCartItems 에서 response.data.contents에 정보가 있음
-  보통 API의 리턴 값이 response.data임
-
-  수량 변경 후 patchCartItem 을 통해 수정하기
-
-  deleteCartItem 을 통해 삭제하기
-
-  주문하기 버튼 클릭하면 결제 창으로 데이터 넘기면서 결제 시작
-  결제에 필요한 데이터: ?
-
-  결제 후 결제완료 창 또는 주문내역 상세로 이동
-
-  하시면 됩니다😆
-넵
-  // 일단 신용카드 결제 클릭하면 결제수단값을 들고있다가
-  // 결제수단 선택 시 테두리 칠하거나 투명>>뚜렷하게 인터렉션 신경쓴다
-  // 맨 하단에 결제하기 눌렀을 때 확인해서 창 띄우는게 낫겠지요
-
-  // 결제로직 구현 >> 결제완료 창 또는 메인 또는 주문내역 상세로 이동
- */
 
 const Cart: React.FC = () => {
   const toast = useAlert()
@@ -66,6 +41,8 @@ const Cart: React.FC = () => {
 
   const { routeTo } = useRouter()
   const [cartProduct, setCartProduct] = useRecoilState(CartStateAtom)
+  const [orderUserInfo, setOrderUserInfo] = useRecoilState(UserStateAtom)
+  const totalCartPrice = useRecoilValue(totalCartPriceSelector)
 
   const handleQuantityChange = (index: number, newQuantity: number, cartId: number) => {
     // if (newQuantity === 0) return deleteCart.mutate(cartId)
@@ -76,30 +53,34 @@ const Cart: React.FC = () => {
     // }
     // updateCart.mutate(payload)
 
-    setCartProduct((prevItems) =>
-      prevItems.map((item, i) => {
-        if (i === index) {
-          const unitPrice =
-            item.menuPrice +
-            (item.optionItems?.reduce((total, option) => total + option.optionItemPrice, 0) || 0)
-          return {
-            ...item,
-            amount: Math.max(1, newQuantity),
-            totalPrice: unitPrice * Math.max(1, newQuantity),
-          }
-        } else {
-          return item
-        }
-      }),
-    )
-    updateCountCartItems({ amount: newQuantity, cartId: cartId }).then(
-      (response: AxiosResponse) => {
-        console.log('확인', response)
-      },
-    )
-  }
+    // setCartProduct((prevItems) =>
+    //   prevItems.map((item, i) => {
+    //     if (i === index) {
+    //       const unitPrice =
+    //         item.menuPrice +
+    //         (item.optionItems?.reduce((total, option) => total + option.optionItemPrice, 0) || 0)
+    //       return {
+    //         ...item,
+    //         amount: Math.max(1, newQuantity),
+    //         totalPrice: unitPrice * Math.max(1, newQuantity),
+    //       }
+    //     } else {
+    //       return item
+    //     }
+    //   }),
+    // )
 
-  const totalCartPrice = cartProduct.reduce((total, item) => total + item.totalPrice, 0)
+    if (newQuantity > 0) {
+      updateCountCartItems({ amount: newQuantity, cartId: cartId }).then(
+        (response: AxiosResponse) => {
+          getCartItems().then((response) => {
+            setCartProduct(response.data)
+            console.log(response)
+          })
+        },
+      )
+    }
+  }
 
   const handleRemoveItem = (index: number) => {
     setCartProduct((prevItems) => prevItems.filter((item, i) => i !== index))
@@ -118,14 +99,19 @@ const Cart: React.FC = () => {
         // console.log('Cart 데이터', response)
         // console.log('Cart 데이터2', response.data)
         // console.log('Cart 데이터3', response.data.content)
-        console.log(response)
-        setCartProduct(response.data.content)
+        setCartProduct(response.data)
       })
       .catch((error) => {
         if (isAxiosError(error)) {
           toast(`${error.message}`, 3000, 'error')
         }
       })
+  }, [])
+
+  useEffect(() => {
+    getMypageInfo().then((response) => {
+      setOrderUserInfo(response)
+    })
   }, [])
 
   const handleselecteddelete = (id: number) => {
@@ -171,7 +157,7 @@ const Cart: React.FC = () => {
           </S.SubTitleWrap>
         </S.TitleWrap>
         <S.ItemList>
-          {cartProduct.map((item, index) => (
+          {cartProduct?.map((item, index) => (
             <S.ItemLi key={index}>
               <S.ItemDescWrap>
                 {/* <S.ItemImg
@@ -179,13 +165,15 @@ const Cart: React.FC = () => {
         src={cartProduct.thumbnailUrl} // thumbnailUrl 등 사진이 api 명세서에 없다?
       /> */}
                 <S.ImgTitle>
-                  {item.menuName}/{item.menuPrice}원x{item.amount}
+                  {item.menuName}/{item.menuPrice?.toLocaleString('ko-KR')}원x{item.amount}
                 </S.ImgTitle>
                 <S.OptionContent>
                   추가 선택:
                   {item.optionItems?.map((optionItem, index) => (
                     <div key={index}>
-                      {optionItem.optionItemName}/{optionItem.optionItemPrice}원x{item.amount}
+                      {optionItem.optionItemName}/
+                      {optionItem.optionItemPrice?.toLocaleString('ko-KR')}
+                      원x{item.amount}
                     </div>
                   ))}
                 </S.OptionContent>
@@ -220,7 +208,7 @@ const Cart: React.FC = () => {
         </S.ItemList>
       </S.ListWrap>
       <S.TotalPriceDiv>
-        총 금액&nbsp;&nbsp;&nbsp;<S.Span>{totalCartPrice}</S.Span>원
+        총 금액&nbsp;&nbsp;&nbsp;<S.Span>{totalCartPrice?.toLocaleString('ko-KR')}</S.Span>원
       </S.TotalPriceDiv>
       <S.BottomDiv>
         <S.ShopGoDiv>
@@ -266,7 +254,7 @@ export default Cart
 //         추가 선택:
 //         {item.optionItems?.map((optionItem: any, index: number) => (
 //           <div key={index}>
-//             {optionItem.optionItemName}/{optionItem.optionPrice.toLocaleString('ko-KR')}
+//             {optionItem.optionItemName}/{optionItem.optionItemPrice.toLocaleString('ko-KR')}
 //             원x{item.amount}
 //           </div>
 //         ))}
