@@ -130,8 +130,6 @@ const AddRestaurants = () => {
         }
       })
 
-      console.log('어흥', formData, payload)
-
       await addShop(formData)
       toast('가게가 성공적으로 등록되었습니다', 2000, 'success')
       window.location.reload()

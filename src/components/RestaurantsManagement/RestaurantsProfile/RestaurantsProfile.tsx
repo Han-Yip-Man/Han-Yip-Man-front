@@ -14,8 +14,6 @@ const RestaurantsProfile = () => {
   const thumbnailUrlImg = shop.thumbnailUrl ? shop.thumbnailUrl : '/img/shopdefault.jpg'
   const bannerUrlImg = shop.bannerUrl ? shop.bannerUrl : '/img/shopdefault.jpg'
 
-  console.log(shop)
-
   return (
     <S.Wrapper>
       <S.ProfileBtnWrapper>
