@@ -28,8 +28,6 @@ const RestaurantsManagementHeader = () => {
     }
   }, [shopList])
 
-  console.log(selectedShopId)
-
   return (
     <S.Wrapper>
       <S.CenteredDiv>

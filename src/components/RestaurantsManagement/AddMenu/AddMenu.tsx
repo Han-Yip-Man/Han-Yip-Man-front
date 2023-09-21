@@ -191,9 +191,7 @@ const AddMenu = () => {
           optionItem: { itemName: '', itemPrice: 0 },
         })
         setOptions([])
-        setTimeout(() => {
-          setmenupage(1)
-        }, 2000)
+        setmenupage(1)
       })
       .catch(() => {
         toast('메뉴 등록에 실패했습니다.', 2000, 'error')

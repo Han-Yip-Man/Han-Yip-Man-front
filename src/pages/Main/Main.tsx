@@ -136,13 +136,20 @@ function Main() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (isSuccess && addressData.data) {
-        const { longitude, latitude } = addressData.data.filter(
-          (addr: CurrentAddr) => addr.isDefault === true,
-        )[0]
+      // if (isSuccess && addressData.data) {
+      //   const { longitude, latitude } = addressData.data.filter(
+      //     (addr: CurrentAddr) => addr.isDefault === true,
+      //   )[0]
 
-        searchAddressByCoords(longitude, latitude)
+      if (isSuccess && addressData.data) {
+        // { longitude, latitude }
+        const userAddressData = addressData.data.filter((addr: CurrentAddr) => addr.isDefault)
+        userAddressData.length &&
+          searchAddressByCoords(userAddressData.longitude, userAddressData.latitude)
       }
+
+      //   searchAddressByCoords(longitude, latitude)
+      // }
     } else {
       navigator.geolocation.getCurrentPosition(
         ({ coords: { longitude, latitude } }) => {
@@ -169,6 +176,9 @@ function Main() {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isSuccess, addressData])
+
+  console.log(addressData)
+  console.log(isLoggedIn)
 
   return (
     <S.MainWrap>
