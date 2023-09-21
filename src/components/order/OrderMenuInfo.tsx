@@ -16,11 +16,19 @@ const OrderMenuInfo = () => {
             {cartProduct.map((item, index) => (
               <S.Td1InnerDiv key={index}>
                 {/* 아이템 정보 출력 */}
-                메뉴 이름: {item.menuName}
-                <br />
-                메뉴 가격: {item.menuPrice.toLocaleString('ko-KR')}원<br />
-                수량: {item.amount}
-                <br />총 가격: {item.totalPrice.toLocaleString('ko-KR')}원
+                <div>
+                  {index + 1}. 메뉴이름/금액: {item.menuName} /&nbsp;
+                  {item.menuPrice.toLocaleString('ko-KR')}원
+                </div>
+                옵션선택:
+                {item.optionItems?.map((option) => (
+                  <div key={option.optionItemId}>
+                    {option.optionItemName} / {option.optionItemPrice.toLocaleString('ko-KR')}원
+                  </div>
+                ))}
+                <div>수량: {item.amount}</div>
+                <div>총 금액: {item.totalPrice.toLocaleString('ko-KR')}원</div>
+                <hr />
                 <hr />
               </S.Td1InnerDiv>
             ))}

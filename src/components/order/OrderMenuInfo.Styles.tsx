@@ -49,6 +49,6 @@ export const Td1 = styled.td`
 export const Td1InnerDiv = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 5px;
   padding-left: 15px;
 `

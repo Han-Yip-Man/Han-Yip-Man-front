@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil'
 
 interface CartItem {
   amount: number
-  cartId: string
+  cartId: number
   menuName: string
   menuPrice: number
   optionItems?: optionItem[]
@@ -27,4 +27,12 @@ export const cartSelectors = selector<CartItem[]>({
   key: 'cartSelectors',
   get: ({ get }) => get(CartStateAtom),
   set: ({ set }, newValue) => set(CartStateAtom, newValue),
+})
+
+export const totalCartPriceSelector = selector({
+  key: 'totalCartPrice',
+  get: ({ get }) => {
+    const cartProduct = get(CartStateAtom)
+    return cartProduct?.reduce((total, item) => total + item.totalPrice, 0)
+  },
 })

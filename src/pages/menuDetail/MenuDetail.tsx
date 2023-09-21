@@ -120,7 +120,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
 
       const newCartItem = {
         amount: quantity,
-        cartId: data.menuId.toString(),
+        cartId: data.menuId,
         menuName: data.menuName,
         menuPrice: data.menuPrice,
         optionItems: allSelectedOptionItems,
@@ -137,7 +137,7 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
         options: selOptArr,
         amount: quantity,
       }
-      addCartItems(requestCartItem) // 임포트 부탁드립니다
+      addCartItems(requestCartItem)
     }
   }
 
@@ -211,11 +211,11 @@ const MenuDetail = ({ cartItem }: MenuDetailProps) => {
               <S.MenuExpDiv>{data.menuDescription}</S.MenuExpDiv>
               <S.MenuPriceDiv> {mainMenuPrice}원</S.MenuPriceDiv>
             </S.MenuInfoDiv>
-
             <S.OptionBox>
               {data.options &&
-                data.options.map((option) => (
+                data.options.map((option, idx) => (
                   <AddOptionOne
+                    key={idx}
                     option={option}
                     onOptionChange={handleOptionChange}
                     selectedOptions={selectedOptions}

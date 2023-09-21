@@ -4,8 +4,10 @@ import * as S from './Option.Styles'
 interface OptionItem {
   optionItemId: number
   optionItemName: string
-  optionItemPrice: number
+  optionItemPrice: number //넵 ㅋㅋㅋㅋ 그 두개를 같이는 아 그렇군요 일단 제가 다시 돌려놓을까요
 }
+// 동욱님!! 와 죄송해요 눈이 맛갔나붑니다 그!! 메뉴 상세조회는 optionItemPrice 고, 장바구니 조회는 optionPrice 로 서버에 되어 있습니다!! 그래서 그때 헷갈렸어요 맞추느라
+// 네 통일되게 안 짜주셨네요.. ㅠㅠ
 
 interface Option {
   optionId: number
@@ -82,6 +84,7 @@ export default function AddOptionOne({
               // onChange={handleCheckChange}
               onClick={handleCheckChange}
               onDoubleClick={handleCheckChange}
+              readOnly
             />
             <S.OptionOneLabel htmlFor={`option-${item.optionItemId}`}>
               <S.OptNameAndPriceWrap>
