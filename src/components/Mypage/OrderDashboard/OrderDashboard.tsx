@@ -14,9 +14,24 @@ type OrderDashboardProps = {
   setmenupage: Dispatch<SetStateAction<number>>
   setOrderIdParam: Dispatch<SetStateAction<number>>
 }
+type OrderContent = {
+  bannerImg: string
+  menus: string[]
+  options: string[]
+  orderDateTime: string
+  orderId: number
+  orderStatus: string
+  orderUid: string
+  shopName: string
+  totalPrice: number
+}
+
+type ContentArray = {
+  content: OrderContent[]
+}
 
 const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) => {
-  const { data } = useQuery(['orders'], () => getOrders())
+  const { data } = useQuery<ContentArray>(['orders'], () => getOrders())
 
   // const {
   //   data: ordersInfData,

@@ -37,9 +37,7 @@ const OwnerSignup = () => {
     ownerSignUp(payload)
       .then((response) => {
         toast('회원가입에 성공했습니다.', 2000, 'success')
-        setTimeout(() => {
-          navigate('/auth/sellersignin')
-        }, 2000)
+        navigate('/auth/sellersignin')
       })
       .catch((error) => {
         toast('회원가입에 실패했습니다.', 2000, 'error')

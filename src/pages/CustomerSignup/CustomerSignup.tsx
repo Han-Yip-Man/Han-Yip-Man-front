@@ -45,6 +45,8 @@ const CustomerSignup = () => {
             zonecode: result.zonecode,
             coordinates: result.coordinates,
           }))
+          setValue('address', result.address)
+          setValue('zonecode', result.zonecode)
         }
       })
       .catch((err: Error) => {
@@ -102,9 +104,7 @@ const CustomerSignup = () => {
     await userSignUp(formData)
       .then((response) => {
         toast('회원가입에 성공했습니다', 2000, 'success')
-        setTimeout(() => {
-          navigate('/auth/usersignin')
-        }, 2000)
+        navigate('/auth/usersignin')
       })
       .catch((error) => {
         toast('회원가입에 실패했습니다', 2000, 'error')

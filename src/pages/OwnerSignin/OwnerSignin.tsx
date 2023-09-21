@@ -7,11 +7,14 @@ import { FormDataType } from '../../types/user'
 import { signIn } from '../../api/user'
 import useAlert from '../../hooks/useAlert'
 import { useNavigate } from 'react-router-dom'
+import { tokenState } from '../../atoms/userInfoAtoms'
+import { useSetRecoilState } from 'recoil'
 
 const OwnerSignin = () => {
   const theme = useTheme()
   const toast = useAlert()
   const navigate = useNavigate()
+  const setToken = useSetRecoilState(tokenState)
 
   const { register, handleSubmit, watch } = useForm<FormDataType>()
   const password = useRef<string | undefined>()
@@ -28,10 +31,9 @@ const OwnerSignin = () => {
         sessionStorage.setItem('accessToken', response.accessToken)
         sessionStorage.setItem('role', response.role)
         sessionStorage.setItem('profileUrl', response.profileUrl)
+        setToken(response.accessToken)
         toast('로그인에 성공했습니다.', 2000, 'success')
-        setTimeout(() => {
-          navigate('/main')
-        }, 2000)
+        navigate('/dashboard/seller')
       })
       .catch(() => {
         toast('로그인 정보가 올바르지 않습니다.', 2000, 'error')

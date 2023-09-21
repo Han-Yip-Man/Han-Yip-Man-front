@@ -10,6 +10,7 @@ import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { userInfo } from '../../atoms/userInfoAtoms'
 import { currentAddr, userAddr } from '../../atoms/addressAtoms'
 import { useRouter } from '../../hooks'
+import { UserInfoType } from '../../types/user'
 
 const messages = [
   '떡볶이 한사발 하시죠?',
@@ -28,7 +29,7 @@ function LoginBtnComponent() {
   const [msg, setMsg] = useState('')
   const { pathname } = useLocation()
   const { routeTo } = useRouter()
-  const isLoggedIn = useRecoilValue(userInfo) // 사용자 이름
+  const isLoggedIn = useRecoilValue(userInfo) as UserInfoType | null // 사용자 이름
   const currentPath = pathname === '/'
   const open = !!anchorEl
 
@@ -54,6 +55,8 @@ function LoginBtnComponent() {
     const message = messages[Math.floor(Math.random() * messages.length)]
     setMsg(message)
   }, [])
+
+  console.log(isLoggedIn)
 
   return (
     <UserInfo>
@@ -88,8 +91,7 @@ function LoginBtnComponent() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          {/* {`${isLoggedIn?.sub}님 ${msg}`} */}
-          {`차지환님 ${msg}`}
+          {`${isLoggedIn?.nickname}님 ${msg}`}
         </CustomBtn>
       </CustomizedTooltip>
       <Menu

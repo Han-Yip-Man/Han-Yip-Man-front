@@ -74,7 +74,7 @@ const MainMenuCategory: React.FC = () => {
     console.log(draggedItem.menuGroupId)
     patchindexMenuGroups({
       shop_id: currentId,
-      menuGroupSequence: dropIndex,
+      menuGroupSequence: dropIndex + 1,
       menuGroupId: draggedItem.menuGroupId,
     })
       .then(() => {
