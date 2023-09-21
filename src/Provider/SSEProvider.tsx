@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect, useRef, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { tokenState } from '../atoms/userInfoAtoms'
-import { EventSourcePolyfill } from 'event-source-polyfill'
 import { MapCoordsState, CustomerAlarm, SellerAlarm } from '../atoms/orderManageAtoms'
 
 export const SSEContext = createContext<EventSource | null>(null)
