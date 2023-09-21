@@ -91,7 +91,7 @@ const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) =
         )}
         <OrdersObserver ref={ref}></OrdersObserver> */}
 
-        {data?.content.map((order) => (
+        {data?.content.map((order: any) => (
           <Card key={order.orderUid}>
             <CardActionArea onClick={() => getOrderDetail(order.orderId)}>
               <Stack flexDirection={'row'} alignItems={'center'}>
@@ -104,7 +104,7 @@ const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) =
                   <Typography gutterBottom variant="h5" component="div">
                     {order.shopName}
                   </Typography>
-                  {order.menus.map((menu, i) => (
+                  {order.menus.map((menu: any, i: any) => (
                     <Typography key={i} variant="body1" color="text.secondary">
                       {menu} <span>옵션:{order.options[i]}</span>
                     </Typography>

@@ -34,6 +34,5 @@ type ReviewResponse = {
 }
 
 export const postReview = async (reviewRequest: FormData): Promise<ReviewResponse> => {
-  const response = await axiosClient.post(`/reviews`, reviewRequest)
-  return response.data
+  return await axiosClient.post(`/reviews`, reviewRequest)
 }
