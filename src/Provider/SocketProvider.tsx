@@ -9,8 +9,8 @@ type SocketState = {
 
 export const SocketContext = createContext<SocketState>({ socket: undefined, connected: false })
 
-export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  const { socket, connected } = useSocket('ws://58.123.150.14:8088')
+export const SocketProvider = ({ children, token }: { children: ReactNode; token: string }) => {
+  const { socket, connected } = useSocket('ws://58.123.150.14:8088', token)
 
   return <SocketContext.Provider value={{ socket, connected }}>{children}</SocketContext.Provider>
 }

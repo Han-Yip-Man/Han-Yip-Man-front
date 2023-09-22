@@ -6,18 +6,19 @@ import OrderAlarmProvider from '../Provider/OrderAlarmProvider'
 // import sound from '../../assets/audio/hanyipSound.mp3'
 
 const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJpYXQiOjE2OTUyMjM1ODIsImV4cCI6MTY5NTM5NjM4Mn0.nfBFoG7c9LBDx-onvh84PwPC7fAYYOl33f-YMOR5Ta8'
+  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJuaWNrbmFtZSI6IuuCmOuKlOyepeyCrOyZlSIsImlhdCI6MTY5NTI5NTk1NiwiZXhwIjoxNjk1NDY4NzU2fQ.yCYIq3TW23ATExMAUNSTQAEVKYl1OjYOpG-iOtGp3wI'
+
+const token2 =
+  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYXN1bmdAZ21haWwuY29tIiwidXNlcklkeCI6MTMsImVtYWlsIjoicGFzdW5nQGdtYWlsLmNvbSIsInJvbGUiOiJTRUxMRVIiLCJuaWNrbmFtZSI6InBhc3VuZyIsImlhdCI6MTY5NTMyODQ4OSwiZXhwIjoxNjk1NTAxMjg5fQ.Out3Zo7VD0zW9iGUdhRwALFJDwxH2bL0aDK9EZoEROI'
 
 const MypageLayout = () => {
   return (
-    <SocketProvider>
-      <SSEProvider url={`http://39.115.156.83:8080/api/sse?token=${token}`}>
-        <OrderAlarmProvider mode="seller">
-          <Layout>
-            <Outlet />
-          </Layout>
-        </OrderAlarmProvider>
-      </SSEProvider>
+    <SocketProvider token={token2}>
+      <OrderAlarmProvider mode="seller">
+        <Layout>
+          <Outlet />
+        </Layout>
+      </OrderAlarmProvider>
     </SocketProvider>
   )
 }
