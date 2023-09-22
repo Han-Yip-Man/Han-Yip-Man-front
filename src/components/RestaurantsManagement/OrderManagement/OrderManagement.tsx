@@ -18,7 +18,7 @@ interface Data {
 }
 
 function OrderManagement() {
-  const { data } = useQuery(['orderList'], () => getSellerOrderList(998))
+  const { data } = useQuery(['orderList'], () => getSellerOrderList(11410))
   const [paidList, setPaidList] = useState<Data[]>([])
   const [takeOverList, setTakeOverList] = useState<Data[]>([])
   const [cookingList, setCookingList] = useState<Data[]>([])
@@ -110,6 +110,14 @@ function OrderManagement() {
         itemsArray.splice(destination.index, 0, reorderedItem)
 
         updateState(source.droppableId, itemsArray)
+        // socket?.emit('send_order_status_change', movedItem, (res: any) => {
+        //   console.log('응답', res)
+        //   if (source.droppableId === res.orderStatus) {
+        //     toast('주문 순서가 정상적으로 변경되었습니다.', 3000, 'success')
+        //   }
+        //   /// 이게 세번째 함수
+        //   qc.invalidateQueries(['orderList'])
+        // })
       }
 
       // if (allowedMoves[source.droppableId] !== destination.droppableId) {

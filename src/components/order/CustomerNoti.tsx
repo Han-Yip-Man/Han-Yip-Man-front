@@ -95,7 +95,7 @@ const Status = styled.div<StatusProps>`
       case 'TAKEOVER':
         return 'green'
       case 'COOKING':
-        return 'orange'
+        return 'purple'
       case 'DELIVERY':
         return 'blue'
       case 'COMPLETE':

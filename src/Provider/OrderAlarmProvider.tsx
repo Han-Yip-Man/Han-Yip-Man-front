@@ -10,8 +10,6 @@ import DELIVERY from '../assets/audio/DELIVERY.mp3'
 import COOKING from '../assets/audio/COOKING.mp3'
 import TAKEOVER from '../assets/audio/TAKEOVER.mp3'
 import COMPLETE from '../assets/audio/COMPLETE.mp3'
-import { useRecoilValue } from 'recoil'
-import { CustomerAlarm, SellerAlarm } from '../atoms/orderManageAtoms'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
@@ -21,8 +19,6 @@ interface Props {
 
 const OrderAlarmProvider = ({ children, mode }: Props) => {
   const { orderIncoming, onClose } = useOrderNotice()
-  const customerAlarmData = useRecoilValue(CustomerAlarm)
-  const sellerAlarmData = useRecoilValue(SellerAlarm)
   const { socket } = useSocketContext()
   const qc = useQueryClient()
 
@@ -57,8 +53,10 @@ const OrderAlarmProvider = ({ children, mode }: Props) => {
 
   const sellerNotiAlarm = (res: AlarmData) => {
     console.log('신규 주문', res)
-    createSellerNoti(res, SELLERORDER)
-    qc.invalidateQueries(['orderList'])
+    if (res.orderStatus === 'PAID') {
+      createSellerNoti(res, SELLERORDER)
+      qc.invalidateQueries(['orderList'])
+    }
   }
 
   useEffect(() => {
@@ -66,10 +64,6 @@ const OrderAlarmProvider = ({ children, mode }: Props) => {
       socket?.emit('room_enter', 'user19', (res: any) => {
         console.log('고객 방입장', res)
         socket?.on('NoticeOrderBuyer', customerNotiAlarm)
-
-        // socket.on('NoticeDroneLocation', (res) => {
-        //   console.log('드론 이벤트', res)
-        // })
       })
     }
 
