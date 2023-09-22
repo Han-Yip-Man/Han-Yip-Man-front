@@ -3,7 +3,9 @@ import toast from 'react-hot-toast'
 const useOrderNotice = () => {
   const playSound = (file: string) => {
     const audio = new Audio(file)
-    audio.play()
+    // audio.muted = true
+    audio.autoplay = true
+    // audio.play()
   }
 
   const orderIncoming = (component: (toast: any) => React.ReactElement, sound: string) => {

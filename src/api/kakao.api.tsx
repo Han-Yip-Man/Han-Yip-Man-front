@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, SyntheticEvent } from 'react'
 import { endPointLocationAtom } from '../atoms/deliveryAtoms'
 
 const { kakao } = window
@@ -195,6 +195,9 @@ export const UserSetAddressKakaoMap = ({
   const [centerLatitude, setCenterLatitude] = useState(latitude)
   const [centerLongitude, setCenterLongitude] = useState(longitude)
   // const [markers, setMarkers] = useState([])
+
+  // console.log(latitude, longitude)
+
   const [address, setAddress] = useState('')
   useEffect(() => {
     const mapContainer = document.getElementById(mapId)
@@ -220,7 +223,6 @@ export const UserSetAddressKakaoMap = ({
 
     kakao.maps.event.addListener(map, 'dragend', () => {
       const latlng = map.getCenter()
-      console.log(latlng)
       setCenterLatitude(latlng.Ma)
       setCenterLongitude(latlng.La)
 
@@ -234,6 +236,7 @@ export const UserSetAddressKakaoMap = ({
 
       const callback = function (result: any, status: any) {
         if (status === kakao.maps.services.Status.OK) {
+          if (result[0].address.address_name === undefined) return
           console.log('그런 너를 마주칠까 ' + result[0].address.address_name + '을 못가')
           setAddress(result[0].address.address_name)
         }
@@ -241,7 +244,7 @@ export const UserSetAddressKakaoMap = ({
       const coord = new kakao.maps.LatLng(latlng.Ma, latlng.La)
       geocoder.coord2Address(coord.getLng(), coord.getLat(), callback)
     })
-  }, [])
+  }, [latitude, longitude])
 
   return (
     <>

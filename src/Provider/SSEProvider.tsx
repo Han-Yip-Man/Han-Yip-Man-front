@@ -2,12 +2,15 @@ import { createContext, ReactNode, useEffect, useRef, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { tokenState } from '../atoms/userInfoAtoms'
 import { MapCoordsState, CustomerAlarm, SellerAlarm } from '../atoms/orderManageAtoms'
+import { EventSourcePolyfill } from 'event-source-polyfill'
 
+const EventSource = EventSourcePolyfill
 export const SSEContext = createContext<EventSource | null>(null)
 
 interface Props {
   children: ReactNode
   url: string
+  token: string
 }
 
 interface SSEResponse {
@@ -24,7 +27,7 @@ type Coords = {
 
 type SSEType = 'NoticeOrderBuyer' | 'NoticeOrderSeller' | 'NoticeDronLocation'
 
-export const SSEProvider = ({ children, url }: Props) => {
+export const SSEProvider = ({ children, url, token }: Props) => {
   const [sse, setSSE] = useState<EventSource | null>(null)
   const setCoords = useSetRecoilState(MapCoordsState)
   const setCustomerAlarm = useSetRecoilState(CustomerAlarm)
@@ -32,6 +35,7 @@ export const SSEProvider = ({ children, url }: Props) => {
   // const token = useRecoilValue(tokenState)
 
   const eventHandler = async (response: any) => {
+    console.log(response)
     const sseResponse: SSEResponse = await response.data
     switch (sseResponse.eventName) {
       case 'NoticeOrderBuyer': {
@@ -54,7 +58,18 @@ export const SSEProvider = ({ children, url }: Props) => {
       sse.close()
     }
 
-    const eventSource = new EventSource(`${url}`)
+    const eventSourceInitDict = {
+      headers: {
+        Accept: 'text/event-stream',
+        'X-API-VERSION': '1',
+        Authorization: `Bearer ${token}`,
+        Connection: 'keep-alive',
+        'Cache-Control': 'no-cache',
+      },
+      heartbeatTimeout: 300000,
+    }
+
+    const eventSource = new EventSource(`${url}`, eventSourceInitDict)
     setSSE(eventSource)
 
     eventSource.onopen = () => {
@@ -70,7 +85,7 @@ export const SSEProvider = ({ children, url }: Props) => {
     return () => {
       eventSource.close()
     }
-  }, [url])
+  }, [url, sse])
 
   return <SSEContext.Provider value={sse}>{children}</SSEContext.Provider>
 }
