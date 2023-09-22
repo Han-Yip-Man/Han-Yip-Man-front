@@ -88,6 +88,7 @@ export const CustomerOrderDetail = ({
 
     // return () => clearInterval(timer)
   }, [])
+  // }, [currentPlace])
 
   const clickHandler = () => {
     setOrderIdParam(0)
