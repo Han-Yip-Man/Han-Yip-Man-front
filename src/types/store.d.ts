@@ -32,12 +32,15 @@ declare interface ICategory {
   categoryId: number
 }
 
+declare type OrderState = 'CANCELED' | 'TAKEOVER' | 'COOKING' | 'DELIVERY' | 'COMPLETE' | 'PAID'
+
 declare interface AlarmData {
   address: string
+  addressDetail: string
   menuNames: string
   orderId: number
   orderUId: string
-  orderStatus: string
+  orderStatus: OrderState
   orderedTime: string
   paymentProvider: string
   totalAmount: number

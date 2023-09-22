@@ -95,6 +95,8 @@ function Main() {
 
     const { id, address_name, road_address_name, place_name, x, y } = data[0]
 
+    console.log(data[0])
+
     const currentAddr = {
       id,
       address: address_name,
@@ -140,6 +142,7 @@ function Main() {
         const { longitude, latitude } = addressData.data.filter(
           (addr: CurrentAddr) => addr.isDefault === true,
         )[0]
+
         searchAddressByCoords(longitude, latitude)
       }
     } else {
