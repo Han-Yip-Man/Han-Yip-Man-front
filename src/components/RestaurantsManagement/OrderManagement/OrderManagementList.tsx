@@ -62,7 +62,7 @@ const ListWrap = styled.div`
 `
 
 const CustomList = styled(List)`
-  overflow: scroll;
+  overflow: none;
 `
 
 const TitleWrap = styled.div`
