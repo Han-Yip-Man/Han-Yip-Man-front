@@ -50,16 +50,21 @@ export const CustomerOrderDetail = ({
   }
   const [currentPlace, setCurrentPlace] = useState<Place>({} as Place)
 
+  console.log(data, currentPlace, endPoint)
+
   useEffect(() => {
     getAddressToLatLng(data?.address, setEndPoint)
     // console.log(endPoint)
 
     socket?.emit('room_enter', `user${user.userIdx}`, (res: any) => {
-      // console.log('entered', res)
+      console.log('entered', user)
+      console.log('entered', res)
 
       socket?.on('NoticeDroneLocation', (message) => {
         // console.log('NoticeDroneLocation', message)
-        setCurrentPlace(message)
+        // setCurrentPlace(message)
+        // setCurrentPlace({ lat: message.lat, lng: message.lng })
+        setCurrentPlace({ lat: message.latitude, lng: message.longitude })
         // console.log('currentPlace', currentPlace)
       })
 
@@ -88,6 +93,7 @@ export const CustomerOrderDetail = ({
 
     // return () => clearInterval(timer)
   }, [])
+  // }, [currentPlace])
 
   const clickHandler = () => {
     setOrderIdParam(0)
@@ -171,7 +177,7 @@ export const CustomerOrderDetail = ({
               <Typography variant="h6">취소시간: {data?.canceledAt}</Typography>
             ) : null}
             <Typography variant="h6" component={Box}>
-              결제비용컴포넌트
+              {/* 결제비용컴포넌트 */}
               <Typography variant="h6">총 금액: {data?.totalPrice}</Typography>
               <Typography variant="h6">배달비: {data?.defaultDeliveryPrice}</Typography>
               <Typography variant="h6">쿠폰할인: {data?.buyerCouponDiscount}</Typography>
