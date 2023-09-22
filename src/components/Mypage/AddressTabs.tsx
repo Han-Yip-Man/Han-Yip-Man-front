@@ -121,7 +121,7 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
     searchAddressByKeyword(debouncedKeyword, (result: any) => {
       setAddrData(() => result)
     })
-    console.log('디바운싱')
+    // console.log('디바운싱')
   }, [debouncedKeyword])
 
   useEffect(() => {
@@ -185,18 +185,6 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
       lng: value.x,
       isDefault: false,
     })
-
-    submitMapAPI(value.x, value.y)
-  }
-
-  /**
-   * kakao.api.ts 에 만들거나 하셈
-   * 아니면 deliverymap 처럼 하든
-   * @param x
-   * @param y
-   */
-  const submitMapAPI = (x: string, y: string) => {
-    console.log(x, y)
   }
 
   return (
