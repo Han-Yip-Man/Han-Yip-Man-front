@@ -8,7 +8,7 @@ import Order from './pages/order/Order'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
 import OwnerDashboard from './pages/ownerDashboard/OwnerDashboard.tsx'
-import { Store } from './pages/Store'
+import { Store } from './pages/store/Store.tsx'
 import CategoryMain from './pages/categoryMain/CategoryMain.tsx'
 import OwnerSignup from './pages/ownerSignup/OwnerSignup.tsx'
 import OwnerSignin from './pages/ownerSignin/OwnerSignin.tsx'
@@ -17,7 +17,7 @@ import CustomerSignin from './pages/customerSignin/CustomerSignin/CustomerSignin
 import Mypage from './components/Mypage/Mypage/Mypage'
 import SignupSelectionPage from './pages/signupSelectionPage/SignupSelectionPage.tsx'
 import SignInSelectionPage from './pages/signInSelectionPage/SignInSelectionPage.tsx'
-import Main from './pages/Main/Main'
+import Main from './pages/main/Main.tsx'
 import KaKao from './components/KaKaoLogin/KaKao'
 
 interface RouterBase {
