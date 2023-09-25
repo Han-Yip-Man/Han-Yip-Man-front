@@ -13,9 +13,9 @@ import {
   patchindexMenuGroups,
 } from '../../../api/restaurant'
 import { useRecoilValue } from 'recoil'
-import { selectedShopIdState } from '../../../recoil/restaurants'
+import { selectedShopIdState } from '../../../atoms/restaurantsAtoms'
 import { useRecoilState } from 'recoil'
-import { shopMenuGroups } from '../../../recoil/restaurants'
+import { shopMenuGroups } from '../../../atoms/restaurantsAtoms'
 
 const MainMenuCategory: React.FC = () => {
   const currentId = useRecoilValue(selectedShopIdState)

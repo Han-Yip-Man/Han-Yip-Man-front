@@ -13,7 +13,7 @@ import useImageCompression from '../../hooks/useImageCompression'
 import { useNavigate } from 'react-router-dom'
 import ImageModalLoading from '../../components/common/ImageModalLoading'
 import { useSetRecoilState } from 'recoil'
-import { LoadingModal } from '../../recoil/restaurants'
+import { LoadingModal } from '../../atoms/restaurantsAtoms'
 
 const CustomerSignup = () => {
   const {

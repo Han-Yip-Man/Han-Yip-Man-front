@@ -6,7 +6,7 @@ import MainMenuCategory from '../MainMenuCategory/MainMenuCategory'
 import AddMenu from '../AddMenu/AddMenu'
 import * as S from './ManagementContainer.style'
 import OrderManagement from '../OrderManagement/OrderManagement'
-import { sellerDashboardNum } from '../../../recoil/restaurants'
+import { sellerDashboardNum } from '../../../atoms/restaurantsAtoms'
 import { useRecoilValue } from 'recoil'
 import MenuContainer from '../MenuContainer/MenuContainer'
 

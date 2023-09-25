@@ -2,13 +2,13 @@ import MenuItem from '@mui/material/MenuItem'
 import { SelectChangeEvent } from '@mui/material/Select'
 import { useEffect } from 'react'
 import * as S from './RestaurantsManagementHeader.style'
-import { shopListState } from '../../../recoil/restaurants'
+import { shopListState } from '../../../atoms/restaurantsAtoms'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   selectedShopIdState,
   selectedShopNameState,
   sellerDashboardNum,
-} from '../../../recoil/restaurants'
+} from '../../../atoms/restaurantsAtoms'
 
 const RestaurantsManagementHeader = () => {
   const shopList = useRecoilValue(shopListState)
