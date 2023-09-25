@@ -1,9 +1,9 @@
 import { Typography, Card, CardContent, CardMedia, Grid } from '@mui/material'
 import * as S from './RestaurantsProfile.style'
 import { useSetRecoilState } from 'recoil'
-import { shopdeletemodal } from '../../../recoil/restaurants'
+import { shopdeletemodal } from '../../../atoms/restaurantsAtoms'
 import RestaurantDeleteModal from '../RestaurantDeleteModal/RestaurantDeleteModal'
-import { sellerDashboardNum } from '../../../recoil/restaurants'
+import { sellerDashboardNum } from '../../../atoms/restaurantsAtoms'
 import { useGetshopDeatil } from '../../../hooks/useGetshopDeatil'
 
 const RestaurantsProfile = () => {

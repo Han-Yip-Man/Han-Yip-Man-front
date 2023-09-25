@@ -11,6 +11,9 @@ import { emailCheck } from '../../api/user'
 import useAlert from '../../hooks/useAlert'
 import useImageCompression from '../../hooks/useImageCompression'
 import { useNavigate } from 'react-router-dom'
+import ImageModalLoading from '../../components/common/ImageModalLoading'
+import { useSetRecoilState } from 'recoil'
+import { LoadingModal } from '../../atoms/restaurantsAtoms'
 
 const CustomerSignup = () => {
   const {
@@ -28,6 +31,7 @@ const CustomerSignup = () => {
   const openPostcodePopup = useAddressSearch(scriptUrl)
   const toast = useAlert()
   const navigate = useNavigate()
+  const setLoading = useSetRecoilState(LoadingModal)
 
   const [address, setAddress] = useState<DaumPostcodeData | null>({
     address: '',
@@ -61,7 +65,9 @@ const CustomerSignup = () => {
   const handleProfileImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      setLoading(true)
       await compressProfileImage(file)
+      setLoading(false)
     }
   }
 
@@ -111,15 +117,21 @@ const CustomerSignup = () => {
       })
   }
 
-  //중복체크 검사할떄 쓸 함수~~
   const checkIdDuplication = async () => {
+    const emailRegex = /^\S+@\S+$/i
     const emailtrim = email?.trim()
+    // 정규식을 이용한 이메일 형식 검사
+    if (!emailRegex.test(emailtrim as string)) {
+      toast('유효하지 않은 이메일 형식입니다.', 3000, 'error')
+      return // 유효하지 않은 형식이면 함수를 종료합니다.
+    }
+
     if (emailtrim && emailtrim.length > 0) {
       try {
         await emailCheck({ checkEmail: emailtrim })
-        toast('사용가능한 아이디입니다.', 3000, 'success')
+        toast('사용가능한 아이디입니다.', 2000, 'success')
       } catch (error) {
-        toast('이미 사용중인 아이디입니다.', 3000, 'error')
+        toast('이미 사용중인 아이디입니다.', 2000, 'error')
       }
     }
   }
@@ -249,6 +261,7 @@ const CustomerSignup = () => {
       <S.SubmitBtn variant="contained" type="submit">
         회원가입
       </S.SubmitBtn>
+      <ImageModalLoading />
     </S.Form>
   )
 }

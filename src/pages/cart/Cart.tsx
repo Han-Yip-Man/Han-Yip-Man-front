@@ -21,7 +21,7 @@ import Minusimg from '../../assets/iconMinus.svg'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMypageInfo } from '../../api/mypage'
 import { UserStateAtom } from '../../atoms/orderAtoms'
-import { TestUser } from '../../recoil/sellermenu'
+// import { TestUser } from '../../atoms/sellermenu'
 
 const Cart: React.FC = () => {
   const toast = useAlert()
@@ -127,13 +127,13 @@ const Cart: React.FC = () => {
       })
   }
 
-  const setUser = useSetRecoilState(TestUser)
+  // const setUser = useSetRecoilState(TestUser)
 
-  useEffect(() => {
-    getMypageInfo().then((response) => {
-      setUser(response)
-    })
-  }, [])
+  // useEffect(() => {
+  //   getMypageInfo().then((response) => {
+  //     setUser(response)
+  //   })
+  // }, [])
 
   return (
     <S.OuterDiv>

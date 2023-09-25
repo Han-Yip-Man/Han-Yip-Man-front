@@ -1,7 +1,7 @@
 import Menumanagement from '../Menumanagement/Menumanagement'
 import MenumanagementHeader from '../MenumanagementHeader/MenumanagementHeader'
 import { useRecoilState } from 'recoil'
-import { shopmenupage } from '../../../recoil/restaurants'
+import { shopmenupage } from '../../../atoms/restaurantsAtoms'
 import AddMenu from '../AddMenu/AddMenu'
 import { useEffect } from 'react'
 import * as S from './MenuContainer.style'

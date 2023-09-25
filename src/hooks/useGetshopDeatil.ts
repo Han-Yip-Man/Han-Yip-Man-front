@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { selectedShopIdState, shopDetailState } from '../recoil/restaurants'
+import { selectedShopIdState, shopDetailState } from '../atoms/restaurantsAtoms'
 import { getShopDetail } from '../api/restaurant'
 
 export const useGetshopDeatil = () => {

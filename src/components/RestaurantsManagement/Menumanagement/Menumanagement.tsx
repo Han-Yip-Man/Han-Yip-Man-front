@@ -4,7 +4,12 @@ import AccordionSummary from '@mui/material/AccordionSummary'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import * as S from './Menumanagement.style'
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil'
-import { shopGroupid, shopMenu, shopMenuId, shopMenuEditModal } from '../../../recoil/restaurants'
+import {
+  shopGroupid,
+  shopMenu,
+  shopMenuId,
+  shopMenuEditModal,
+} from '../../../atoms/restaurantsAtoms'
 import { getsellerMenu } from '../../../api/restaurant'
 import MenuEditModal from './MenuEditModal'
 import { deleteMenu } from '../../../api/shopMenuEdit.api'

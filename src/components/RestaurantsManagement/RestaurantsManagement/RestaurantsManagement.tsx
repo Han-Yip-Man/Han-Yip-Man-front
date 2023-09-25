@@ -4,7 +4,7 @@ import ManagementContainer from '../ManagementContainer/ManagementContainer'
 import * as S from './RestaurantsManagement.style'
 import { getShop } from '../../../api/restaurant'
 import { useSetRecoilState } from 'recoil'
-import { shopListState } from '../../../recoil/restaurants'
+import { shopListState } from '../../../atoms/restaurantsAtoms'
 
 const RestaurantsManagement = () => {
   const setShopList = useSetRecoilState(shopListState)

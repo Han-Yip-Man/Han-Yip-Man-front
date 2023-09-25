@@ -12,7 +12,7 @@ import useAddressSearch from '../../../hooks/useAddressSearch.js'
 import { DaumPostcodeData } from '../../../types/Address.js'
 import useAlert from '../../../hooks/useAlert.js'
 import { useSetRecoilState } from 'recoil'
-import { sellerDashboardNum, LoadingModal } from '../../../recoil/restaurants.js'
+import { sellerDashboardNum, LoadingModal } from '../../../atoms/restaurantsAtoms.js'
 import ImageModalLoading from '../../common/ImageModalLoading.js'
 
 const AddRestaurants = () => {

@@ -44,9 +44,15 @@ const OwnerSignup = () => {
       })
   }
 
-  //중복체크 검사할떄 쓸 함수~~
   const checkIdDuplication = async () => {
+    const emailRegex = /^\S+@\S+$/i
     const emailtrim = email?.trim()
+    // 정규식을 이용한 이메일 형식 검사
+    if (!emailRegex.test(emailtrim as string)) {
+      toast('유효하지 않은 이메일 형식입니다.', 3000, 'error')
+      return // 유효하지 않은 형식이면 함수를 종료합니다.
+    }
+
     if (emailtrim && emailtrim.length > 0) {
       try {
         await emailCheck({ checkEmail: emailtrim })

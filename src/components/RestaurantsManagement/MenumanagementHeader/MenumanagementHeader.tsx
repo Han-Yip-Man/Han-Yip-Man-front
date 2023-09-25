@@ -9,7 +9,7 @@ import {
   shopGroupid,
   shopmenupage,
   shopMenu,
-} from '../../../recoil/restaurants'
+} from '../../../atoms'
 import { SelectChangeEvent } from '@mui/material'
 
 const MenumanagementHeader = () => {

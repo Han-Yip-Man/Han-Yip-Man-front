@@ -8,7 +8,7 @@ import { useForm, Controller } from 'react-hook-form'
 import useAlert from '../../../hooks/useAlert'
 import useImageCompression from '../../../hooks/useImageCompression'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { shopGroupid, shopmenupage, LoadingModal } from '../../../recoil/restaurants'
+import { shopGroupid, shopmenupage, LoadingModal } from '../../../atoms/restaurantsAtoms'
 import { addsellerMenu } from '../../../api/restaurant'
 import ImageModalLoading from '../../common/ImageModalLoading'
 
