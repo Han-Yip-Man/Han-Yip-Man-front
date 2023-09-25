@@ -12,3 +12,11 @@ export const endPointLocationAtom = atom<Location>({
     lng: 0,
   },
 })
+
+export const currentLocationAtom = atom<Location>({
+  key: 'curLocation',
+  default: {
+    lat: 0,
+    lng: 0,
+  },
+})

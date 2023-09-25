@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, SyntheticEvent } from 'react'
 import { endPointLocationAtom } from '../atoms/deliveryAtoms'
+import { getAddressToLatLng } from '../utils/map.util'
+import { useRecoilState } from 'recoil'
 
 const { kakao } = window
 
@@ -17,8 +19,9 @@ type DeliveryKakaoMapProps = {
   longitude: number
   curLatitude: number
   curLongitude: number
-  endingPointLatitude: number
-  endingPointLongitude: number
+  addressData: string
+  endPointLatitude: number
+  endPointLongitude: number
 }
 
 export const DeliveryKakaoMap = ({
@@ -29,37 +32,54 @@ export const DeliveryKakaoMap = ({
   longitude,
   curLatitude,
   curLongitude,
-  endingPointLatitude,
-  endingPointLongitude,
+  addressData,
+  endPointLatitude,
+  endPointLongitude,
 }: DeliveryKakaoMapProps) => {
-  const mapContainer = useRef(null)
+  const [endPoint, setEndPoint] = useRecoilState(endPointLocationAtom)
 
-  const mapOption = {
-    center: new kakao.maps.LatLng(
-      (latitude + endingPointLatitude) / 2,
-      (longitude + endingPointLongitude) / 2,
-    ),
-    level: 8,
-  }
+  console.log('from>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+  console.log('latlng', latitude, longitude)
+  console.log('curlatlng', curLatitude, curLongitude)
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>to')
 
-  const startingPoint = {
-    latitude,
-    longitude,
-    // latitude: 37.492569,
-    // longitude: 127.026444,
-  }
-  const endingPoint = {
-    latitude: endingPointLatitude,
-    longitude: endingPointLongitude,
-    // latitude: 37.488569,
-    // longitude: 127.037444,
-  }
+  getAddressToLatLng(addressData, setEndPoint)
+  // orderData 불러올 때 좌표가 아니고 주소지가 옵니다
+  // 그래서 이 함수 안에서 콜백함수가 실행되어서 값이 없나봐요
+  // 간과했습니다 ㅠㅠ
+  // 시작점 끝점만 있으면 움직이는 거는 아마 가능할 듯 합니다
+  // 그렇죠 끝점이 주소지입니다
 
   useEffect(() => {
     /**
      * map
      */
-    const map = new kakao.maps.Map(mapContainer.current, mapOption)
+
+    const mapContainer = document.getElementById(mapId)
+
+    const mapOption = {
+      // center: new kakao.maps.LatLng((latitude + endPointLatitude) / 2, (longitude + endPointLongitude) / 2),
+      // center: new kakao.maps.LatLng((latitude + endPoint.lat) / 2, (longitude + endPoint.lng) / 2),
+      center: new kakao.maps.LatLng(latitude, longitude),
+      level: 5,
+    }
+
+    const startingPoint = {
+      latitude,
+      longitude,
+      // latitude: 37.492569,
+      // longitude: 127.026444,
+    }
+    const endingPoint = {
+      latitude: endPointLatitude,
+      longitude: endPointLongitude,
+      // latitude: endPoint.lat,
+      // longitude: endPoint.lng,
+      // latitude: 37.488569,
+      // longitude: 127.037444,
+    }
+
+    const map = new kakao.maps.Map(mapContainer, mapOption)
     // console.log(map)
 
     /**
@@ -109,70 +129,71 @@ export const DeliveryKakaoMap = ({
     /**
      * line
      */
-    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-    const linePath = [
-      new kakao.maps.LatLng(startingPoint.latitude, startingPoint.longitude),
-      new kakao.maps.LatLng(curLatitude, curLongitude),
-      new kakao.maps.LatLng(endingPoint.latitude, endingPoint.longitude),
-    ]
+    // // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+    // const linePath = [
+    //   new kakao.maps.LatLng(startingPoint.latitude, startingPoint.longitude),
+    //   new kakao.maps.LatLng(curLatitude, curLongitude),
+    //   new kakao.maps.LatLng(endingPoint.latitude, endingPoint.longitude),
+    // ]
 
-    // 지도에 표시할 선을 생성합니다
-    const polyline1 = new kakao.maps.Polyline({
-      path: [linePath[0], linePath[1]],
-      strokeWeight: 5,
-      strokeColor: '#0040ff',
-      strokeOpacity: 0.7,
-      strokeStyle: 'solid',
-    })
-    const polyline2 = new kakao.maps.Polyline({
-      path: [linePath[1], linePath[2]],
-      strokeWeight: 5,
-      strokeColor: '#0040ff',
-      strokeOpacity: 0.7,
-      strokeStyle: 'dashed',
-    })
+    // // 지도에 표시할 선을 생성합니다
+    // const polyline1 = new kakao.maps.Polyline({
+    //   path: [linePath[0], linePath[1]],
+    //   strokeWeight: 5,
+    //   strokeColor: '#0040ff',
+    //   strokeOpacity: 0.7,
+    //   strokeStyle: 'solid',
+    // })
+    // const polyline2 = new kakao.maps.Polyline({
+    //   path: [linePath[1], linePath[2]],
+    //   strokeWeight: 5,
+    //   strokeColor: '#0040ff',
+    //   strokeOpacity: 0.7,
+    //   strokeStyle: 'dashed',
+    // })
 
-    // 지도에 선을 표시합니다
-    polyline1.setMap(map)
-    polyline2.setMap(map)
+    // // 지도에 선을 표시합니다
+    // polyline1.setMap(map)
+    // polyline2.setMap(map)
 
     /**
      * info window
      */
-    if (latitude !== undefined && longitude !== undefined) {
-      const isDelivered =
-        curLatitude === endingPoint.latitude && curLongitude === endingPoint.longitude
+    // if (latitude !== undefined && longitude !== undefined) {
+    const isDelivered =
+      curLatitude === endingPoint.latitude && curLongitude === endingPoint.longitude
 
-      let iwContent
-      if (isDelivered) {
-        iwContent = '<div style="padding:5px;">배달 완료!!</div>'
-      } else {
-        iwContent = '<div style="padding:5px;">배달 중...</div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-      }
-      const iwPosition = new kakao.maps.LatLng(curLatitude + 0.012, curLongitude), //인포윈도우 표시 위치입니다
-        iwRemoveable = false // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+    //   let iwContent
+    //   if (isDelivered) {
+    //     iwContent = '<div style="padding:5px;">배달 완료!!</div>'
+    //   } else {
+    //     iwContent = '<div style="padding:5px;">배달 중...</div>' // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    //   }
+    //   const iwPosition = new kakao.maps.LatLng(curLatitude + 0.012, curLongitude), //인포윈도우 표시 위치입니다
+    //     iwRemoveable = false // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-      // 인포윈도우를 생성하고 지도에 표시합니다
-      const infowindow = new kakao.maps.InfoWindow({
-        map: map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      })
+    //   // 인포윈도우를 생성하고 지도에 표시합니다
+    //   const infowindow = new kakao.maps.InfoWindow({
+    //     map: map, // 인포윈도우가 표시될 지도
+    //     position: iwPosition,
+    //     content: iwContent,
+    //     removable: iwRemoveable,
+    //   })
 
-      if (isDelivered) {
-        setTimeout(() => {
-          infowindow.close()
-          polyline1.setMap(null)
-          polyline2.setMap(null)
-        }, 1000)
-      }
+    if (isDelivered) {
+      //   setTimeout(() => {
+      //     // infowindow.close()
+      //     // polyline1.setMap(null)
+      //     // polyline2.setMap(null)
+      //   }, 1000)
+      console.log('don')
     }
+    // }
   }, [curLatitude, curLongitude])
 
   return (
     <>
-      <div id={mapId} ref={mapContainer} style={{ margin: 10, width: width, height: height }}></div>
+      <div id={mapId} style={{ margin: 10, width: width, height: height }}></div>
     </>
   )
 }
