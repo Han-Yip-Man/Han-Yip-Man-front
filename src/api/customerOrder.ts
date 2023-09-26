@@ -1,5 +1,5 @@
 import axiosClient from './axiosInstance'
-import { getStoreDetail } from './storeDetail'
+import { getStoreDetail } from '../pages/store/hooks/storeDetail'
 
 export const getOrder = async (orderId: number) => {
   console.log('getOrder>>>', orderId)

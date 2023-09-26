@@ -1,10 +1,10 @@
-import { Box, Card, Input, Rating, Stack, TextField, styled } from '@mui/material'
+import { Box, Rating } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import * as S from './ReviewCardForm.style'
 import { useAlert, useImageCompression } from '../../../hooks'
-import { postReview } from '../../../api/mypage'
+import { postReview } from '../hooks/mypage'
 
 type ReviewCardFormProps = {
   shopId?: number

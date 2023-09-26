@@ -1,11 +1,11 @@
-import React from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import * as S from './UserTabController.style'
 
 type TabControllerProps = {
-  setmenupage: React.Dispatch<React.SetStateAction<number>>
+  setmenupage: Dispatch<SetStateAction<number>>
 }
 
-const UserTabController: React.FC<TabControllerProps> = ({ setmenupage }) => {
+const UserTabController = ({ setmenupage }: TabControllerProps) => {
   return (
     <S.TabWrapper>
       <S.Title>마이페이지</S.Title>

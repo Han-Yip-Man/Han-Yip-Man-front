@@ -8,7 +8,7 @@ import { RequestPayParams, RequestPayResponse } from '../../types/pay'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { CouponDiscountAtom, FinalChargePriceAtom, UserStateAtom } from '../../atoms/orderAtoms'
-import { getMypageInfo } from '../../api/mypage'
+import { getMypageInfo } from '../customerMypage/hooks/mypage'
 import { CartStateAtom, totalCartPriceSelector } from '../../atoms/cartAtoms'
 import {
   orderItems,

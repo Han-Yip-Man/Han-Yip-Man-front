@@ -1,6 +1,6 @@
 import { Stack, Table, TableBody, TableRow, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { getMypageInfo } from '../../../api/mypage'
+import { getMypageInfo } from '../hooks/mypage'
 import AddressTabs from '../addressTabs/AddressTabs'
 import * as S from './CustomerMyPageInfo.style'
 

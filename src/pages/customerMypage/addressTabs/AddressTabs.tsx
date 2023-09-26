@@ -14,6 +14,7 @@ import { getUserAddr, regUserAddrPost } from '../../../api/address'
 import { currentAddr, userAddr } from '../../../atoms/addressAtoms'
 import searchAddressByKeyword from '../../../api/addressSearch'
 import * as S from './AddressTabs.style'
+import { Address, AddressFormValues } from '../types'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -44,24 +45,8 @@ function a11yProps(index: number) {
   }
 }
 
-type Address = {
-  addressNumber: number
-  address: string
-  detailAddress: string
-  latitude: number
-  longitude: number
-  isDefault: boolean
-}
-
 type AddressTabsProps = {
   addressList: Address[] | undefined
-}
-
-type FormValues = {
-  address: string
-  detailAddress: string
-  latitude: number
-  longitude: number
 }
 
 export default function AddressTabs({ addressList }: AddressTabsProps) {
@@ -151,7 +136,7 @@ export default function AddressTabs({ addressList }: AddressTabsProps) {
    * 주소지 관련 새로 가져와서 일부 생략
    * 코드 보존 위해 그냥 둠 line 273:285
    */
-  const { register, handleSubmit, watch, setValue, getValues } = useForm<FormValues>()
+  const { register, handleSubmit, watch, setValue, getValues } = useForm<AddressFormValues>()
 
   const findAddressLatLng = () => {
     console.log(watch())

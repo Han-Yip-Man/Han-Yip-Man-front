@@ -1,21 +1,15 @@
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
+import { CardMedia, Typography } from '@mui/material'
 import * as S from './MenuCard.style'
+import { menuInfo } from '../types'
 
 type MenuCardProps = {
-  menu: {
-    menuDescription: string
-    menuDiscountPrice: number
-    menuId: number
-    menuName: string
-    menuPrice: number
-    menuThumbnailUrl: string
-  }
+  menu: menuInfo
 }
 
 export const MenuCard = ({ menu }: MenuCardProps) => {
   return (
     <S.StyledCardContainer>
-      <Card sx={{ height: 116, padding: 1 }}>
+      <S.StyledCard>
         <S.StyledCardInnerContainer>
           <CardMedia
             component="img"
@@ -23,13 +17,13 @@ export const MenuCard = ({ menu }: MenuCardProps) => {
             height="100"
             image={menu.menuThumbnailUrl}
           />
-          <CardContent sx={{ width: '300%', display: 'flex', flexDirection: 'column' }}>
+          <S.StyledCardContent>
             <Typography variant="h6">{menu.menuName}</Typography>
             <Typography variant="body1">{menu.menuPrice}원</Typography>
             <Typography variant="body1">{menu.menuDiscountPrice}원</Typography>
-          </CardContent>
+          </S.StyledCardContent>
         </S.StyledCardInnerContainer>
-      </Card>
+      </S.StyledCard>
     </S.StyledCardContainer>
   )
 }

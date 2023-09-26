@@ -1,24 +1,16 @@
 import { List, ListItem, ListItemButton } from '@mui/material'
 import { MenuCard } from '../menuCard/MenuCard'
-import { useNavigate } from 'react-router-dom'
-
-type menuInfo = {
-  menuDescription: string
-  menuDiscountPrice: number
-  menuId: number
-  menuName: string
-  menuPrice: number
-  menuThumbnailUrl: string
-}
+import { menuInfo } from '../types'
+import { useRouter } from '../../../hooks'
 
 type MenuListProps = {
   menuList: menuInfo[]
 }
 
 export default function MenuList({ menuList }: MenuListProps) {
-  const navigate = useNavigate()
+  const { routeTo } = useRouter()
   const handleToggle = (menuId: number) => () => {
-    navigate(`/menuDetail/${menuId}`) //temp
+    routeTo(`/menuDetail/${menuId}`)
   }
 
   return (

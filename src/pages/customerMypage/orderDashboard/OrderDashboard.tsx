@@ -9,29 +9,11 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { getOrders, getOrdersInf } from '../../../api/customerOrder'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 import { useIntersection } from '../../../hooks'
+import { Orders } from '../types'
 
 type OrderDashboardProps = {
   setmenupage: Dispatch<SetStateAction<number>>
   setOrderIdParam: Dispatch<SetStateAction<number>>
-}
-
-type Order = {
-  orderId: number
-  orderUid: string
-  shopName: string
-  shopId: number // 가게ID
-  bannerImg: string
-  menus: string[]
-  options: string[]
-  orderDateTime: string
-  orderStatus: string
-}
-
-type Orders = {
-  content: Order[]
-  cursor: number
-  size: number
-  end: boolean
 }
 
 const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) => {
@@ -110,7 +92,7 @@ const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) =
             )}
           </div>
         )}
-        <OrdersObserver ref={ref}></OrdersObserver>
+        <S.OrdersObserver ref={ref}></S.OrdersObserver>
 
         {/* {data?.content.map((order: any) => (
           <Card key={order.orderUid}>
@@ -143,8 +125,3 @@ const OrderDashboard = ({ setmenupage, setOrderIdParam }: OrderDashboardProps) =
 }
 
 export default OrderDashboard
-
-const OrdersObserver = styled(Box)`
-  height: 100px;
-  width: 100px;
-`

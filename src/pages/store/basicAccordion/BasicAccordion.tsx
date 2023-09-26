@@ -2,15 +2,7 @@ import { Box, Accordion, AccordionSummary, Typography } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import MenuList from '../menuList/MenuList'
 import * as S from './BasicAccordion.style'
-
-type menuInfo = {
-  menuDescription: string
-  menuDiscountPrice: number
-  menuId: number
-  menuName: string
-  menuPrice: number
-  menuThumbnailUrl: string
-}
+import { menuInfo } from '../types'
 
 type BasicAccordionProps = {
   menuList: {

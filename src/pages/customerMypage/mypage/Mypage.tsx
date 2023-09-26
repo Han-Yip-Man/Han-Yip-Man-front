@@ -5,20 +5,20 @@ import UserTabController from '../userTabController/UserTabController'
 import * as S from './Mypage.style'
 import { CustomerOrderDetail } from '../customerOrderDetail/CustomerOrderDetail'
 import { CustomerMyPageInfo } from '../customerMypageInfo/CustomerMyPageInfo'
-import { useNavigate } from 'react-router'
 import { useRecoilValue } from 'recoil'
 import { UserInfoType } from '../../../types/user'
 import { userInfo } from '../../../atoms/userInfoAtoms'
+import { useRouter } from '../../../hooks'
 
 const Mypage = () => {
   const [menupage, setmenupage] = useState(0)
   const [orderIdParam, setOrderIdParam] = useState(0)
-  const navigate = useNavigate()
+  const { routeTo } = useRouter()
   const user = useRecoilValue(userInfo) as UserInfoType
 
   useEffect(() => {
     if (user.role === 'SELLER') {
-      navigate('/dashboard/seller')
+      routeTo('/dashboard/seller')
     }
   }, [])
 

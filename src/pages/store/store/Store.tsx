@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getStoreDetail } from '../../../api/storeDetail'
+import { getStoreDetail } from '../hooks/storeDetail'
 import { Box, CardMedia, Rating, Stack, Typography, styled } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { orderShopid } from '../../../atoms/orderAtoms'

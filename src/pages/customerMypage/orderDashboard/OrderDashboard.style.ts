@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Box } from '@mui/material'
 
 export const DashboardWrapper = styled.div`
   flex: 1;
@@ -41,4 +42,8 @@ export const ItemList = styled.div`
       padding: 5px;
     }
   }
+`
+export const OrdersObserver = styled(Box)`
+  height: 100px;
+  width: 100px;
 `
