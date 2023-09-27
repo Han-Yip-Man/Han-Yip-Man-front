@@ -19,7 +19,7 @@ import Ximg from '../../assets/iconX.svg'
 import Plusimg from '../../assets/iconPlus.svg'
 import Minusimg from '../../assets/iconMinus.svg'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getMypageInfo } from '../../api/mypage'
+import { getMypageInfo } from '../customerMypage/hooks/mypage'
 import { UserStateAtom } from '../../atoms/orderAtoms'
 // import { TestUser } from '../../atoms/sellermenu'
 
