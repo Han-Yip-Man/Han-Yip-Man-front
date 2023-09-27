@@ -1,6 +1,6 @@
 import * as S from './OrderMenuInfo.Styles'
 import { useRecoilValue } from 'recoil'
-import { CartStateAtom } from '../../atoms/cartAtoms'
+import { CartStateAtom } from '../../../atoms/cartAtoms'
 
 const OrderMenuInfo = () => {
   const cartProduct = useRecoilValue(CartStateAtom)

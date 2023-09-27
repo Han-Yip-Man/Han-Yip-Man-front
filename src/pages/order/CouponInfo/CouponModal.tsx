@@ -1,11 +1,11 @@
 import * as S from './CouponModal.Styles'
 import { useEffect, useRef, useState } from 'react'
-import { getMyCounpon } from '../../api/coupon'
-import { registerCoupon } from '../../api/coupon'
-import PositionedSnackbar from './PositionedSnackbar'
-import Ximg from '../../assets/iconX.svg'
+import { getMyCounpon } from '../../../api/coupon'
+import { registerCoupon } from '../../../api/coupon'
+import PositionedSnackbar from '../../order/PositionedSnackbar'
+import Ximg from '../../../assets/iconX.svg'
 import { useRecoilState } from 'recoil'
-import { CouponDiscountAtom } from '../../atoms/orderAtoms'
+import { CouponDiscountAtom } from '../../../atoms/orderAtoms'
 
 type ModalProps = {
   title?: string // 모달창 제목을 Prop으로 받을 수 있다.

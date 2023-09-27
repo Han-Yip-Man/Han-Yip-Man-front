@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import * as S from './Option.Styles'
-import CustomCheckbox from './CustomCheckbox'
+import CustomCheckbox from '../../menuDetail/CustomCheckbox'
 
 interface OptionItem {
   optionItemId: number

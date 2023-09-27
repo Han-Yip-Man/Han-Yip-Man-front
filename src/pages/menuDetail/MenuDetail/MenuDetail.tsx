@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import * as S from './MenuDetail.Styles'
-import CounterBox from '../../components/menuDetail/CounterBox'
-import AddOptionOne from '../../components/menuDetail/AddOptionOne'
-import MenuDetailModal from './MenuDetailModal'
-import { getMenuDetail } from '../../api/menu'
+import CounterBox from '../CounterBox/CounterBox'
+import AddOptionOne from '../Options/AddOptionOne'
+import MenuDetailModal from '../Modal/MenuDetailModal'
+import { getMenuDetail } from '../../../api/menu'
 // import useRouter from '../../hooks/useRouter'
 import { isAxiosError, AxiosResponse } from 'axios'
 // import { mmdata } from './menuDetailMockData'
-import useAlert from '../../hooks/useAlert'
+import useAlert from '../../../hooks/useAlert'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { CartStateAtom } from '../../atoms/cartAtoms'
+import { CartStateAtom } from '../../../atoms/cartAtoms'
 import { useParams } from 'react-router-dom'
-import { addCartItems } from '../../api/cart'
-import { orderShopid } from '../../atoms/orderAtoms'
+import { addCartItems } from '../../../api/cart'
+import { orderShopid } from '../../../atoms/orderAtoms'
 
 type optionItem = {
   optionItemId: number
@@ -27,6 +27,7 @@ type option = {
   maxSelected: number
   optionItems: optionItem[]
 }
+
 interface MenuData {
   menuId: number
   menuPrice: number
@@ -46,6 +47,7 @@ const initialMenuData = {
   discountPrice: 0,
   options: [],
 }
+
 interface CartItem {
   amount: number
   cartId: string
@@ -58,6 +60,7 @@ interface CartItem {
 interface MenuDetailProps {
   cartItem?: CartItem
 }
+
 const MenuDetail = ({ cartItem }: MenuDetailProps) => {
   const toast = useAlert()
   const { amount, cartId, menuName, menuPrice, optionItems, totalPrice } = cartItem || {}

@@ -1,22 +1,22 @@
-import CouponInfo from '../../components/order/CouponInfo'
-import DeliveryInfo from '../../components/order/DeliveryInfo'
-import OrderMenuInfo from '../../components/order/OrderMenuInfo'
-import PaymentMethodInfo from '../../components/order/PaymentMethodInfo'
-import TotalPriceInfo from '../../components/order/TotalPriceInfo'
+import DeliveryInfo from '../DeliveryInfo/DeliveryInfo'
+import OrderMenuInfo from '../OrderMenuInfo/OrderMenuInfo'
+import CouponInfo from '../CouponInfo/CouponInfo'
+import PaymentMethodInfo from '../PaymentMethodInfo/PaymentMethodInfo'
+import TotalPriceInfo from '../TotalPriceInfo/TotalPriceInfo'
 import * as S from './Order.Styles'
-import { RequestPayParams, RequestPayResponse } from '../../types/pay'
+import { RequestPayParams, RequestPayResponse } from '../../../types/pay'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { CouponDiscountAtom, FinalChargePriceAtom, UserStateAtom } from '../../atoms/orderAtoms'
-import { getMypageInfo } from '../../api/mypage'
-import { CartStateAtom, totalCartPriceSelector } from '../../atoms/cartAtoms'
+import { CouponDiscountAtom, FinalChargePriceAtom, UserStateAtom } from '../../../atoms/orderAtoms'
+import { getMypageInfo } from '../../../api/mypage'
+import { CartStateAtom, totalCartPriceSelector } from '../../../atoms/cartAtoms'
 import {
   orderItems,
   proveAfterPayment,
   proveBeforePayment,
   cancelPayment,
-} from '../../api/menuOrder'
-import { useRouter } from '../../hooks'
+} from '../../../api/menuOrder'
+import { useRouter } from '../../../hooks'
 
 type Address = {
   addressNumber: number

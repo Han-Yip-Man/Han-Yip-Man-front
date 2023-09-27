@@ -1,4 +1,4 @@
-import useRouter from '../../hooks/useRouter'
+import { useRouter } from '../../../hooks'
 import * as S from './CouponInfo.Styles'
 import CouponModal from './CouponModal'
 
