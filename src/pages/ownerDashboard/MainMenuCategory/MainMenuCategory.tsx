@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import InputField from '../../common/InputField'
+import InputField from '../../../pages/common/InputField'
 import { Grid } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FormDataType } from '../../../types/user'
-import useAlert from '../../../hooks/useAlert'
+import useAlert from '../../../pages/common/hooks/useAlert'
 import * as S from './MainMenuCategory.style'
 import {
   getMenuGroups,

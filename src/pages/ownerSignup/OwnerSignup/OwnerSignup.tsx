@@ -1,12 +1,12 @@
 import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import InputField from '../../components/common/InputField'
+import InputField from '../../common/InputField'
 import * as S from './OwnerSignup.style'
 import { useTheme } from '@mui/material/styles'
-import { FormDataType } from '../../types/user'
-import { ownerSignUp } from '../../api/user'
-import useAlert from '../../hooks/useAlert'
-import { emailCheck } from '../../api/user'
+import { FormDataType } from '../../../types/user'
+import { ownerSignUp } from '../hooks/api'
+import useAlert from '../../common/hooks/useAlert'
+import { emailCheck } from '../../common/hooks/api'
 import { useNavigate } from 'react-router-dom'
 
 const OwnerSignup = () => {
