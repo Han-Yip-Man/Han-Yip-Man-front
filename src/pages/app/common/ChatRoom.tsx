@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Dialog, DialogContent, DialogContentText } from '@mui/material'
 import { useState, useEffect } from 'react'
-import { useSocketContext } from '../../hooks'
+import { useSocketContext } from '../../../hooks'
 
 const ChatRoom = ({ fullScreen, open, onClose, orderId }: any) => {
   const [value, setValue] = useState('')

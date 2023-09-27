@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
-import Header from '../components/header/Header'
+import Header from '../pages/app/common/header/Header'
 import Container from '@mui/material/Container'
 import useRouter from '../hooks/useRouter'
 import { SSEProvider } from '../Provider/SSEProvider'

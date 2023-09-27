@@ -15,7 +15,7 @@ import { DraggableProvided } from 'react-beautiful-dnd'
 import { timeAgo } from '../../../utils/timeAgo'
 import { useSocketContext } from '../../../hooks'
 import { useQueryClient } from '@tanstack/react-query'
-import ChatRoomEnter from '../../common/ChatRoomEnter'
+import ChatRoomEnter from '../../../pages/app/common/ChatRoomEnter'
 
 type OmittedDraggableProvided = Omit<DraggableProvided, 'innerRef'>
 

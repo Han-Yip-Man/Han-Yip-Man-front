@@ -3,10 +3,10 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import { Button, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { useRecoilState } from 'recoil'
-import { currentAddr, userAddr } from '../../atoms/addressAtoms'
-import { useAlert } from '../../hooks'
+import { currentAddr, userAddr } from '../../../../atoms/addressAtoms'
+import { useAlert } from '../../../../hooks'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { delUserAddr, setDefaultAddr } from '../../api/address'
+import { delUserAddr, setDefaultAddr } from '../../../../api/address'
 import { useEffect } from 'react'
 
 interface Props extends CurrentAddr {

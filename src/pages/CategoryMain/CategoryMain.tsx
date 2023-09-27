@@ -19,8 +19,8 @@ import { fetchStoreData } from '../../api/categoryMainApi'
 import { userInfo } from '../../atoms/userInfoAtoms'
 import { isAxiosError } from 'axios'
 import { ErrorBoundary } from 'react-error-boundary'
-import StoreList from '../../components/categoryMain/StoreList'
-import ErrorFallback from '../../components/common/ErrorFallback'
+import StoreList from './components/CategoryMain/StoreList'
+import ErrorFallback from '../app/common/ErrorFallback'
 
 type CategoryType =
   | 'all'

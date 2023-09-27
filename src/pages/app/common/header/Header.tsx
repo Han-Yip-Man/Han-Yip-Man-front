@@ -22,9 +22,9 @@ import LunchDiningOutlinedIcon from '@mui/icons-material/LunchDiningOutlined'
 import { Link, useLocation } from 'react-router-dom'
 import { useState, forwardRef } from 'react'
 import { useRecoilValue } from 'recoil'
-import { userAddr } from '../../atoms/addressAtoms'
-import { userInfo } from '../../atoms/userInfoAtoms'
-import { useRouter } from '../../hooks'
+import { userAddr } from '../../../../atoms/addressAtoms'
+import { userInfo } from '../../../../atoms/userInfoAtoms'
+import { useRouter } from '../../../../hooks'
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {

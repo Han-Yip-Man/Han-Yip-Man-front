@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import InputField from '../../common/InputField'
+import InputField from '../../../pages/app/common/InputField'
 import { Grid } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FormDataType } from '../../../types/user'

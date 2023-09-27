@@ -4,12 +4,12 @@ import AddressListItem from './AddressListItem'
 
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { userInfo } from '../../atoms/userInfoAtoms'
-import { currentAddr, userAddr } from '../../atoms/addressAtoms'
+import { userInfo } from '../../../../atoms/userInfoAtoms'
+import { currentAddr, userAddr } from '../../../../atoms/addressAtoms'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAlert, useDebounce } from '../../hooks'
-import searchAddressByKeyword from '../../api/addressSearch'
-import { getUserAddr, regUserAddrPost } from '../../api/address'
+import { useAlert, useDebounce } from '../../../../hooks'
+import searchAddressByKeyword from '../../../../api/addressSearch'
+import { getUserAddr, regUserAddrPost } from '../../../../api/address'
 
 function AddressModal() {
   const isLoggedIn = useRecoilValue(userInfo)

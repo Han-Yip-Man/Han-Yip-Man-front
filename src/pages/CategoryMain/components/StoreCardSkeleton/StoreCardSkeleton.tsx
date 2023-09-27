@@ -1,5 +1,5 @@
 import { Divider, Skeleton } from '@mui/material'
-import * as S from './StoreCard.style'
+import * as S from '../StoreCard/StoreCard.style'
 
 function StoreCardSkeleton() {
   return (

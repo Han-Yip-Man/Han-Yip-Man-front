@@ -7,13 +7,15 @@ import { ThemeProvider as MuiTheme } from '@mui/material/styles'
 import { theme } from './styles/theme.ts'
 import { routers } from './router.tsx'
 import { SnackbarProvider } from 'notistack'
-
-const queryClient = new QueryClient()
+import { useAlert } from './hooks'
+import { generateQueryClient } from './react-query/queryClient.ts'
 
 function App() {
+  const toast = useAlert()
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <SnackbarProvider maxSnack={4}>
+    <SnackbarProvider maxSnack={4}>
+      <QueryClientProvider client={generateQueryClient(toast)}>
         <MuiTheme theme={theme}>
           <RecoilRoot>
             <GlobalStyle />
@@ -21,8 +23,8 @@ function App() {
             <ReactQueryDevtools />
           </RecoilRoot>
         </MuiTheme>
-      </SnackbarProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </SnackbarProvider>
   )
 }
 

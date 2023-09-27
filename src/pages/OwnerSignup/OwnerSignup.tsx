@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import InputField from '../../components/common/InputField'
+import InputField from '../app/common/InputField'
 import * as S from './OwnerSignup.style'
 import { useTheme } from '@mui/material/styles'
 import { FormDataType } from '../../types/user'

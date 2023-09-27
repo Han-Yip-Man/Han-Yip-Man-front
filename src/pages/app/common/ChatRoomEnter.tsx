@@ -2,7 +2,7 @@ import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStati
 import { Zoom, Fab, useMediaQuery } from '@mui/material'
 import styled from '@emotion/styled'
 import { useRecoilValue } from 'recoil'
-import { accordionExpand } from '../../atoms/orderManageAtoms'
+import { accordionExpand } from '../../../atoms/orderManageAtoms'
 import ChatRoom from './ChatRoom'
 import { useState } from 'react'
 import { useTheme } from '@mui/material/styles'

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import InputField from '../../common/InputField'
+import InputField from '../../../pages/app/common/InputField'
 import Select from '@mui/material/Select'
 
 export const DetailBtnbox = styled.div`

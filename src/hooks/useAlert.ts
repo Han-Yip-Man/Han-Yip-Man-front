@@ -8,10 +8,12 @@ interface Styles<T = any> {
 type horizontalType = 'right' | 'center' | 'left'
 type verticalType = 'bottom' | 'top'
 
-type anchorOriginType = {
+type AnchorOriginType = {
   horizontal: horizontalType
   vertical: verticalType
 }
+
+export type Args<T, C extends ReactNode> = [C, number, VariantType, AnchorOriginType?, Styles<T>?]
 
 const useAlert = () => {
   const { enqueueSnackbar } = useSnackbar()
@@ -20,7 +22,7 @@ const useAlert = () => {
     msg: C,
     hideDuration: number,
     variant: VariantType,
-    anchorOrigin?: anchorOriginType,
+    anchorOrigin?: AnchorOriginType,
     style?: Styles<T>,
   ) => {
     enqueueSnackbar(msg, {

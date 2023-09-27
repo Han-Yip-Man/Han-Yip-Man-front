@@ -1,10 +1,10 @@
 import * as S from './StoreList.style'
-import StoreCard from './StoreCard'
-import LoadingSpinner from '../common/LoadingSpinner'
+import StoreCard from '../StoreCard'
+import LoadingSpinner from '../../../app/common/LoadingSpinner'
 import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useIntersection } from '../../hooks'
-import StoreCardSkeleton from './StoreCardSkeleton'
+import { useIntersection } from '../../../../hooks'
+import StoreCardSkeleton from '../StoreCardSkeleton'
 import { useNavigate } from 'react-router'
 
 interface Props {

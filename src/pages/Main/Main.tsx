@@ -6,7 +6,7 @@ import { checkExistAddress, getAddressData, registerUserAddress } from '../../ap
 import { useMutation, useQuery } from '@tanstack/react-query'
 import MopedOutlinedIcon from '@mui/icons-material/MopedOutlined'
 import { useTheme } from '@mui/material/styles'
-import AddrLi from '../../components/address/AddrLi'
+import AddrLi from './components/AddrLi'
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil'
 import { keyword } from '../../atoms/mainAtoms'
 import { userInfo } from '../../atoms/userInfoAtoms'

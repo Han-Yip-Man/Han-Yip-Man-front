@@ -13,7 +13,7 @@ import { ShopField, ShopInfo } from '../../../types/restaurantsAtom'
 import { patchShopbanner, patchShopthumbnail } from '../../../api/restaurant'
 import useImageCompression from '../../../hooks/useImageCompression'
 import { validateField } from './EditPatchRegex'
-import ImageModalLoading from '../../common/ImageModalLoading'
+import ImageModalLoading from '../../../pages/app/common/ImageModalLoading'
 
 const EditRestaurant = () => {
   const { shop, currentId } = useGetshopDeatil()
