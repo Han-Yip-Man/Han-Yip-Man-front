@@ -1,19 +1,19 @@
 import { useRef, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import InputField from '../../components/common/InputField'
+import InputField from '../../common/InputField'
 import * as S from './CustomerSignup.style'
 import { useTheme } from '@mui/material/styles'
-import { FormDataType } from '../../types/user'
-import useAddressSearch from '../../hooks/useAddressSearch'
-import { DaumPostcodeData } from '../../types/Address'
-import { userSignUp } from '../../api/user'
-import { emailCheck } from '../../api/user'
-import useAlert from '../../hooks/useAlert'
-import useImageCompression from '../../hooks/useImageCompression'
+import { FormDataType } from '../../../types/user'
+import useAddressSearch from '../../common/hooks/useAddressSearch'
+import { DaumPostcodeData } from '../../../types/Address'
+import { userSignUp } from '../hooks/api'
+import { emailCheck } from '../../common/hooks/api'
+import useAlert from '../../common/hooks/useAlert'
+import useImageCompression from '../../common/hooks/useImageCompression'
 import { useNavigate } from 'react-router-dom'
-import ImageModalLoading from '../../components/common/ImageModalLoading'
+import ImageModalLoading from '../../../components/common/ImageModalLoading'
 import { useSetRecoilState } from 'recoil'
-import { LoadingModal } from '../../atoms/restaurantsAtoms'
+import { LoadingModal } from '../../../atoms/restaurantsAtoms'
 
 const CustomerSignup = () => {
   const {
@@ -108,11 +108,11 @@ const CustomerSignup = () => {
     })
 
     await userSignUp(formData)
-      .then((response) => {
+      .then(() => {
         toast('회원가입에 성공했습니다', 2000, 'success')
         navigate('/auth/usersignin')
       })
-      .catch((error) => {
+      .catch(() => {
         toast('회원가입에 실패했습니다', 2000, 'error')
       })
   }

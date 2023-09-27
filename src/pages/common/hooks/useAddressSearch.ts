@@ -1,5 +1,5 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode'
-import { DaumPostcodeData } from '../types/Address'
+import { DaumPostcodeData } from '../../../types/Address'
 
 const useAddressSearch = (scriptUrl: string) => {
   const open = useDaumPostcodePopup(scriptUrl)

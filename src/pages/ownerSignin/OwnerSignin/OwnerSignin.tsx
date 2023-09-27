@@ -1,13 +1,13 @@
 import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import InputField from '../../components/common/InputField'
+import InputField from '../../common/InputField'
 import * as S from './OwnerSignin.style'
 import { useTheme } from '@mui/material/styles'
-import { FormDataType } from '../../types/user'
-import { signIn } from '../../api/user'
-import useAlert from '../../hooks/useAlert'
+import { FormDataType } from '../../../types/user'
+import { signIn } from '../../common/hooks/api'
+import useAlert from '../../common/hooks/useAlert'
 import { useNavigate } from 'react-router-dom'
-import { tokenState } from '../../atoms/userInfoAtoms'
+import { tokenState } from '../../../atoms/userInfoAtoms'
 import { useSetRecoilState } from 'recoil'
 
 const OwnerSignin = () => {

@@ -2,7 +2,7 @@ import { Box, Card, Input, Rating, Stack, TextField, styled } from '@mui/materia
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { postReview } from '../../api/mypage'
-import useImageCompression from '../../hooks/useImageCompression'
+import useImageCompression from '../../pages/common/hooks/useImageCompression'
 import { useAlert } from '../../hooks'
 import { useMutation } from '@tanstack/react-query'
 
