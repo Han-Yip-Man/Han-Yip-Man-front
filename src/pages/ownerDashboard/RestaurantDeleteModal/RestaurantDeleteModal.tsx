@@ -9,7 +9,7 @@ import {
 } from '../../../atoms/restaurantsAtoms'
 import * as S from './RestaurantDeleteModal.style'
 import { deleteShop } from '../../../api/restaurant'
-import useAlert from '../../../hooks/useAlert'
+import useAlert from '../../../pages/common/hooks/useAlert'
 
 const RestaurantDeleteModal = () => {
   const [open, setOpen] = useRecoilState(shopdeletemodal)
