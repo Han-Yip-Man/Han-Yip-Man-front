@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
-import { getStoreDetail } from '../hooks/storeDetail'
 import { Box, CardMedia, Rating, Stack, Typography, styled } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { orderShopid } from '../../../atoms/orderAtoms'
@@ -7,10 +5,11 @@ import { useSetRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import BasicTabs from '../basicTabs/BasicTabs'
 import * as S from './Store.style'
+import useStore from '../hooks/useStore'
 
 const Store = () => {
   const { storeId } = useParams()
-  const { data, isLoading } = useQuery(['stores', storeId], () => getStoreDetail(storeId))
+  const { data, isLoading } = useStore(Number(storeId))
 
   const setShopid = useSetRecoilState(orderShopid)
 
