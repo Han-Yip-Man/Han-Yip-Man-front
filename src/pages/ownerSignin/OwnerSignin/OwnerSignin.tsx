@@ -1,21 +1,21 @@
 import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import InputField from '../../common/InputField'
-import * as S from './CustomerSignin.style'
+import * as S from './OwnerSignin.style'
 import { useTheme } from '@mui/material/styles'
 import { FormDataType } from '../../../types/user'
-import { signIn } from '../../../api/user'
+import { signIn } from '../../common/hooks/api'
 import useAlert from '../../common/hooks/useAlert'
-import { KAKAO_AUTH_URL } from '../../../components/KaKaoLogin/AuthKaKao'
 import { useNavigate } from 'react-router-dom'
-import { useSetRecoilState } from 'recoil'
 import { tokenState } from '../../../atoms/userInfoAtoms'
+import { useSetRecoilState } from 'recoil'
 
-const CustomerSignin = () => {
+const OwnerSignin = () => {
   const theme = useTheme()
   const toast = useAlert()
   const navigate = useNavigate()
   const setToken = useSetRecoilState(tokenState)
+
   const { register, handleSubmit, watch } = useForm<FormDataType>()
   const password = useRef<string | undefined>()
   password.current = watch('password')
@@ -33,9 +33,9 @@ const CustomerSignin = () => {
         sessionStorage.setItem('profileUrl', response.profileUrl)
         setToken(response.accessToken)
         toast('로그인에 성공했습니다.', 2000, 'success')
-        navigate('/main')
+        navigate('/dashboard/seller')
       })
-      .catch((error) => {
+      .catch(() => {
         toast('로그인 정보가 올바르지 않습니다.', 2000, 'error')
       })
   }
@@ -46,7 +46,7 @@ const CustomerSignin = () => {
         <img src="/img/mainlogo.svg" alt="" />
       </S.Logobox>
       <S.Title>
-        <h1 style={{ color: theme.palette.custom.main }}>사용자 로그인</h1>
+        <h1 style={{ color: theme.palette.custom.main }}>사장님 로그인</h1>
       </S.Title>
       <InputField label="아이디" type="email" {...register('email')} />
 
@@ -55,10 +55,7 @@ const CustomerSignin = () => {
       <S.SubmitBtn variant="contained" type="submit">
         로그인
       </S.SubmitBtn>
-      <S.KaKaoBtn href={KAKAO_AUTH_URL}>
-        <img src="/img/kakaologin.jpg" alt="" />
-      </S.KaKaoBtn>
     </S.Form>
   )
 }
-export default CustomerSignin
+export default OwnerSignin

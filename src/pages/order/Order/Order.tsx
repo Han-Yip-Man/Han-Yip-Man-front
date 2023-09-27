@@ -7,9 +7,6 @@ import * as S from './Order.Styles'
 import { RequestPayParams, RequestPayResponse } from '../../../types/pay'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { CouponDiscountAtom, FinalChargePriceAtom, UserStateAtom } from '../../../atoms/orderAtoms'
-import { getMypageInfo } from '../../../api/mypage'
-import { CartStateAtom, totalCartPriceSelector } from '../../../atoms/cartAtoms'
 import {
   orderItems,
   proveAfterPayment,
@@ -17,6 +14,13 @@ import {
   cancelPayment,
 } from '../../../api/menuOrder'
 import { useRouter } from '../../../hooks'
+import {
+  CartStateAtom,
+  CouponDiscountAtom,
+  FinalChargePriceAtom,
+  UserStateAtom,
+} from '../../../atoms'
+import { getMypageInfo } from '../../customerMypage/hooks/mypage'
 
 type Address = {
   addressNumber: number
