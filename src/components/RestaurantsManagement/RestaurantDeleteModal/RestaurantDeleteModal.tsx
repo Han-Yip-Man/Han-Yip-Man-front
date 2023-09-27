@@ -6,7 +6,7 @@ import {
   selectedShopNameState,
   shopdeletemodal,
   selectedShopIdState,
-} from '../../../recoil/restaurants'
+} from '../../../atoms/restaurantsAtoms'
 import * as S from './RestaurantDeleteModal.style'
 import { deleteShop } from '../../../api/restaurant'
 import useAlert from '../../../hooks/useAlert'

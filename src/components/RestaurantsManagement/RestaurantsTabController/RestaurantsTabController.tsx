@@ -3,7 +3,7 @@ import { Typography } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import * as S from './RestaurantsTabController.style'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { selectedShopNameState, sellerDashboardNum } from '../../../recoil/restaurants'
+import { selectedShopNameState, sellerDashboardNum } from '../../../atoms/restaurantsAtoms'
 
 const RestaurantsTabController = () => {
   const selectedShopName = useRecoilValue(selectedShopNameState)

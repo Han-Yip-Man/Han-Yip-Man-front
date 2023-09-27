@@ -8,13 +8,14 @@ import {
 } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import * as S from './OrderListItem.style'
-import { forwardRef, useCallback, useMemo } from 'react'
+import { forwardRef, useCallback, useMemo, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { accordionExpand } from '../../../atoms/orderManageAtoms'
 import { DraggableProvided } from 'react-beautiful-dnd'
 import { timeAgo } from '../../../utils/timeAgo'
 import { useSocketContext } from '../../../hooks'
 import { useQueryClient } from '@tanstack/react-query'
+import ChatRoomEnter from '../../common/ChatRoomEnter'
 
 type OmittedDraggableProvided = Omit<DraggableProvided, 'innerRef'>
 
@@ -26,7 +27,22 @@ interface Props extends OmittedDraggableProvided {
   orderedTime: string
   totalAmount: number
   address: string
-  menuResponses: []
+  menuResponses: MenuData[]
+}
+
+type MenuData = {
+  menuName: string
+  optionNames: []
+}
+
+function processMenuResponses(menuResponses: MenuData[]): string {
+  const menuNames = [...new Set(menuResponses.map((response) => response.menuName))]
+  const length = menuNames.length
+
+  if (length === 0) return '메뉴가 없습니다.'
+  if (length === 1) return `${menuNames[0]}`
+
+  return `${menuNames.join(', ')} 외 ${menuResponses.length - length}건`
 }
 
 const OrderListItem = forwardRef<HTMLLIElement, Props>(
@@ -45,6 +61,7 @@ const OrderListItem = forwardRef<HTMLLIElement, Props>(
     }: Props,
     ref,
   ) => {
+    const [open, setOpen] = useState(true)
     const [expanded, setExpanded] = useRecoilState<string | false>(accordionExpand)
     const { socket } = useSocketContext()
     const qc = useQueryClient()
@@ -70,46 +87,55 @@ const OrderListItem = forwardRef<HTMLLIElement, Props>(
     }
     // 나중에 컴포넌트 분리해야함
 
+    const onClose = () => {
+      setOpen(false)
+    }
+
     return (
-      <ListItem {...draggableProps} {...dragHandleProps} ref={ref}>
-        <S.CustomAccordion
-          expanded={expanded === draggableProps['data-rbd-draggable-id']}
-          onChange={handleChange(draggableProps['data-rbd-draggable-id'])}
-        >
-          <AccordionSummary expandIcon={<AddCircleIcon />}>
-            <Typography>{'곱창 외 3건'}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{address}</Typography>
-            <S.CustomDivider />
-            <Typography>주문 메뉴</Typography>
-            <Typography>곱창: 20,000원 옵션: 안맵게</Typography>
-            {/* <Typography>닭발: 35,000원</Typography>
-            <Typography>계란찜: 2,000원</Typography>
-            <Typography>오돌뼈: 30,000원</Typography> */}
-            {/* <Typography>배달비: 3,000원</Typography> */}
-            <Divider sx={{ mt: '5px', mb: '5px' }} />
-            <S.Total>결제금액: {totalAmount.toLocaleString()}원</S.Total>
-            <S.CustomDivider />
-            <Typography>주문시간: {memoizedTime}</Typography>
-            <Typography>주문번호: {orderId}</Typography>
-            <Typography component="div" sx={{ display: 'flex' }}>
-              상태:&nbsp;
-              <Typography sx={{ color: textColor }}>{orderStatus}</Typography>
-            </Typography>
-            {title === '주문대기' && (
-              <S.ButtonWrap>
-                <Button sx={{ color: 'green', fontSize: '18px' }} onClick={() => onClick('accept')}>
-                  수락
-                </Button>
-                <Button sx={{ color: 'red', fontSize: '18px' }} onClick={() => onClick('deny')}>
-                  거절
-                </Button>
-              </S.ButtonWrap>
-            )}
-          </AccordionDetails>
-        </S.CustomAccordion>
-      </ListItem>
+      <>
+        <ListItem {...draggableProps} {...dragHandleProps} ref={ref}>
+          <S.CustomAccordion
+            expanded={expanded === draggableProps['data-rbd-draggable-id']}
+            onChange={handleChange(draggableProps['data-rbd-draggable-id'])}
+            onClick={onClose}
+          >
+            <AccordionSummary expandIcon={<AddCircleIcon />}>
+              <Typography>{`${processMenuResponses(menuResponses)}`}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{address}</Typography>
+              <S.CustomDivider />
+              <Typography>주문 메뉴</Typography>
+              {menuResponses.map((menu: MenuData, i) => (
+                <Typography key={i}>{`${menu.menuName}`}</Typography>
+              ))}
+              <Divider sx={{ mt: '5px', mb: '5px' }} />
+              <S.Total>결제금액: {totalAmount.toLocaleString()}원</S.Total>
+              <S.CustomDivider />
+              <Typography>주문시간: {memoizedTime}</Typography>
+              <Typography>주문번호: {orderId}</Typography>
+              <Typography component="div" sx={{ display: 'flex' }}>
+                상태:&nbsp;
+                <Typography sx={{ color: textColor }}>{orderStatus}</Typography>
+              </Typography>
+              {title === '주문대기' && (
+                <S.ButtonWrap>
+                  <Button
+                    sx={{ color: 'green', fontSize: '18px' }}
+                    onClick={() => onClick('accept')}
+                  >
+                    수락
+                  </Button>
+                  <Button sx={{ color: 'red', fontSize: '18px' }} onClick={() => onClick('deny')}>
+                    거절
+                  </Button>
+                </S.ButtonWrap>
+              )}
+            </AccordionDetails>
+            <ChatRoomEnter orderId={orderId} />
+          </S.CustomAccordion>
+        </ListItem>
+      </>
     )
   },
 )

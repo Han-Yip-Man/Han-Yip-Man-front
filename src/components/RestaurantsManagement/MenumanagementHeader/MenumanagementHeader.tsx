@@ -9,7 +9,7 @@ import {
   shopGroupid,
   shopmenupage,
   shopMenu,
-} from '../../../recoil/restaurants'
+} from '../../../atoms'
 import { SelectChangeEvent } from '@mui/material'
 
 const MenumanagementHeader = () => {
@@ -27,7 +27,7 @@ const MenumanagementHeader = () => {
           setGroupid(response[0]?.menuGroupId)
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
         })
     }
     getCate()

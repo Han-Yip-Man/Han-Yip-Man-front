@@ -7,12 +7,14 @@ import { useNavigate } from 'react-router'
 import { useEffect } from 'react'
 
 const OwnerDashboard = () => {
-  const user = useRecoilValue(userInfo) as UserInfoType
+  const user = useRecoilValue<UserInfoType | null>(userInfo)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (user.role === 'BUYER') {
-      navigate('/dashboard/user')
+    if (user) {
+      if (user.role === 'BUYER') {
+        navigate('/dashboard/user')
+      }
     }
   }, [])
 

@@ -12,7 +12,7 @@ import useAddressSearch from '../../../hooks/useAddressSearch.js'
 import { DaumPostcodeData } from '../../../types/Address.js'
 import useAlert from '../../../hooks/useAlert.js'
 import { useSetRecoilState } from 'recoil'
-import { sellerDashboardNum, LoadingModal } from '../../../recoil/restaurants.js'
+import { sellerDashboardNum, LoadingModal } from '../../../atoms/restaurantsAtoms.js'
 import ImageModalLoading from '../../common/ImageModalLoading.js'
 
 const AddRestaurants = () => {
@@ -129,8 +129,6 @@ const AddRestaurants = () => {
           formData.append(key, value)
         }
       })
-
-      console.log('어흥', formData, payload)
 
       await addShop(formData)
       toast('가게가 성공적으로 등록되었습니다', 2000, 'success')

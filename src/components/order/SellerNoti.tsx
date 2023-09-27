@@ -1,37 +1,69 @@
 import styled from '@emotion/styled'
 import { extractTime } from '../../utils/extractTime'
+import { useSocketContext } from '../../hooks'
+import { useQueryClient } from '@tanstack/react-query'
 
-const SellerNoti = (props: any) => {
+interface Props {
+  t: any
+  onClose: (id: string) => void
+  data: AlarmData
+}
+
+const SellerNoti = ({ data, t, onClose }: Props) => {
+  const { socket } = useSocketContext()
+  const qc = useQueryClient()
+
+  const onClick = (action: string) => {
+    const movedItem = {
+      orderId: data.orderId,
+      orderStatus: action === 'accept' ? 'TAKEOVER' : 'CANCELED',
+      orderSequence: 0,
+    }
+    socket?.emit('send_order_status_change', movedItem, () => {
+      qc.invalidateQueries(['orderList'])
+    })
+    onClose(t.id)
+  }
+
   return (
-    <>
+    <CardWrap>
       <OrderDesc>
         <OrderHeader>
-          <OrderId>3216546545632146orderUID</OrderId>
-          <OrderTime>{extractTime('2023-09-20T17:44:55Z')}</OrderTime>
+          <OrderId>{data.orderUId}</OrderId>
+          <OrderTime>{extractTime(data.orderedTime)}</OrderTime>
         </OrderHeader>
-        <OrderTitle>페페로니 피자 외 3건</OrderTitle>
+        <OrderTitle>{data.menuNames}</OrderTitle>
         <OrderAddrWrap>
-          <OrderAddr1>경기도 성남시 분당구 백현동 123</OrderAddr1>
-          <OrderAddr2>판교역 3번 출구</OrderAddr2>
+          <OrderAddr1>{data.address}</OrderAddr1>
+          <OrderAddr2>{data.addressDetail}</OrderAddr2>
         </OrderAddrWrap>
         <OrderFootWrap>
-          <OrderTotal>146,000원</OrderTotal>
-          <OrderPayment>결제 수단: 카드</OrderPayment>
+          <OrderTotal>{data.totalAmount.toLocaleString()}원</OrderTotal>
+          <OrderPayment>결제: {data.paymentProvider}</OrderPayment>
         </OrderFootWrap>
       </OrderDesc>
       <BtnWrap>
         <BtnAWrap>
-          <Btn onClick={() => props.onClose(props.t.id)}>수락</Btn>
+          <Btn onClick={() => onClick('accept')}>수락</Btn>
         </BtnAWrap>
         <BtnDWrap>
-          <Btn>거절</Btn>
+          <Btn onClick={() => onClick('deny')}>거절</Btn>
         </BtnDWrap>
       </BtnWrap>
-    </>
+    </CardWrap>
   )
 }
 
 export default SellerNoti
+
+const CardWrap = styled.div`
+  height: 200px;
+  width: 400px;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  background-color: rgb(255, 165, 0, 0.9);
+  padding: 10px;
+`
 
 const OrderDesc = styled.div`
   /* background-color: gray; */
@@ -105,8 +137,8 @@ const BtnDWrap = styled.div`
 `
 
 const Btn = styled.button`
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: none;
   outline: none;

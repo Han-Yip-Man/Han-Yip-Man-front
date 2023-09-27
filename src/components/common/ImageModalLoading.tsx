@@ -1,6 +1,6 @@
 import Modal from '@mui/material/Modal'
 import styled from '@emotion/styled'
-import { LoadingModal } from '../../recoil/restaurants'
+import { LoadingModal } from '../../atoms/restaurantsAtoms'
 import { useRecoilValue } from 'recoil'
 
 const ImageModalLoading = () => {

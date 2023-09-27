@@ -20,6 +20,8 @@ import { endPointLocationAtom } from '../../atoms/deliveryAtoms'
 import { useRecoilState, useRecoilValue } from 'recoil'
 // import { MapCoordsState } from '../../atoms/orderManageAtoms'
 import { useSocketContext } from '../../hooks'
+import { UserInfoType } from '../../types/user'
+import { userInfo } from '../../atoms/userInfoAtoms'
 
 type CustomerOrderDetailProps = {
   setmenupage: Dispatch<SetStateAction<number>>
@@ -39,17 +41,8 @@ export const CustomerOrderDetail = ({
   // SSE에서 WS으로 변경
   // const mapCoods = useRecoilValue(MapCoordsState)
   const { socket } = useSocketContext()
-  socket?.on('NoticeDroneLocation', (message) => {
-    setCurrentPlace(message)
-    console.log(currentPlace)
-  })
-  socket?.on('NoticeDroneLocationComplete', (message) => {
-    // 지도로 완료상태 보내어 처리
-    // chip 배달 중.. >> 배달완료로 변경
-    setCurrentPlace(message)
-    IsDelivered(true)
-    console.log(currentPlace)
-  })
+
+  const user = useRecoilValue(userInfo) as UserInfoType
 
   type Place = {
     lat: number
@@ -59,24 +52,43 @@ export const CustomerOrderDetail = ({
 
   useEffect(() => {
     getAddressToLatLng(data?.address, setEndPoint)
-    console.log(endPoint)
+    // console.log(endPoint)
+
+    socket?.emit('room_enter', `user${user.userIdx}`, (res: any) => {
+      // console.log('entered', res)
+
+      socket?.on('NoticeDroneLocation', (message) => {
+        // console.log('NoticeDroneLocation', message)
+        setCurrentPlace(message)
+        // console.log('currentPlace', currentPlace)
+      })
+
+      socket?.on('NoticeDroneLocationComplete', (message) => {
+        // 지도로 완료상태 보내어 처리
+        // chip 배달 중.. >> 배달완료로 변경
+        setCurrentPlace(message)
+        IsDelivered(true)
+        // console.log('complete currentPlace', currentPlace)
+      })
+    })
 
     /**
      * 임시
      */
-    const start = { lat: 37.492569, lng: 127.026444 }
-    const end = { lat: 37.539397, lng: 126.849724 }
-    const res = getTempCurrentLatLng(start, end)
-    console.log(res)
+    // const start = { lat: 37.492569, lng: 127.026444 }
+    // const end = { lat: 37.539397, lng: 126.849724 }
+    // const res = getTempCurrentLatLng(start, end)
+    // console.log(res)
 
-    const timer = setInterval(() => {
-      if (res.length === 1) clearInterval(timer)
-      setCurrentPlace(() => res[0])
-      res.shift()
-    }, 400)
+    // const timer = setInterval(() => {
+    //   if (res.length === 1) clearInterval(timer)
+    //   setCurrentPlace(() => res[0])
+    //   res.shift()
+    // }, 400)
 
-    return () => clearInterval(timer)
+    // return () => clearInterval(timer)
   }, [])
+  // }, [currentPlace])
 
   const clickHandler = () => {
     setOrderIdParam(0)

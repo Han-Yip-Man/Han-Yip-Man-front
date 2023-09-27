@@ -9,7 +9,7 @@ import {
   shopGroupid,
   shopMenu,
   LoadingModal,
-} from '../../../recoil/restaurants'
+} from '../../../atoms/restaurantsAtoms'
 import { Grid, Button, Select, MenuItem } from '@mui/material'
 import { useEffect, useState, useRef } from 'react'
 import InputField from '../../common/InputField'

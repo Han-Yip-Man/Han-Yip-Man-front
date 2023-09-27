@@ -5,15 +5,16 @@ import Container from '@mui/material/Container'
 import useRouter from '../hooks/useRouter'
 import { SSEProvider } from '../Provider/SSEProvider'
 import OrderAlarmProvider from '../Provider/OrderAlarmProvider'
+import { SocketProvider } from '../Provider/SocketProvider'
 
 const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QzLmNvbSIsInVzZXJJZHgiOjE5LCJlbWFpbCI6InRlc3RAdGVzdDMuY29tIiwicm9sZSI6IkJVWUVSIiwibmlja25hbWUiOiLrp4nrp4jshZQiLCJpYXQiOjE2OTUyMjcyOTQsImV4cCI6MTY5NTQwMDA5NH0.1KmcXb4v-qIuf2zgBH-VMETN-9cZFltN8l_lYqJTaQA'
+  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QzLmNvbSIsInVzZXJJZHgiOjE5LCJlbWFpbCI6InRlc3RAdGVzdDMuY29tIiwicm9sZSI6IkJVWUVSIiwibmlja25hbWUiOiLrp4nrp4jshZQiLCJpYXQiOjE2OTUzNjM1NDUsImV4cCI6MTY5NTUzNjM0NX0.Sf0G_xNdDx-dnkMiOBxxYdnbbO3037WpJZ9rKI_ZFQ4'
 
 function GeneralLayout() {
   const { currentPath } = useRouter()
 
   return (
-    <SSEProvider url={`http://39.115.156.83:8080/api/sse?token=${token}`}>
+    <SocketProvider token={token}>
       <OrderAlarmProvider mode="customer">
         <CustomContainer maxWidth="xl" disableGutters>
           {currentPath === '/' && (
@@ -27,7 +28,7 @@ function GeneralLayout() {
           <Outlet />
         </CustomContainer>
       </OrderAlarmProvider>
-    </SSEProvider>
+    </SocketProvider>
   )
 }
 

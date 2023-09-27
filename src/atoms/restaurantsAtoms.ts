@@ -113,6 +113,12 @@ export const selectedShopMenuEdit = selector<MenuType | null>({
   },
 })
 
+//내 가게들 조회
+export const myMenuState = atom({
+  key: 'myMenuState',
+  default: [],
+})
+
 //이미지 압축 로딩모달
 export const LoadingModal = atom({
   key: 'LoadingModal',

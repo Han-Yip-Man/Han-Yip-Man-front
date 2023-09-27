@@ -4,7 +4,7 @@ import ManagementContainer from '../ManagementContainer/ManagementContainer'
 import * as S from './RestaurantsManagement.style'
 import { getShop } from '../../../api/restaurant'
 import { useSetRecoilState } from 'recoil'
-import { shopListState } from '../../../recoil/restaurants'
+import { shopListState } from '../../../atoms/restaurantsAtoms'
 
 const RestaurantsManagement = () => {
   const setShopList = useSetRecoilState(shopListState)
@@ -15,7 +15,7 @@ const RestaurantsManagement = () => {
         const response = await getShop()
         setShopList(response)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
     getmyRestaurants()
