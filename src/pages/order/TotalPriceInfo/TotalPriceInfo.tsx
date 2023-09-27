@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from 'recoil'
 import * as S from './TotalPriceInfo.Styles'
-import { totalCartPriceSelector } from '../../atoms/cartAtoms'
-import { CouponDiscountAtom, FinalChargePriceAtom } from '../../atoms/orderAtoms'
+import { totalCartPriceSelector } from '../../../atoms/cartAtoms'
+import { CouponDiscountAtom, FinalChargePriceAtom } from '../../../atoms/orderAtoms'
 import { useEffect } from 'react'
 
 const TotalPriceInfo = () => {

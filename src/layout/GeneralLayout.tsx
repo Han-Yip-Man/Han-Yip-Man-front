@@ -8,7 +8,7 @@ import OrderAlarmProvider from '../Provider/OrderAlarmProvider'
 import { SocketProvider } from '../Provider/SocketProvider'
 
 const token =
-  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QzLmNvbSIsInVzZXJJZHgiOjE5LCJlbWFpbCI6InRlc3RAdGVzdDMuY29tIiwicm9sZSI6IkJVWUVSIiwibmlja25hbWUiOiLrp4nrp4jshZQiLCJpYXQiOjE2OTUzMjQ4MDYsImV4cCI6MTY5NTQ5NzYwNn0.-qcm4xEJCsqjQb-SGzZ5cpMmTvTWBWPYQlq6d8lv_3A'
+  'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QzLmNvbSIsInVzZXJJZHgiOjE5LCJlbWFpbCI6InRlc3RAdGVzdDMuY29tIiwicm9sZSI6IkJVWUVSIiwibmlja25hbWUiOiLrp4nrp4jshZQiLCJpYXQiOjE2OTUzNjM1NDUsImV4cCI6MTY5NTUzNjM0NX0.Sf0G_xNdDx-dnkMiOBxxYdnbbO3037WpJZ9rKI_ZFQ4'
 
 function GeneralLayout() {
   const { currentPath } = useRouter()

@@ -1,12 +1,12 @@
 import * as S from './DeliveryInfo.Styles'
-import IconClock from '../../assets/iconClock.svg'
+import IconClock from '../../../assets/iconClock.svg'
 import { useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getMypageInfo } from '../../pages/customerMypage/hooks/mypage'
 import { AxiosResponse } from 'axios'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { UserStateAtom } from '../../atoms/orderAtoms'
-import { userAddr } from '../../atoms/addressAtoms'
+import { UserStateAtom } from '../../../atoms/orderAtoms'
+import { userAddr } from '../../../atoms/addressAtoms'
+import { getMypageInfo } from '../../customerMypage/hooks/mypage'
 
 type MypageInfo = {
   userNumber: number

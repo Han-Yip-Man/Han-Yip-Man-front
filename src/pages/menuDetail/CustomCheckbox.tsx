@@ -1,5 +1,5 @@
 // import { ReactNode } from 'react'
-import * as S from './Option.Styles'
+import * as S from './Options/Option.Styles'
 
 type OptionItem = {
   optionItemId: number
