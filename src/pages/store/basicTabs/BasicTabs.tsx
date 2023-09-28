@@ -13,12 +13,13 @@ import BasicAccordion from '../basicAccordion/BasicAccordion'
 import { ReviewCard } from '../reviewCard/ReviewCard'
 import { KakaoMap } from '../../../api/kakao.api'
 import { SyntheticEvent, useState } from 'react'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { getStoreDetail, getStoreMenus, getStoreReviewsInf } from '../hooks/storeDetail'
 import { useParams } from 'react-router-dom'
 import { useIntersection } from '../../../hooks'
 import * as S from './BasicTabs.style'
 import CustomTabPanel from '../customTabPanel/CustomTabPanel'
+import useMenu from '../hooks/useMenu'
+import useStore from '../hooks/useStore'
+import useReview from '../hooks/useReview'
 
 function a11yProps(index: number) {
   return {
@@ -30,19 +31,9 @@ function a11yProps(index: number) {
 export default function BasicTabs() {
   const [tabValue, setTabValue] = useState(0)
   const { storeId } = useParams()
-  const { data: menuData } = useQuery(['storeMenus', storeId], () => getStoreMenus(storeId))
-  const { data: infoData } = useQuery(['stores', storeId], () => getStoreDetail(storeId))
-
-  const {
-    data: reviewInfData,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ['reviewsInf', storeId],
-    queryFn: ({ pageParam = '' }) => getStoreReviewsInf(storeId, pageParam),
-    getNextPageParam: (lastPage) => lastPage.cursor,
-  })
+  const { data: menuData } = useMenu(Number(storeId))
+  const { data: infoData } = useStore(Number(storeId))
+  const { data: reviewInfData, fetchNextPage, hasNextPage, isFetching } = useReview(Number(storeId))
 
   const ref = useIntersection(fetchNextPage, hasNextPage)
 

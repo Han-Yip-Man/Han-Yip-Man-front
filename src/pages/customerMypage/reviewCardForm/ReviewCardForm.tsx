@@ -1,10 +1,9 @@
 import { Box, Rating } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useMutation } from '@tanstack/react-query'
 import * as S from './ReviewCardForm.style'
 import { useAlert, useImageCompression } from '../../../hooks'
-import { postReview } from '../hooks/mypage'
+import useReview from '../hooks/useReview'
 
 type ReviewCardFormProps = {
   shopId?: number
@@ -14,12 +13,7 @@ export const ReviewCardForm = ({ shopId }: ReviewCardFormProps) => {
   const [errorMessage, setErrorMessage] = useState('')
   const { register, handleSubmit, control, setValue } = useForm()
   const toast = useAlert()
-  const addReview = useMutation(postReview, {
-    onSuccess: (res) => {
-      toast(res.message, 3000, 'info')
-    },
-    onError: (error) => console.log(error),
-  })
+  const { mutate } = useReview()
 
   const handleProfileImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -58,7 +52,7 @@ export const ReviewCardForm = ({ shopId }: ReviewCardFormProps) => {
         }
       })
 
-      addReview.mutate(formData)
+      mutate(formData)
     } catch (e: any) {
       console.log('리뷰등록실패', e)
       toast(e.message, 3000, 'error')

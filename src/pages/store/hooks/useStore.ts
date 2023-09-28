@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import axiosClient from '../../../api/axiosInstance'
 import { StoreDetail } from '../types'
+import { queryKeys } from '../../../react-query/querykey'
 
 const getStoreDetail = async (shopId: any | undefined): Promise<StoreDetail> => {
   const infoResponse = await axiosClient.get(`/buyer-shops/${shopId}/info`)
@@ -17,7 +18,7 @@ const getStoreDetail = async (shopId: any | undefined): Promise<StoreDetail> => 
 }
 
 const useStore = (storeId: number) => {
-  const { data, isLoading } = useQuery(['stores', storeId], () => getStoreDetail(storeId))
+  const { data, isLoading } = useQuery([queryKeys.store, storeId], () => getStoreDetail(storeId))
 
   return { data, isLoading }
 }
