@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { Divider } from '@mui/material'
 import * as S from './StoreCard.style'
-import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 
 interface Props extends StoreDetail {}
 
@@ -28,51 +28,48 @@ const StoreCard = memo(
     deliveryPrice,
     shopId,
   }: Props) => {
-    const navigate = useNavigate()
-    const handleTest = () => {
-      navigate(`/store/${shopId}`)
-    }
-
     return (
-      <S.CustomCard onClick={handleTest}>
-        <S.CustomCardAction>
-          <S.MediaWrap>
-            <S.Media image="/img/jjajang.jpg" />
-          </S.MediaWrap>
-          <S.Content>
-            <S.TitleWrap>
-              <S.Title gutterBottom variant="h5">
-                {shopName}
-              </S.Title>
-              <S.ChipWrap>
-                <span>
-                  <S.CustomChip
-                    color="warning"
-                    label={`⭐ ${!avgRating ? '평점없음' : avgRating.toFixed(1)}`}
-                  />
-                </span>
-              </S.ChipWrap>
-            </S.TitleWrap>
-            <S.DescWrap>
-              <S.StoreDesc variant="body2" color="GrayText">
-                {shopDescription}
-              </S.StoreDesc>
+      <Link to={`/store/${shopId}`} style={{ textDecoration: 'none' }}>
+        <S.CustomCard>
+          <S.CustomCardAction>
+            <S.MediaWrap>
+              <S.Media image="/img/jjajang.jpg" />
+            </S.MediaWrap>
+            <S.Content>
+              <S.TitleWrap>
+                <S.Title gutterBottom variant="h5">
+                  {shopName}
+                </S.Title>
+                <S.ChipWrap>
+                  <span>
+                    <S.CustomChip
+                      color="warning"
+                      label={`⭐ ${!avgRating ? '평점없음' : avgRating.toFixed(1)}`}
+                    />
+                  </span>
+                </S.ChipWrap>
+              </S.TitleWrap>
+              <S.DescWrap>
+                <S.StoreDesc variant="body2" color="GrayText">
+                  {shopDescription}
+                </S.StoreDesc>
 
-              <S.StoreInfoWrap>
-                <S.ReviewCount color="salmon">리뷰 {reviewCount}</S.ReviewCount>
-                <S.Estimated>예상 배달시간 {deliveryTime / 1000}분</S.Estimated>
-              </S.StoreInfoWrap>
-            </S.DescWrap>
-            <Divider />
-            <S.DeliveryInfo>
-              <S.MinOrder>최소주문금액 {minOrderPrice.toLocaleString()}원</S.MinOrder>
-              <S.DeliveryFee color="slategrey">
-                배달료 {deliveryPrice.toLocaleString()}원
-              </S.DeliveryFee>
-            </S.DeliveryInfo>
-          </S.Content>
-        </S.CustomCardAction>
-      </S.CustomCard>
+                <S.StoreInfoWrap>
+                  <S.ReviewCount color="salmon">리뷰 {reviewCount}</S.ReviewCount>
+                  <S.Estimated>예상 배달시간 {deliveryTime / 1000}분</S.Estimated>
+                </S.StoreInfoWrap>
+              </S.DescWrap>
+              <Divider />
+              <S.DeliveryInfo>
+                <S.MinOrder>최소주문금액 {minOrderPrice.toLocaleString()}원</S.MinOrder>
+                <S.DeliveryFee color="slategrey">
+                  배달료 {deliveryPrice.toLocaleString()}원
+                </S.DeliveryFee>
+              </S.DeliveryInfo>
+            </S.Content>
+          </S.CustomCardAction>
+        </S.CustomCard>
+      </Link>
     )
   },
   areEqual,

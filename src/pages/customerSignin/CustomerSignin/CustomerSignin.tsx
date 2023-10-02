@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import InputField from '../../app/common/InputField'
 import * as S from './CustomerSignin.style'
 import { useTheme } from '@mui/material/styles'
 import { FormDataType } from '../../../types/user'
@@ -10,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { tokenState } from '../../../atoms/userInfoAtoms'
 import { signIn } from '../../common/hooks/api'
+import { InputField } from '../../common/components'
 
 const CustomerSignin = () => {
   const theme = useTheme()

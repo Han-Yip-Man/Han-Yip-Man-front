@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import * as S from './ReviewCardForm.style'
-import { useAlert, useImageCompression } from '../../../hooks'
+import { useAlert, useImageCompression } from '../../common/hooks'
 import { postReview } from '../hooks/mypage'
 
 type ReviewCardFormProps = {

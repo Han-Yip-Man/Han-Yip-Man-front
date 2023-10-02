@@ -4,7 +4,7 @@ import { Stack } from '@mui/material'
 import { DragDropContext, DropResult, Droppable, DroppableId } from 'react-beautiful-dnd'
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAlert, useSocketContext, useSSEContext } from '../../../hooks'
+import { useAlert, useSocketContext } from '../../common/hooks'
 import { getSellerOrderList } from '../../../api/order'
 
 interface Data {
@@ -25,7 +25,6 @@ function OrderManagement() {
   const [deliveryList, setDeliveryList] = useState<Data[]>([])
   const qc = useQueryClient()
   const { socket } = useSocketContext()
-  const sse = useSSEContext()
   const toast = useAlert()
 
   const sortOrders = useCallback((orderArr: Data[]) => {

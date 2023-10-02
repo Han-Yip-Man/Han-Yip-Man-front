@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil'
-import { focusState } from '../atoms/mainAtoms'
+import { focusState } from '../../../atoms'
 
 const useFocus = () => {
   const [isFocused, setIsFocused] = useRecoilState(focusState)

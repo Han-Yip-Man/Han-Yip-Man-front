@@ -13,7 +13,7 @@ import {
 import { getsellerMenu } from '../../../api/restaurant'
 import MenuEditModal from './MenuEditModal'
 import { deleteMenu } from '../../../api/shopMenuEdit.api'
-import { useAlert } from '../../../hooks'
+import { useAlert } from '../../common/hooks'
 
 const Menumanagement = () => {
   const [expanded, setExpanded] = useState<string | false>(false)

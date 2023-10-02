@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import * as S from './AddMenu.style'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import InputField from '../../../pages/app/common/InputField'
 import Button from '@mui/material/Button'
 import { useForm, Controller } from 'react-hook-form'
 import useAlert from '../../common/hooks/useAlert'
@@ -10,7 +9,7 @@ import useImageCompression from '../../common/hooks/useImageCompression'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { shopGroupid, shopmenupage, LoadingModal } from '../../../atoms/restaurantsAtoms'
 import { addsellerMenu } from '../../../api/restaurant'
-import ImageModalLoading from '../../../pages/app/common/ImageModalLoading'
+import { ImageModalLoading, InputField } from '../../common/components'
 
 interface MenuOptionItem {
   itemName: string

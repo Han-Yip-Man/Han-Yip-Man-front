@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import InputField from '../../../pages/app/common/InputField'
 import { Grid } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FormDataType } from '../../../types/user'
@@ -16,6 +15,7 @@ import { useRecoilValue } from 'recoil'
 import { selectedShopIdState } from '../../../atoms/restaurantsAtoms'
 import { useRecoilState } from 'recoil'
 import { shopMenuGroups } from '../../../atoms/restaurantsAtoms'
+import { InputField } from '../../common/components'
 
 const MainMenuCategory: React.FC = () => {
   const currentId = useRecoilValue(selectedShopIdState)

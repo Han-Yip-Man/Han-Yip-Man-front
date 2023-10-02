@@ -11,7 +11,14 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil'
 import { keyword } from '../../atoms/mainAtoms'
 import { userInfo } from '../../atoms/userInfoAtoms'
 import { currentAddr, userAddr } from '../../atoms/addressAtoms'
-import { useDebounce, useAddress, useRouter, useKeyboard, useAlert, useFocus } from '../../hooks'
+import {
+  useDebounce,
+  useAddress,
+  useRouter,
+  useKeyboard,
+  useAlert,
+  useFocus,
+} from '../common/hooks'
 
 const geo = new window.kakao.maps.services.Geocoder()
 
@@ -95,8 +102,6 @@ function Main() {
 
     const { id, address_name, road_address_name, place_name, x, y } = data[0]
 
-    console.log(data[0])
-
     const currentAddr = {
       id,
       address: address_name,
@@ -109,26 +114,25 @@ function Main() {
 
     if (isLoggedIn) {
       // 주소 중복여부 체크하는 api 요청후 로직 작성
-      checkExistAddress(id)
-        .then((res) => {
-          if (res.data === false) {
-            addrRegisterMutation.mutate({ id, address_name, road_address_name, place_name, x, y })
-          }
-        })
-        .catch((error) => {
-          if (isAxiosError(error)) {
-            return toast(`${error.message}`, 3000, 'error')
-          }
-        })
+      checkExistAddress(id).then((res) => {
+        if (res.data === false) {
+          addrRegisterMutation.mutate({ id, address_name, road_address_name, place_name, x, y })
+        }
+      })
+      // .catch((error) => {
+      //   if (isAxiosError(error)) {
+      //     return toast(`${error.message}`, 3000, 'error')
+      //   }
+      // })
     } else {
       setNonLoginAddrs((prev) => {
         const isDuplicate = prev.map((a) => a.id).includes(id)
 
-        if (isDuplicate) {
-          return prev
-        }
-
         const prevAddr = prev.map((addr) => (addr.isDefault ? { ...addr, isDefault: false } : addr))
+
+        if (isDuplicate) {
+          return prevAddr.map((addr) => (addr.id === id ? { ...addr, isDefault: true } : addr))
+        }
 
         return [...prevAddr, currentAddr]
       })
@@ -138,20 +142,11 @@ function Main() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      // if (isSuccess && addressData.data) {
-      //   const { longitude, latitude } = addressData.data.filter(
-      //     (addr: CurrentAddr) => addr.isDefault === true,
-      //   )[0]
-
       if (isSuccess && addressData.data) {
-        // { longitude, latitude }
         const userAddressData = addressData.data.filter((addr: CurrentAddr) => addr.isDefault)
         userAddressData.length &&
           searchAddressByCoords(userAddressData.longitude, userAddressData.latitude)
       }
-
-      //   searchAddressByCoords(longitude, latitude)
-      // }
     } else {
       navigator.geolocation.getCurrentPosition(
         ({ coords: { longitude, latitude } }) => {

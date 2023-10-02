@@ -12,7 +12,7 @@ import {
 } from '../../api/cart'
 import { useEffect, useState } from 'react'
 import { AxiosResponse, isAxiosError } from 'axios'
-import { useAlert, useRouter } from '../../hooks'
+import { useAlert, useRouter } from '../common/hooks'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { CartStateAtom, totalCartPriceSelector } from '../../atoms/cartAtoms'
 import Ximg from '../../assets/iconX.svg'

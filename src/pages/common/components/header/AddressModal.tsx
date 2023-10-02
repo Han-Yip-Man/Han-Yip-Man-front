@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { userInfo } from '../../../../atoms/userInfoAtoms'
 import { currentAddr, userAddr } from '../../../../atoms/addressAtoms'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useAlert, useDebounce } from '../../../../hooks'
+import { useAlert, useDebounce } from '../../hooks'
 import searchAddressByKeyword from '../../../../api/addressSearch'
 import { getUserAddr, regUserAddrPost } from '../../../../api/address'
 
@@ -27,6 +27,8 @@ function AddressModal() {
   })
 
   const qc = useQueryClient()
+
+  console.log(nonAddrList)
 
   const handleChange = (_: React.SyntheticEvent<any>, keyword: string) => {
     if (!keyword) return

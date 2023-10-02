@@ -12,17 +12,15 @@ import {
 } from '../../../atoms/restaurantsAtoms'
 import { Grid, Button, Select, MenuItem } from '@mui/material'
 import { useEffect, useState, useRef } from 'react'
-import InputField from '../../../pages/app/common/InputField'
-import useEditPatch from '../../../hooks/useEditPatch'
-import { useAlert } from '../../../hooks'
+import { useAlert, useEditPatch } from '../../common/hooks'
 import { getsellerMenu } from '../../../api/restaurant'
 import { patchMenuthumbnailEdit } from '../../../api/shopMenuEdit.api'
 import useImageCompression from '../../../pages/common/hooks/useImageCompression'
 import { MenuField } from '../../../types/restaurantsAtom'
-import ImegeModalLoading from '../../../pages/app/common/ImageModalLoading'
 import { menuplaceholders } from './MenuEditInfo'
 import { menuvalidateField } from './MenuEditRegex'
 import { MenuType } from '../../../types/sellermenu'
+import { ImageModalLoading, InputField } from '../../common/components'
 
 const MenuEditModal = () => {
   const [open, setOpen] = useRecoilState(shopMenuEditModal)
@@ -320,7 +318,7 @@ const MenuEditModal = () => {
           </S.GridContainer>
         </S.StyledBox>
       </Modal>
-      <ImegeModalLoading />
+      <ImageModalLoading />
     </>
   )
 }

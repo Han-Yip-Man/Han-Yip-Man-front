@@ -24,7 +24,7 @@ import { useState, forwardRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { userAddr } from '../../../../atoms/addressAtoms'
 import { userInfo } from '../../../../atoms/userInfoAtoms'
-import { useRouter } from '../../../../hooks'
+import { useRouter } from '../../hooks'
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {

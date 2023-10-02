@@ -13,7 +13,7 @@ import {
   proveBeforePayment,
   cancelPayment,
 } from '../../../api/menuOrder'
-import { useRouter } from '../../../hooks'
+import { useRouter } from '../../common/hooks'
 import {
   CartStateAtom,
   CouponDiscountAtom,

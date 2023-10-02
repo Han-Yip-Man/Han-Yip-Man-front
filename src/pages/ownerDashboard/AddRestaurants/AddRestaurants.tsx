@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import InputField from '../../../pages/app/common/InputField.js'
 import * as S from './AddRestaurants.style'
 import useImageCompression from '../../../pages/common/hooks/useImageCompression.js'
 import { FormDataType } from '../../../types/user'
@@ -13,7 +12,7 @@ import { DaumPostcodeData } from '../../../types/Address.js'
 import useAlert from '../../../pages/common/hooks/useAlert.js'
 import { useSetRecoilState } from 'recoil'
 import { sellerDashboardNum, LoadingModal } from '../../../atoms/restaurantsAtoms.js'
-import ImageModalLoading from '../../../pages/app/common/ImageModalLoading.js'
+import { ImageModalLoading, InputField } from '../../common/components'
 
 const AddRestaurants = () => {
   const pageset = useSetRecoilState(sellerDashboardNum)

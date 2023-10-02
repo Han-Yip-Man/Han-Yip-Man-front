@@ -16,7 +16,7 @@ import { SyntheticEvent, useState } from 'react'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { getStoreDetail, getStoreMenus, getStoreReviewsInf } from '../hooks/storeDetail'
 import { useParams } from 'react-router-dom'
-import { useIntersection } from '../../../hooks'
+import { useIntersection } from '../../common/hooks'
 import * as S from './BasicTabs.style'
 import CustomTabPanel from '../customTabPanel/CustomTabPanel'
 

@@ -1,4 +1,4 @@
-import { useRouter } from '../../../hooks'
+import { useRouter } from '../../common/hooks'
 import * as S from './MenuDetailModal.Styles'
 
 interface MenuDetailModalProps {

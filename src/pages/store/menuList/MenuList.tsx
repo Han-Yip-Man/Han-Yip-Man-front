@@ -1,7 +1,7 @@
 import { List, ListItem, ListItemButton } from '@mui/material'
 import { MenuCard } from '../menuCard/MenuCard'
 import { menuInfo } from '../types'
-import { useRouter } from '../../../hooks'
+import { useRouter } from '../../common/hooks'
 
 type MenuListProps = {
   menuList: menuInfo[]

@@ -1,4 +1,3 @@
-import { useGetshopDeatil } from '../../../hooks/useGetshopDeatil'
 import * as S from './EditRestaurant.style'
 import { useState, useRef, useEffect, ChangeEvent } from 'react'
 import { getShopDetail } from '../../../api/restaurant'
@@ -7,13 +6,14 @@ import { shopDetailState, sellerDashboardNum, LoadingModal } from '../../../atom
 import { EditGridSection } from './EditPatchInfo'
 import { sections, categories } from './EditRestaurantInfo'
 import { Select, MenuItem, Grid } from '@mui/material'
-import useEditPatch from '../../../hooks/useEditPatch'
 import useAlert from '../../../pages/common/hooks/useAlert'
 import { ShopField, ShopInfo } from '../../../types/restaurantsAtom'
 import { patchShopbanner, patchShopthumbnail } from '../../../api/restaurant'
 import useImageCompression from '../../../pages/common/hooks/useImageCompression'
 import { validateField } from './EditPatchRegex'
-import ImageModalLoading from '../../../pages/app/common/ImageModalLoading'
+import { useGetshopDeatil } from '../../common/hooks'
+import useEditPatch from '../../common/hooks/useEditPatch'
+import { ImageModalLoading } from '../../common/components'
 
 const EditRestaurant = () => {
   const { shop, currentId } = useGetshopDeatil()

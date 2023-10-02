@@ -8,7 +8,7 @@ import { getAddressToLatLng, getTempCurrentLatLng } from '../../../utils/map.uti
 import { endPointLocationAtom } from '../../../atoms/deliveryAtoms'
 import { useRecoilState, useRecoilValue } from 'recoil'
 // import { MapCoordsState } from '../../atoms/orderManageAtoms'
-import { useSocketContext } from '../../../hooks'
+import { useSocketContext } from '../../common/hooks'
 import { UserInfoType } from '../../../types/user'
 import { userInfo } from '../../../atoms/userInfoAtoms'
 import * as S from './CustomerOrderDetail.style'

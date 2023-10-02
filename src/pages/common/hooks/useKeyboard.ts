@@ -1,6 +1,6 @@
 import React, { useState, useRef, KeyboardEvent } from 'react'
 import { useRecoilState } from 'recoil'
-import { focusState } from '../atoms/mainAtoms'
+import { focusState } from '../../../atoms'
 
 type KeyboardProps = {
   currentIndex: number
