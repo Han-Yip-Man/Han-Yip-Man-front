@@ -1,7 +1,7 @@
 export const queryKeys = {
   category: 'category',
-  store: 'store',
-  storeMenu: 'storeMenu',
+  shop: 'shop',
+  shopMenu: 'shopMenu',
   review: 'review',
   reviewInf: 'reviewInf',
   mypage: 'mypage',

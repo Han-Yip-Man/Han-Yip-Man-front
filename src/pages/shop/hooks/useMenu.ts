@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import axiosClient from '../../../api/axiosInstance'
-import { StoreMenus } from '../types'
+import { ShopMenus } from '../types'
 import { queryKeys } from '../../../react-query/querykey'
 
-const getStoreMenus = async (shopId: number | undefined): Promise<StoreMenus> => {
+const getShopMenus = async (shopId: number | undefined): Promise<ShopMenus> => {
   const menuResponse = await axiosClient.get(`/buyer-shops/${shopId}/menus`)
   return menuResponse.data
 }
 
-const useMenu = (storeId: number) => {
-  const { data } = useQuery([queryKeys.storeMenu, storeId], () => getStoreMenus(storeId))
+const useMenu = (shopId: number) => {
+  const { data } = useQuery([queryKeys.shopMenu, shopId], () => getShopMenus(shopId))
 
   return { data }
 }

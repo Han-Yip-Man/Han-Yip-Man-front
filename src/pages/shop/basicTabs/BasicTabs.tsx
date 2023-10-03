@@ -18,7 +18,7 @@ import { useIntersection } from '../../common/hooks'
 import * as S from './BasicTabs.style'
 import CustomTabPanel from '../customTabPanel/CustomTabPanel'
 import useMenu from '../hooks/useMenu'
-import useStore from '../hooks/useStore'
+import useShop from '../hooks/useShop'
 import useReview from '../hooks/useReview'
 
 function a11yProps(index: number) {
@@ -30,10 +30,10 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [tabValue, setTabValue] = useState(0)
-  const { storeId } = useParams()
-  const { data: menuData } = useMenu(Number(storeId))
-  const { data: infoData } = useStore(Number(storeId))
-  const { data: reviewInfData, fetchNextPage, hasNextPage, isFetching } = useReview(Number(storeId))
+  const { shopId } = useParams()
+  const { data: menuData } = useMenu(Number(shopId))
+  const { data: infoData } = useShop(Number(shopId))
+  const { data: reviewInfData, fetchNextPage, hasNextPage, isFetching } = useReview(Number(shopId))
 
   const ref = useIntersection(fetchNextPage, hasNextPage)
 
@@ -67,10 +67,10 @@ export default function BasicTabs() {
         </S.InfoPaper>
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={1}>
-        <S.StoreInfoWrap>
+        <S.ShopInfoWrap>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <S.StoreInfoPaper>
+              <S.ShopInfoPaper>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -82,7 +82,7 @@ export default function BasicTabs() {
                   <TableBody>
                     <TableRow>
                       <S.StyledTableCell>상호명</S.StyledTableCell>
-                      <S.StyledTableCell>{infoData?.storeDetail.info.shopName}</S.StyledTableCell>
+                      <S.StyledTableCell>{infoData?.shopDetail.info.shopName}</S.StyledTableCell>
                     </TableRow>
                     <TableRow>
                       <S.StyledTableCell>운영시간</S.StyledTableCell>
@@ -102,8 +102,8 @@ export default function BasicTabs() {
                     </TableRow>
                   </TableBody>
                 </Table>
-              </S.StoreInfoPaper>
-              <S.StoreInfoPaper>
+              </S.ShopInfoPaper>
+              <S.ShopInfoPaper>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -115,11 +115,11 @@ export default function BasicTabs() {
                   <TableBody>
                     <TableRow>
                       <S.StyledTableCell>CESCO</S.StyledTableCell>
-                      <S.StyledTableCell>2023.09. 최근 해충방제 점검월</S.StyledTableCell>
+                      <S.StyledTableCell>2023.10. 최근 해충방제 점검월</S.StyledTableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
-              </S.StoreInfoPaper>
+              </S.ShopInfoPaper>
             </Grid>
           </Grid>
           <S.MapBox>
@@ -127,11 +127,11 @@ export default function BasicTabs() {
               mapId={'map'}
               width="100%"
               height="350px"
-              latitude={infoData?.storeDetail.info.shopAddressResponse.latitude}
-              longitude={infoData?.storeDetail.info.shopAddressResponse.longitude}
+              latitude={infoData?.shopDetail.info.shopAddressResponse.latitude}
+              longitude={infoData?.shopDetail.info.shopAddressResponse.longitude}
             />
           </S.MapBox>
-        </S.StoreInfoWrap>
+        </S.ShopInfoWrap>
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={2}>
         <S.ReviewPaper>

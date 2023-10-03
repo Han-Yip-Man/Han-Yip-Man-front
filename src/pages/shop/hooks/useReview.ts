@@ -1,14 +1,14 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import axiosClient from '../../../api/axiosInstance'
-import { StoreReviews } from '../types'
+import { ShopReviews } from '../types'
 import { queryKeys } from '../../../react-query/querykey'
 
-const getStoreReviews = async (shopId: string | undefined): Promise<StoreReviews> => {
+const getShopReviews = async (shopId: string | undefined): Promise<ShopReviews> => {
   const defaultSize = 2
   const reviewResponse = await axiosClient.get(`/buyer-shops/${shopId}/reviews?size=${defaultSize}`)
   return reviewResponse.data
 }
-const getStoreReviewsInf = async (shopId: number, cursor: string) => {
+const getShopReviewsInf = async (shopId: number, cursor: string) => {
   const size = 2
   const reviewInfResponse = await axiosClient.get(
     `/buyer-shops/${shopId}/reviews?cursor=${cursor}&size=${size}`,
@@ -16,10 +16,10 @@ const getStoreReviewsInf = async (shopId: number, cursor: string) => {
   return reviewInfResponse.data
 }
 
-const useReview = (storeId: number) => {
+const useReview = (shopId: number) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: [queryKeys.reviewInf, storeId],
-    queryFn: ({ pageParam = '' }) => getStoreReviewsInf(storeId, pageParam),
+    queryKey: [queryKeys.reviewInf, shopId],
+    queryFn: ({ pageParam = '' }) => getShopReviewsInf(shopId, pageParam),
     getNextPageParam: (lastPage) => lastPage.cursor,
   })
   return { data, fetchNextPage, hasNextPage, isFetching }
