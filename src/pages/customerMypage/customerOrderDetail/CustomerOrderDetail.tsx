@@ -31,11 +31,8 @@ export const CustomerOrderDetail = ({
   const { data } = useOrder(orderIdParam)
   const [delivered, IsDelivered] = useState(false)
   const [currentPlace, setCurrentPlace] = useState({ lat: 0, lng: 0 })
-  const [currentPlaceQueue, setCurrentPlaceQueue] = useState([])
-  // SSE에서 WS으로 변경
-  // const mapCoods = useRecoilValue(MapCoordsState)
-  const { socket } = useSocketContext()
 
+  const { socket } = useSocketContext()
   const user = useRecoilValue(userInfo) as UserInfoType
 
   useEffect(() => {
@@ -154,8 +151,8 @@ export const CustomerOrderDetail = ({
               height="350px"
               startPointLat={data.shopLat}
               startPointLng={data.shopLng}
-              curPointLat={data ? currentPlace.lat : data.shopLat}
-              curPointLng={data ? currentPlace.lng : data.shopLng}
+              curPointLat={currentPlace.lat}
+              curPointLng={currentPlace.lng}
               endPointLat={data.latitude}
               endPointLng={data.longitude}
             />
