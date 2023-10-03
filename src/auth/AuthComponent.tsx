@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import useRouter from '../hooks/useRouter'
 import { User } from '../types/user'
 import jwtDecode from 'jwt-decode'
+import { useRouter } from '../pages/common/hooks'
 
 interface GeneralLayoutProps {
   children: React.ReactNode

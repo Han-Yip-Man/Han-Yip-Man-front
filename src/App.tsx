@@ -7,7 +7,7 @@ import { ThemeProvider as MuiTheme } from '@mui/material/styles'
 import { theme } from './styles/theme.ts'
 import { routers } from './router.tsx'
 import { SnackbarProvider } from 'notistack'
-import { useAlert } from './hooks'
+import { useAlert } from './pages/common/hooks/index.ts'
 import { generateQueryClient } from './react-query/queryClient.ts'
 
 function App() {

@@ -7,7 +7,7 @@ import { ownerSignUp } from '../hooks/api'
 import useAlert from '../../common/hooks/useAlert'
 import { emailCheck } from '../../common/hooks/api'
 import { useNavigate } from 'react-router-dom'
-import InputField from '../../app/common/InputField'
+import { InputField } from '../../common/components'
 
 const OwnerSignup = () => {
   const theme = useTheme()

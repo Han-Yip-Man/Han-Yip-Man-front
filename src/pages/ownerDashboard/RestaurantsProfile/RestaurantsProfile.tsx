@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil'
 import { shopdeletemodal } from '../../../atoms/restaurantsAtoms'
 import RestaurantDeleteModal from '../RestaurantDeleteModal/RestaurantDeleteModal'
 import { sellerDashboardNum } from '../../../atoms/restaurantsAtoms'
-import { useGetshopDeatil } from '../../../hooks/useGetshopDeatil'
+import { useGetshopDeatil } from '../../common/hooks'
 
 const RestaurantsProfile = () => {
   const ModalOpen = useSetRecoilState(shopdeletemodal)

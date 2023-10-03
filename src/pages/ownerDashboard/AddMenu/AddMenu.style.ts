@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import InputField from '../../../pages/app/common/InputField'
 import Select from '@mui/material/Select'
+import { InputField } from '../../common/components'
 
 export const DetailBtnbox = styled.div`
   width: 25%;

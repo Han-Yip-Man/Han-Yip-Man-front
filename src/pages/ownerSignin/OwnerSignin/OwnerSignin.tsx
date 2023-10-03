@@ -8,7 +8,7 @@ import useAlert from '../../common/hooks/useAlert'
 import { useNavigate } from 'react-router-dom'
 import { tokenState } from '../../../atoms/userInfoAtoms'
 import { useSetRecoilState } from 'recoil'
-import InputField from '../../app/common/InputField'
+import { InputField } from '../../common/components'
 
 const OwnerSignin = () => {
   const theme = useTheme()

@@ -8,7 +8,7 @@ import * as S from './OrderDashboard.style'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { getOrders, getOrdersInf } from '../../../api/customerOrder'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import { useIntersection } from '../../../hooks'
+import { useIntersection } from '../../common/hooks'
 import { Orders } from '../types'
 
 type OrderDashboardProps = {

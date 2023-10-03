@@ -2,7 +2,7 @@ import { Box, Rating } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as S from './ReviewCardForm.style'
-import { useAlert, useImageCompression } from '../../../hooks'
+import { useAlert, useImageCompression } from '../../common/hooks'
 import useReview from '../hooks/useReview'
 
 type ReviewCardFormProps = {

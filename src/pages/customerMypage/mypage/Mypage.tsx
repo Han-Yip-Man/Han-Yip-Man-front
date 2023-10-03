@@ -8,7 +8,7 @@ import { CustomerMyPageInfo } from '../customerMypageInfo/CustomerMyPageInfo'
 import { useRecoilValue } from 'recoil'
 import { UserInfoType } from '../../../types/user'
 import { userInfo } from '../../../atoms/userInfoAtoms'
-import { useRouter } from '../../../hooks'
+import { useRouter } from '../../common/hooks'
 
 const Mypage = () => {
   const [menupage, setmenupage] = useState(0)

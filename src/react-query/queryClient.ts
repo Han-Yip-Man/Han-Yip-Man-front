@@ -1,6 +1,6 @@
+import { Args } from './../pages/common/hooks/useAlert'
 import { ReactNode } from 'react'
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
-import { Args } from '../hooks/useAlert'
 
 type ToastFnType<T, C extends ReactNode> = (...args: Args<T, C>) => void
 

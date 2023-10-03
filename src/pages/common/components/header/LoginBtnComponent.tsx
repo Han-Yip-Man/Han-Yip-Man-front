@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { userInfo, tokenState } from '../../../../atoms/userInfoAtoms'
 import { currentAddr, userAddr } from '../../../../atoms/addressAtoms'
-import { useRouter } from '../../../../hooks'
+import { useRouter } from '../../hooks'
 import { UserInfoType } from '../../../../types/user'
 
 const messages = [

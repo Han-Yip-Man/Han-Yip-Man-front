@@ -13,9 +13,9 @@ import { useRecoilState } from 'recoil'
 import { accordionExpand } from '../../../atoms/orderManageAtoms'
 import { DraggableProvided } from 'react-beautiful-dnd'
 import { timeAgo } from '../../../utils/timeAgo'
-import { useSocketContext } from '../../../hooks'
+import { useSocketContext } from '../../common/hooks'
 import { useQueryClient } from '@tanstack/react-query'
-import ChatRoomEnter from '../../../pages/app/common/ChatRoomEnter'
+import { ChatRoomEnter } from '../../common/components'
 
 type OmittedDraggableProvided = Omit<DraggableProvided, 'innerRef'>
 

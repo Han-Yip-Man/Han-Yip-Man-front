@@ -1,5 +1,5 @@
 import { useEffect, ReactNode, useCallback } from 'react'
-import { useOrderNotice, useSocketContext } from '../hooks'
+import { useOrderNotice, useSocketContext } from '../pages/common/hooks'
 import { Toaster } from 'react-hot-toast'
 import SellerNoti from '../components/order/SellerNoti'
 import CustomerNoti from '../components/order/CustomerNoti'

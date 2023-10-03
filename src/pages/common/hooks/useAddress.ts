@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { dataState } from '../atoms/mainAtoms'
-import searchAddressByKeyword from '../api/addressSearch'
+import { dataState } from '../../../atoms'
+import searchAddressByKeyword from '../../../api/addressSearch'
 
 const useAddress = (keyword: string) => {
   const [data, setData] = useRecoilState<DataType[]>(dataState)
