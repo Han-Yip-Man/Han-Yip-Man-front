@@ -1,4 +1,4 @@
-import { atom } from 'recoil'
+import { atom, selector } from 'recoil'
 
 type Location = {
   lat: number
@@ -13,10 +13,7 @@ export const endPointLocationAtom = atom<Location>({
   },
 })
 
-export const currentLocationAtom = atom<Location>({
+export const currentLocationAtom = atom<Location[]>({
   key: 'curLocation',
-  default: {
-    lat: 0,
-    lng: 0,
-  },
+  default: [],
 })

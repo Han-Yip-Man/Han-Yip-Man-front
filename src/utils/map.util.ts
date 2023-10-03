@@ -11,7 +11,7 @@ const getTempPointArray = (start: number, end: number) => {
   const curArr = []
   for (let index = 0; index < TOTAL; index++) {
     const current = start + (end - start) * (index / DIVIDER)
-    curArr.push(current)
+    curArr.unshift(current)
   }
   return curArr
 }

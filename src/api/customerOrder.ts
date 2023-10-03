@@ -1,20 +1,24 @@
 import axiosClient from './axiosInstance'
-import { getStoreDetail } from './storeDetail'
+import { getShopDetail } from '../pages/shop/hooks/shopDetail'
 
 export const getOrder = async (orderId: number) => {
-  console.log('getOrder>>>', orderId)
   const response = await axiosClient.get(`orders/${orderId}`)
   const orderData = response.data
 
-  const storeData = await getStoreDetail(orderData.shopId)
-  const latitude = storeData.storeDetail.info.shopAddressResponse.latitude,
-    longitude = storeData.storeDetail.info.shopAddressResponse.longitude
+  console.log('orderData', orderData)
 
-  return Object.assign(orderData, { lat: latitude, lng: longitude })
+  const shopData = await getShopDetail(orderData.shopId)
 
-  // const data = await getStoreDetail(10)
-  // const latitude = data.storeDetail.info.shopAddressResponse.latitude,
-  //   longitude = data.storeDetail.info.shopAddressResponse.longitude,
+  // console.log('shopData', shopData)
+
+  const latitude = shopData.shopDetail.info.shopAddressResponse.latitude,
+    longitude = shopData.shopDetail.info.shopAddressResponse.longitude
+
+  return Object.assign(orderData, { shopLat: latitude, shopLng: longitude })
+
+  // const data = await getShopDetail(10)
+  // const latitude = data.shopDetail.info.shopAddressResponse.latitude,
+  //   longitude = data.shopDetail.info.shopAddressResponse.longitude,
   //   mockOrder = {
   //     result: true,
   //     status: 200,

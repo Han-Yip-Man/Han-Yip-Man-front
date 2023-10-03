@@ -34,6 +34,8 @@ declare interface ICategory {
 
 declare type OrderState = 'CANCELED' | 'TAKEOVER' | 'COOKING' | 'DELIVERY' | 'COMPLETE' | 'PAID'
 
+declare type FilterType = 'DISTANCE' | 'AVG_RATING' | 'COUNT_REVIEW' | 'CREATED_AT'
+
 declare interface AlarmData {
   address: string
   addressDetail: string

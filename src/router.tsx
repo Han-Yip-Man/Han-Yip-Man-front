@@ -2,23 +2,23 @@ import { createBrowserRouter } from 'react-router-dom'
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 import AuthComponent from './auth/AuthComponent'
 import GeneralLayout from './layout/GeneralLayout'
-import MenuDetail from './pages/menuDetail/MenuDetail'
+import MenuDetail from './pages/menuDetail/MenuDetail/MenuDetail'
 import Cart from './pages/cart/Cart'
-import Order from './pages/order/Order'
+import Order from './pages/order/Order/Order'
 import SignLayout from './layout/SignLayout'
 import MypageLayout from './layout/MypageLayout'
-import OwnerDashboard from './pages/OwnerDashboard/OwnerDashboard'
-import { Store } from './pages/Store'
-import CategoryMain from './pages/CategoryMain/CategoryMain'
-import OwnerSignup from './pages/OwnerSignup/OwnerSignup'
-import OwnerSignin from './pages/OwnerSignin/OwnerSignin'
-import CustomerSignup from './pages/CustomerSignup/CustomerSignup'
-import CustomerSignin from './pages/CustomerSignin/CustomerSignin'
-import Mypage from './components/Mypage/Mypage/Mypage'
-import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage'
-import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage.tsx'
-import Main from './pages/Main/Main'
+import OwnerSignup from './pages/ownerSignup/OwnerSignup/OwnerSignup.tsx'
+import OwnerSignin from './pages/ownerSignin/OwnerSignin/OwnerSignin.tsx'
+import CustomerSignin from './pages/customerSignin/CustomerSignin/CustomerSignin.tsx'
 import KaKao from './components/KaKaoLogin/KaKao'
+import CustomerSignup from './pages/customerSignup/CostomerSignup/CustomerSignup.tsx'
+import OwnerDashboard from './pages/ownerDashboard/OwnerDashboard/OwnerDashboard.tsx'
+import Mypage from './pages/customerMypage/mypage/Mypage.tsx'
+import SignupSelectionPage from './pages/SignupSelectionPage/SignupSelectionPage.tsx'
+import SignInSelectionPage from './pages/SignInSelectionPage/SignInSelectionPage.tsx'
+import Main from './pages/Main/Main.tsx'
+import CategoryMain from './pages/CategoryMain/CategoryMain.tsx'
+import Shop from './pages/shop/shop/Shop.tsx'
 
 interface RouterBase {
   id: number // 페이지 아이디 (반복문용 고유값)
@@ -86,9 +86,9 @@ const routerData: RouterElement[] = [
       },
       {
         id: 3,
-        path: '/store/:storeId',
-        label: 'Store',
-        element: <Store />,
+        path: '/shop/:shopId',
+        label: 'Shop',
+        element: <Shop />,
       },
       {
         id: 4,

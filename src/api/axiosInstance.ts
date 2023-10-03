@@ -23,9 +23,9 @@ axiosClient.interceptors.request.use((config) => {
   }
   config.headers['X-API-VERSION'] = '1'
 
-  // const token = sessionStorage.getItem('accessToken')
-  const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2R3MjEzMkBhc2R3LmFjIiwidXNlcklkeCI6MTgsImVtYWlsIjoiYXNkdzIxMzJAYXNkdy5hYyIsInJvbGUiOiJTRUxMRVIiLCJuaWNrbmFtZSI6IuuCmOuKlOyepeyCrOyZlSIsImlhdCI6MTY5NTI5NTk1NiwiZXhwIjoxNjk1NDY4NzU2fQ.yCYIq3TW23ATExMAUNSTQAEVKYl1OjYOpG-iOtGp3wI'
+  const token = sessionStorage.getItem('accessToken')
+  // const token =
+  //   'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYXN1bmdAZ21haWwuY29tIiwidXNlcklkeCI6MTMsImVtYWlsIjoicGFzdW5nQGdtYWlsLmNvbSIsInJvbGUiOiJTRUxMRVIiLCJuaWNrbmFtZSI6InBhc3VuZyIsImlhdCI6MTY5NTMyODQ4OSwiZXhwIjoxNjk1NTAxMjg5fQ.Out3Zo7VD0zW9iGUdhRwALFJDwxH2bL0aDK9EZoEROI'
 
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`
