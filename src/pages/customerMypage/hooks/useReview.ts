@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import axiosClient from '../../../api/axiosInstance'
 import { ReviewResponse } from '../types'
-import { useAlert } from '../../../hooks'
+import { useAlert } from '../../common/hooks'
 
 const postReview = async (reviewRequest: FormData): Promise<ReviewResponse> => {
   return await axiosClient.post(`/reviews`, reviewRequest)
