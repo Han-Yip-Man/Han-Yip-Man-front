@@ -1,11 +1,11 @@
 import { Button, Card, CardContent, TextField, Typography } from '@mui/material'
 import * as S from './MyCoupon.style'
-import { useQuery } from '@tanstack/react-query'
-import { getCoupons, postCoupon } from '../../../api/coupons'
+import { postCoupon } from '../../../api/coupons'
 import { useForm } from 'react-hook-form'
+import useCoupon from '../hooks/useCoupon'
 
 const MyCoupon = () => {
-  const { data } = useQuery(['coupons'], () => getCoupons())
+  const { data } = useCoupon()
   console.log(data)
   const { register, handleSubmit } = useForm()
 

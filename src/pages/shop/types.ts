@@ -1,5 +1,5 @@
-export type StoreDetail = {
-  storeDetail: {
+export type ShopDetail = {
+  shopDetail: {
     info: {
       bannerUrl: string
       description: string
@@ -30,9 +30,9 @@ export type menuGroup = {
   menuGroupName: string
 }
 
-export type StoreMenus = menuGroup[]
+export type ShopMenus = menuGroup[]
 
-export type StoreReview = {
+export type ShopReview = {
   userId: number
   nickName: string
   reviewContent: string
@@ -41,7 +41,7 @@ export type StoreReview = {
   reviewImageUrl: string
 }
 
-export type StoreReviews = {
+export type ShopReviews = {
   cursor: string
-  shopReviewsList: StoreReview[]
+  shopReviewsList: ShopReview[]
 }
