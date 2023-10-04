@@ -13,7 +13,7 @@ interface UserInfoType {
 
 export const tokenState = atom({
   key: 'token',
-  default: sessionStorage.getItem('accessToken') || null,
+  default: sessionStorage.getItem('accessToken') as string,
 })
 
 export const userInfo = selector<UserInfoType | null>({
