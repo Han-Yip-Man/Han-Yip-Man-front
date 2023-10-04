@@ -11,7 +11,7 @@ const getTempPointArray = (start: number, end: number) => {
   const curArr = []
   for (let index = 0; index < TOTAL; index++) {
     const current = start + (end - start) * (index / DIVIDER)
-    curArr.push(current)
+    curArr.unshift(current)
   }
   return curArr
 }
@@ -58,10 +58,10 @@ export const getAddressToLatLng = (address: string | undefined, setAtom: any) =>
 
   const callback = (result: any, status: any) => {
     if (status === kakaoApi.kakao.maps.services.Status.OK) {
-      setAtom({
+      setAtom(() => ({
         lat: +parseFloat(result[0].y).toFixed(6),
         lng: +parseFloat(result[0].x).toFixed(6),
-      })
+      }))
     }
   }
   geocoder.addressSearch(address, callback)
