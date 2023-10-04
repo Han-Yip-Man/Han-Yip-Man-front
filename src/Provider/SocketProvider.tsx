@@ -1,5 +1,5 @@
 import { createContext, ReactNode } from 'react'
-import { useSocket } from '../hooks'
+import { useSocket } from '../pages/common/hooks'
 import { Socket } from 'socket.io-client'
 
 type SocketState = {

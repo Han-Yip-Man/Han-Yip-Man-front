@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import axiosClient from '../../api/axiosInstance'
-import { useAlert } from '../../hooks'
+import { useAlert } from '../../pages/common/hooks'
 import { useNavigate } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
 import { tokenState } from '../../atoms/userInfoAtoms'

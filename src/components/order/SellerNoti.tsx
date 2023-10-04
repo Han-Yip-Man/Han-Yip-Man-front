@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { extractTime } from '../../utils/extractTime'
-import { useSocketContext } from '../../hooks'
+import { useSocketContext } from '../../pages/common/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {

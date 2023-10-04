@@ -1,13 +1,12 @@
 import { Outlet } from 'react-router-dom'
 import styled from '@emotion/styled'
-import Header from '../components/header/Header'
+import Header from '../pages/common/components/header/Header'
 import Container from '@mui/material/Container'
-import useRouter from '../hooks/useRouter'
-import { SSEProvider } from '../Provider/SSEProvider'
 import OrderAlarmProvider from '../Provider/OrderAlarmProvider'
 import { SocketProvider } from '../Provider/SocketProvider'
 import { tokenState } from '../atoms/userInfoAtoms'
 import { useRecoilValue } from 'recoil'
+import { useRouter } from '../pages/common/hooks'
 
 // const token =
 //   'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QzLmNvbSIsInVzZXJJZHgiOjE5LCJlbWFpbCI6InRlc3RAdGVzdDMuY29tIiwicm9sZSI6IkJVWUVSIiwibmlja25hbWUiOiLrp4nrp4jshZQiLCJpYXQiOjE2OTUzMjQ4MDYsImV4cCI6MTY5NTQ5NzYwNn0.-qcm4xEJCsqjQb-SGzZ5cpMmTvTWBWPYQlq6d8lv_3A'
