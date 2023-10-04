@@ -1,11 +1,10 @@
 import { Stack, Table, TableBody, TableRow, Typography } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
-import { getMypageInfo } from '../hooks/mypage'
 import AddressTabs from '../addressTabs/AddressTabs'
 import * as S from './CustomerMyPageInfo.style'
+import useMypageInfo from '../hooks/useMypageInfo'
 
 export const CustomerMyPageInfo = () => {
-  const { data } = useQuery(['mypage'], () => getMypageInfo())
+  const { data } = useMypageInfo()
 
   return (
     <>

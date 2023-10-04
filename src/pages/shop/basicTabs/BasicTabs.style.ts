@@ -1,6 +1,6 @@
 import { Box, Typography, Stack, styled, Paper, TableCell } from '@mui/material'
 
-export const StoreInfoWrap = styled(Stack)`
+export const ShopInfoWrap = styled(Stack)`
   color: rgba(0, 0, 0, 0.6);
   align-items: center;
 `
@@ -16,7 +16,7 @@ export const InfoPaper = styled(Paper)`
   padding: 20px;
 `
 
-export const StoreInfoPaper = styled(Paper)`
+export const ShopInfoPaper = styled(Paper)`
   box-sizing: border-box;
   width: 100%;
   padding: 16px;

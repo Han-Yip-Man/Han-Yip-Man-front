@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import axiosClient from '../../../api/axiosInstance'
-import { StoreDetail } from '../types'
+import { ShopDetail } from '../types'
+import { queryKeys } from '../../../react-query/querykey'
 
-const getStoreDetail = async (shopId: any | undefined): Promise<StoreDetail> => {
+const getShopDetail = async (shopId: any | undefined): Promise<ShopDetail> => {
   const infoResponse = await axiosClient.get(`/buyer-shops/${shopId}/info`)
   const rvAvgResponse = await axiosClient.get(`/buyer-shops/${shopId}/review-average`)
 
   const returnValue = {
-    storeDetail: {
+    shopDetail: {
       info: infoResponse.data,
       rvAvg: rvAvgResponse.data,
     },
@@ -16,10 +17,10 @@ const getStoreDetail = async (shopId: any | undefined): Promise<StoreDetail> => 
   return returnValue
 }
 
-const useStore = (storeId: number) => {
-  const { data, isLoading } = useQuery(['stores', storeId], () => getStoreDetail(storeId))
+const useShop = (shopId: number) => {
+  const { data, isLoading } = useQuery([queryKeys.shop, shopId], () => getShopDetail(shopId))
 
   return { data, isLoading }
 }
 
-export default useStore
+export default useShop
