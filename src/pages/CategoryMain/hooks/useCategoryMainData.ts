@@ -31,8 +31,8 @@ const useCategoryMainData = ({ debouncedKeyword, currentCategory, currentFilter 
     async ({ nextCursorId, nextCursorValue }: CursorParams) => {
       const nextCursorIdParam = nextCursorId ? `&cursorId=${nextCursorId}` : ''
       const nextCursorValueParam = nextCursorValue ? `&cursorValue=${nextCursorValue}` : ''
-      const keyword = debouncedKeyword.trim()
-      const searchParam = keyword ? `&searchKeyword=${keyword}` : ''
+      const search_keyword = debouncedKeyword.trim()
+      const searchParam = search_keyword ? `&searchKeyword=${search_keyword}` : ''
       const sortParam = `&sortType=${currentFilter}`
       const url = `categoryId=${
         currentCategory.categoryId
@@ -50,11 +50,11 @@ const useCategoryMainData = ({ debouncedKeyword, currentCategory, currentFilter 
     [queryKeys.category, currentCategory.categoryName, debouncedKeyword, currentFilter],
     (pageParam: any) => fetchData(pageParam),
     {
-      getNextPageParam: (lastPage: StoreListResponse) => {
-        if (!lastPage.nextCursorId) {
+      getNextPageParam: ({ nextCursorId, nextCursorValue }: StoreListResponse) => {
+        if (!nextCursorId) {
           return false
         }
-        return { nextCursorId: lastPage.nextCursorId, nextCursorValue: lastPage.nextCursorValue }
+        return { nextCursorId, nextCursorValue }
       },
       useErrorBoundary: true,
       staleTime: 50000,

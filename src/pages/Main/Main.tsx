@@ -114,16 +114,17 @@ function Main() {
 
     if (isLoggedIn) {
       // 주소 중복여부 체크하는 api 요청후 로직 작성
-      checkExistAddress(id).then((res) => {
-        if (res.data === false) {
-          addrRegisterMutation.mutate({ id, address_name, road_address_name, place_name, x, y })
-        }
-      })
-      // .catch((error) => {
-      //   if (isAxiosError(error)) {
-      //     return toast(`${error.message}`, 3000, 'error')
-      //   }
-      // })
+      checkExistAddress(id)
+        .then((res) => {
+          if (res.data === false) {
+            addrRegisterMutation.mutate({ id, address_name, road_address_name, place_name, x, y })
+          }
+        })
+        .catch((error) => {
+          if (isAxiosError(error)) {
+            return toast(`${error.message}`, 3000, 'error')
+          }
+        })
     } else {
       setNonLoginAddrs((prev) => {
         const isDuplicate = prev.map((a) => a.id).includes(id)
